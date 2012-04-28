@@ -91,9 +91,8 @@ public abstract class Faction {
 		}
 		while(plan.peek().isBaseTask() != true) {
 			if(plan.peek().isCompleted(this)) plan.pop();
-			plan.add(plan.peek().getNextStep(this));
+			else plan.add(plan.peek().getNextStep(this));
 		}
-		System.out.println(plan);
 	}
 	
 	public boolean needToReplan() {
@@ -105,6 +104,7 @@ public abstract class Faction {
 		if(needToReplan())
 			replan();
 		timeToReplan--;
+		System.out.println(plan);
 		return plan.pop();
 	}
 	public void doTurn() {

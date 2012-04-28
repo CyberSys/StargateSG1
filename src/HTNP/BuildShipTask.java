@@ -6,7 +6,7 @@ public class BuildShipTask extends Task {
 	
 	private int limit;
 	public BuildShipTask(int limit) {
-		super(true, "Build Ship Task " + limit);
+		super(true, "Build Ship Task");
 		this.limit = limit;
 	}
 	

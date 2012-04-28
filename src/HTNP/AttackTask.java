@@ -14,7 +14,10 @@ public class AttackTask extends Task {
 		//sum of turns until combat strenght up
 		//+ turns until transport ready
 		//+ turns guessed for assault
-		return 0;
+		return new GatherTroopsTask(faction.getEnemy().getCombatStrength()).stepsToCompletion(faction)
+				+ new TransportTroopsTask().stepsToCompletion(faction)
+				+ (new AssaultTask().getFlavorMatch(faction) > new ConquerTask().getFlavorMatch(faction) ?
+					new AssaultTask().stepsToCompletion(faction) : new ConquerTask().stepsToCompletion(faction));
 	}
 
 	public Task getNextStep(Faction faction) {
