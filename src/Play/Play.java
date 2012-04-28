@@ -14,15 +14,13 @@ public class Play {
 		f.addKnownWorldLocation(targetWorld);
 		f2.setNumArmies(15);
 		f.setEnemy(f2);
-		Task t = new AttackTask();
-		while(!t.isCompleted(f)) {
+		while(true) {
 			System.out.println(f);
-			//System.out.println(t.stepsToCompletion(f));
-			t.perform(f);
+			f.doTurn();
+			if(f.didWin())
+				break;
 		}
-		
 		System.out.println(f);
-		System.out.println(t.stepsToCompletion(f));
 			
 	}
 

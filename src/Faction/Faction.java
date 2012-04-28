@@ -2,12 +2,14 @@ package Faction;
 
 import java.util.*;
 
+import HTNP.*;
 import World.*;
 
 //Todo: The following:
 //Think of stats for factions to have
 //Think of way to keep track of current task so replanning not a bitch
 public abstract class Faction {
+	protected Stack<Task> plan = new Stack<Task>();
 	protected boolean isReadyToAttack = false;
 	protected int numArmies;
 	protected int numShips;
@@ -16,6 +18,7 @@ public abstract class Faction {
 	protected List<World> gateAddress = new ArrayList<World>();
 	protected List<World> knownWorldLocations = new ArrayList<World>();
 	protected World world;
+	private int timeToReplan = 0;
 	
 	public void setIsReadyToAttack(boolean isReady) {
 		this.isReadyToAttack = isReady;
@@ -74,5 +77,35 @@ public abstract class Faction {
 	
 	public void addKnownWorldLocation(World world) {
 		knownWorldLocations.add(world);
+	}
+	
+	public void replan() {
+		//Do things
+		//probably check all of the highest level tasks, find the one that matches flavor the most
+		//or one that gives an end result of victory condition
+		Task attack = new AttackTask();
+		plan.add(attack);
+		while(plan.peek().isBaseTask() != true) {
+			plan.add(plan.peek().getNextStep(this));
+		}
+	}
+	
+	public boolean needToReplan() {
+		//Replan if your plan is empty, you need to replan, or you don't have a base task to perform
+		return plan.isEmpty() ||/* timeToReplan <= 0 || */plan.peek().isBaseTask() != true;
+	}
+	
+	public Task getNextPlannedTask() {
+		if(needToReplan())
+			replan();
+		timeToReplan--;
+		return plan.pop();
+	}
+	public void doTurn() {
+		getNextPlannedTask().perform(this);		
+	}
+	public boolean didWin() {
+		Task attack = new AttackTask();
+		return attack.isCompleted(this);
 	}
 }

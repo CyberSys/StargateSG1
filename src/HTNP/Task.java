@@ -33,6 +33,10 @@ public abstract class Task {
 	//Think of way to have this work generically
 	//Flavors are war, science, diplomacy
 	public abstract double getFlavorMatch(Faction faction);
+
+	public boolean isBaseTask() {
+		return isBaseTask;
+	}
 	
 	
 }
