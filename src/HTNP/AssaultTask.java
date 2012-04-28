@@ -6,7 +6,7 @@ import Faction.Faction;
 public class AssaultTask extends Task {
 
 	public AssaultTask() {
-		super(true);
+		super(true, "Assault Task");
 	}
 
 	@Override
@@ -19,34 +19,23 @@ public class AssaultTask extends Task {
 		return this;
 	}
 
-	public boolean isCompleted(Faction faction, World world) {
-		return world.getControllingFaction().equals(faction);
+	public boolean isCompleted(Faction faction) {
+		return faction.getEnemy().getWorld().getControllingFaction().equals(faction);
 	}
 
-	public boolean canPerform(Faction faction, World world) {
-		return faction.isReadyToAttack(world);
+	public boolean canPerform(Faction faction) {
+		return faction.isReadyToAttack();
 	}
 
 	public void perform(Faction faction) {
-		//figure this out
+		System.out.println("Doing " + name);
+		faction.getEnemy().getWorld().setControllingFaction(faction);
 	}
 	
 	@Override
 	public double getFlavorMatch(Faction faction) {
 		// TODO Auto-generated method stub
 		return 0;
-	}
-
-	@Override
-	public boolean isCompleted(Faction faction) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean canPerform(Faction faction) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 }

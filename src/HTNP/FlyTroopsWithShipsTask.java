@@ -2,16 +2,12 @@ package HTNP;
 
 import Faction.Faction;
 
-public class GatherResourcesTask extends Task {
+public class FlyTroopsWithShipsTask extends Task {
 
-	private int limit;
-	public GatherResourcesTask(int limit) {
-		super(true, "Gather Resources Task");
-		this.limit = limit;
+	public FlyTroopsWithShipsTask() {
+		super(true, "Fly Troops With Ships Task");
 	}
-	
-	//Consider resources gathered when limit is reached
-	
+
 	@Override
 	public int stepsToCompletion(Faction faction) {
 		return 1;
@@ -24,17 +20,17 @@ public class GatherResourcesTask extends Task {
 
 	@Override
 	public boolean isCompleted(Faction faction) {
-		return faction.getNumResources() >= limit;
+		// TODO Auto-generated method stub
+		return faction.isReadyToAttack();
 	}
 
-	@Override
-	public boolean canPerform(Faction faction) {
-		return true;
-	}
-	
 	public void perform(Faction faction) {
 		System.out.println("Doing " + name);
-		faction.setNumResources(faction.getNumResources() + 1);
+		faction.setIsReadyToAttack(true);
+	}
+	@Override
+	public boolean canPerform(Faction faction) {
+		return faction.getNumShips() >= faction.getNumArmies();
 	}
 
 	@Override

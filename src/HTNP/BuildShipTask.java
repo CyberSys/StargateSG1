@@ -5,7 +5,7 @@ import Faction.Faction;
 public class BuildShipTask extends Task {
 	
 	public BuildShipTask() {
-		super(true);
+		super(true, "Build Ship Task");
 	}
 	
 	@Override
@@ -29,6 +29,7 @@ public class BuildShipTask extends Task {
 	}
 	
 	public void perform(Faction faction) {
+		System.out.println("Doing " + name);
 		faction.setNumResources(faction.getNumResources() - 1);
 		faction.setNumShips(faction.getNumShips() + 1);
 	}

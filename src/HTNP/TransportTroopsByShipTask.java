@@ -1,17 +1,14 @@
 package HTNP;
 
-import World.World;
 import Faction.Faction;
 
 public class TransportTroopsByShipTask extends Task {
 
-	private World world;
 	public TransportTroopsByShipTask() {
-		super(false);
-	}
-	
-	public void setTargetWorld(World world) {
-		this.world = world;
+		super(false, "Transport Troops By Ship Task");
+		tasks.add(new GatherShipTask());
+		tasks.add(new FlyTroopsWithShipsTask());
+		
 	}
 
 	@Override
@@ -21,13 +18,14 @@ public class TransportTroopsByShipTask extends Task {
 
 	@Override
 	public Task getNextStep(Faction faction) {
-		// TODO Auto-generated method stub
-		return null;
+		if(faction.getNumShips() < faction.getNumArmies())
+			return tasks.get(0);
+		return tasks.get(1);
 	}
 
 	@Override
 	public boolean isCompleted(Faction faction) {
-		return faction.isReadyToAttack(world);
+		return faction.isReadyToAttack();
 	}
 
 	@Override

@@ -4,10 +4,10 @@ import java.util.Random;
 
 import Faction.Faction;
 
-public class StealShip extends Task {
+public class StealShipTask extends Task {
 
-	public StealShip() {
-		super(true);
+	public StealShipTask() {
+		super(true, "Steal Ship Task");
 	}
 
 	@Override
@@ -39,7 +39,7 @@ public class StealShip extends Task {
 	@Override
 	public double getFlavorMatch(Faction faction) {
 		// TODO Auto-generated method stub
-		return 0;
+		return -1;
 	}
 
 }

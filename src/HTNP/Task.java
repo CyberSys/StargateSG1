@@ -10,9 +10,11 @@ public abstract class Task {
 	//Tasks should 
 	protected ArrayList<Task> tasks = new ArrayList<Task>();
 	protected boolean isBaseTask;
+	protected String name;
 
-	public Task(boolean isBaseTask) {
+	public Task(boolean isBaseTask, String taskName) {
 		this.isBaseTask = isBaseTask;
+		this.name = taskName;
 	}
 	
 	public abstract int stepsToCompletion(Faction faction);
@@ -24,6 +26,7 @@ public abstract class Task {
 	public abstract boolean canPerform(Faction faction);
 	
 	public void perform(Faction faction) {
+		System.out.println("Doing " + name);
 		getNextStep(faction).perform(faction);
 	}
 	

@@ -5,7 +5,7 @@ import Faction.Faction;
 public class GatherTroopsTask extends Task {
 
 	public GatherTroopsTask() {
-		super(true);
+		super(true, "Gather Troops Task");
 	}
 
 	@Override
@@ -29,6 +29,7 @@ public class GatherTroopsTask extends Task {
 	}
 
 	public void perform(Faction faction) {
+		System.out.println("Doing " + name);
 		faction.setNumArmies(faction.getNumArmies() + 1);
 	}
 	@Override

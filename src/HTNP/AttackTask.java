@@ -6,7 +6,7 @@ import Faction.Faction;
 public class AttackTask extends Task {
 
 	public AttackTask() {
-		super(false);
+		super(false, "Attack Task");
 		tasks.add(new GatherTroopsTask()); //0
 		tasks.add(new TransportTroopsTask()); //1
 		tasks.add(new AssaultTask()); // 2
@@ -22,6 +22,7 @@ public class AttackTask extends Task {
 	}
 
 	public Task getNextStep(Faction faction) {
+		
 		if(!(faction.getCombatStrength() > faction.getEnemy().getCombatStrength()))
 			return tasks.get(0);
 		if(!faction.isReadyToAttack())

@@ -5,20 +5,30 @@ import Faction.Faction;
 public class GatherShipTask extends Task {
 
 	public GatherShipTask() {
-		super(false);
-		// TODO Auto-generated constructor stub
+		super(false, "Gather Ships Task");
+		tasks.add(new GatherResourcesTask(1));
+		tasks.add(new BuildShipTask());
+		tasks.add(new StealShipTask());
 	}
 
 	@Override
 	public int stepsToCompletion(Faction faction) {
-		// TODO Auto-generated method stub
-		return 0;
+		if(tasks.get(1).getFlavorMatch(faction) > tasks.get(2).getFlavorMatch(faction))
+		{
+			return tasks.get(0).stepsToCompletion(faction);
+		}
+		else return tasks.get(2).stepsToCompletion(faction);
 	}
 
 	@Override
 	public Task getNextStep(Faction faction) {
-		// TODO Auto-generated method stub
-		return null;
+		if(tasks.get(1).getFlavorMatch(faction) > tasks.get(2).getFlavorMatch(faction))
+		{
+			if(tasks.get(1).canPerform(faction))
+				return tasks.get(1);
+			else return tasks.get(0);
+		}
+		else return tasks.get(2);
 	}
 
 	@Override
@@ -28,7 +38,6 @@ public class GatherShipTask extends Task {
 
 	@Override
 	public boolean canPerform(Faction faction) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

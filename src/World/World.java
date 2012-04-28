@@ -1,10 +1,20 @@
 package World;
 
+import Faction.Faction;
+
 public class World {
+	Faction controllingFaction;
 
 	public Object getControllingFaction() {
-		// TODO Auto-generated method stub
-		return null;
+		return controllingFaction;
+	}
+	
+	public boolean equals(World other) {
+		return true;
+	}
+
+	public void setControllingFaction(Faction faction) {
+		controllingFaction = faction;	
 	}
 
 }

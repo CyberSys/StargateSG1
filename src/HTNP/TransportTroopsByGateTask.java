@@ -7,7 +7,7 @@ public class TransportTroopsByGateTask extends Task {
 
 	private World world;
 	public TransportTroopsByGateTask() {
-		super(true);
+		super(true, "Transport Troops By Gate Task");
 	}
 	
 	public void setTargetWorld(World world) {
@@ -26,7 +26,7 @@ public class TransportTroopsByGateTask extends Task {
 
 	@Override
 	public boolean isCompleted(Faction faction) {
-		return faction.isReadyToAttack(world);
+		return faction.isReadyToAttack();
 	}
 
 	@Override
