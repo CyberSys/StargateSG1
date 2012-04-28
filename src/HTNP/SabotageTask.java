@@ -1,42 +1,34 @@
 package HTNP;
 
-import World.World;
 import Faction.Faction;
 
-public class TransportTroopsByGateTask extends Task {
+public class SabotageTask extends Task {
 
-	private World world;
-	public TransportTroopsByGateTask(World world) {
-		super(true, "Transport Troops By Gate Task");
+	public SabotageTask() {
+		super(false, "Sabotage Task");
 	}
 
 	@Override
 	public int stepsToCompletion(Faction faction) {
-		return 1;
+		return new InfiltrateTask().stepsToCompletion(faction) + new CauseHavokTask().stepsToCompletion(faction);
 	}
 
 	@Override
 	public Task getNextStep(Faction faction) {
-		return this;
+		if(new InfiltrateTask().isCompleted(faction)) return new CauseHavokTask();
+		return new InfiltrateTask();
 	}
 
 	@Override
 	public boolean isCompleted(Faction faction) {
-		return faction.isReadyToAttack();
+		return new CauseHavokTask().isCompleted(faction);
 	}
 
 	@Override
 	public boolean canPerform(Faction faction) {
-		return faction.knowsGateAddress(world);
-		
-		//figure this out
+		return true;
 	}
 
-	public void perform(Faction faction) {
-		//figure this out
-	}
-	
-	
 	@Override
 	public double getFlavorMatch(Faction faction) {
 		// TODO Auto-generated method stub

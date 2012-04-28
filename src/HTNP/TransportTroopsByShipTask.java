@@ -1,11 +1,14 @@
 package HTNP;
 
+import World.World;
 import Faction.Faction;
 
 public class TransportTroopsByShipTask extends Task {
 
-	public TransportTroopsByShipTask() {
-		super(false, "Transport Troops By Ship Task");		
+	private World world;
+	public TransportTroopsByShipTask(World world) {
+		super(false, "Transport Troops By Ship Task");	
+		this.world = world;
 	}
 
 	@Override
@@ -27,7 +30,7 @@ public class TransportTroopsByShipTask extends Task {
 
 	@Override
 	public boolean canPerform(Faction faction) {
-		return faction.getNumShips() >= faction.getNumArmies();
+		return faction.getNumShips() >= faction.getNumArmies() && faction.knowsLocation(world);
 	}
 
 	@Override

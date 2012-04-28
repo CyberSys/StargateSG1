@@ -2,17 +2,17 @@ package HTNP;
 
 import Faction.Faction;
 
-public class BuildShipTask extends Task {
-	
+public class BuyShipTask extends Task {
+
 	private int limit;
-	public BuildShipTask(int limit) {
-		super(true, "Build Ship Task");
+	public BuyShipTask(int limit) {
+		super(true, "Buy Ship Task");
 		this.limit = limit;
 	}
-	
+
 	@Override
 	public int stepsToCompletion(Faction faction) {
-		return limit - faction.getNumShips();
+		return 1;
 	}
 
 	@Override
@@ -27,19 +27,20 @@ public class BuildShipTask extends Task {
 
 	@Override
 	public boolean canPerform(Faction faction) {
-		return faction.getNumResources() + faction.getNumShips() >= limit;
+		return faction.getNumResources() >= (limit - faction.getNumShips()) * 2;
 	}
 	
 	public void perform(Faction faction) {
 		System.out.println("Doing " + name);
-		faction.setNumResources(faction.getNumResources() - 1);
-		faction.setNumShips(faction.getNumShips() + 1);
+		int numShipsBought = Math.min(faction.getNumResources() / 2, limit - faction.getNumShips());
+		faction.setNumShips(faction.getNumShips() + numShipsBought);
+		faction.setNumResources(faction.getNumResources() - 2*numShipsBought);
 	}
 
 	@Override
 	public double getFlavorMatch(Faction faction) {
 		// TODO Auto-generated method stub
-		return 0;
+		return 1;
 	}
 
 }

@@ -33,7 +33,22 @@ public abstract class Task {
 	//Think of way to have this work generically
 	//Flavors are war, science, diplomacy
 	public abstract double getFlavorMatch(Faction faction);
+	
+	protected List<Task> getTaskList(){return null;}
 
+	protected Task getFlavorMatchTask(Faction faction) {
+		List<Task> taskList = getTaskList();
+		Task bestMatch = taskList.get(0);
+		for(Task task : taskList) {
+			if(task.getFlavorMatch(faction) > bestMatch.getFlavorMatch(faction))
+				bestMatch = task;
+		}
+		return bestMatch;
+	}
+	
+	public String toString() {
+		return name.substring(0,  name.length() - 5);
+	}
 	public boolean isBaseTask() {
 		return isBaseTask;
 	}

@@ -18,7 +18,8 @@ public class Play {
 	
 		while(true) {
 			System.out.println(f);
-			System.out.println(f.plan.firstElement().stepsToCompletion(f));
+			System.out.println(f2);
+			//System.out.println(f.plan.firstElement().stepsToCompletion(f));
 			f.doTurn();
 			if(f.didWin())
 				break;

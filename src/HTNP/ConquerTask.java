@@ -24,7 +24,7 @@ public class ConquerTask extends Task {
 	}
 
 	public boolean canPerform(Faction faction) {
-		return faction.isReadyToAttack();
+		return faction.getNumArmies() > faction.getEnemy().getNumArmies() *  2;
 	}
 
 	public void perform(Faction faction) {

@@ -1,42 +1,33 @@
 package HTNP;
 
-import World.World;
 import Faction.Faction;
 
-public class TransportTroopsByGateTask extends Task {
-
-	private World world;
-	public TransportTroopsByGateTask(World world) {
-		super(true, "Transport Troops By Gate Task");
-	}
+public class InfiltrateTask extends Task {
 
 	@Override
 	public int stepsToCompletion(Faction faction) {
-		return 1;
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	@Override
 	public Task getNextStep(Faction faction) {
-		return this;
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public boolean isCompleted(Faction faction) {
-		return faction.isReadyToAttack();
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	@Override
 	public boolean canPerform(Faction faction) {
-		return faction.knowsGateAddress(world);
-		
-		//figure this out
+		// TODO Auto-generated method stub
+		return false;
 	}
 
-	public void perform(Faction faction) {
-		//figure this out
-	}
-	
-	
 	@Override
 	public double getFlavorMatch(Faction faction) {
 		// TODO Auto-generated method stub

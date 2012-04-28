@@ -29,7 +29,7 @@ public class AssaultTask extends Task {
 
 	public void perform(Faction faction) {
 		System.out.println("Doing " + name);
-		faction.getEnemy().getWorld().setControllingFaction(faction);
+		faction.getEnemy().setNumArmies(faction.getEnemy().getNumArmies()-1);
 	}
 	
 	@Override
