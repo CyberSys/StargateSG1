@@ -6,8 +6,6 @@ public class TransportTroopsTask extends Task {
 
 	public TransportTroopsTask() {
 		super(false, "Transport Troops Task");
-		tasks.add(new TransportTroopsByGateTask());
-		tasks.add(new TransportTroopsByShipTask());
 	}
 
 	@Override
@@ -19,11 +17,11 @@ public class TransportTroopsTask extends Task {
 		if(faction.knowsLocation(faction.getEnemy().getWorld())) {
 			canByShip = true;
 		}
-		if(canByGate && !canByShip) return tasks.get(0).stepsToCompletion(faction);
-		if(canByShip && !canByGate) return tasks.get(1).stepsToCompletion(faction);
+		if(canByGate && !canByShip) return new TransportTroopsByGateTask().stepsToCompletion(faction);
+		if(canByShip && !canByGate) return new TransportTroopsByShipTask().stepsToCompletion(faction);
 		if(canByShip && canByGate) {
-			if(tasks.get(0).getFlavorMatch(faction) > tasks.get(1).getFlavorMatch(faction)) return tasks.get(0).stepsToCompletion(faction);
-			else return tasks.get(1).stepsToCompletion(faction);
+			if(new TransportTroopsByGateTask().getFlavorMatch(faction) > new TransportTroopsByShipTask().getFlavorMatch(faction)) return new TransportTroopsByGateTask().stepsToCompletion(faction);
+			else return new TransportTroopsByShipTask().stepsToCompletion(faction);
 		}
 		return -1;
 	}
@@ -38,11 +36,11 @@ public class TransportTroopsTask extends Task {
 			canByShip = true;
 		}
 		
-		if(canByGate && !canByShip) return tasks.get(0);
-		if(canByShip && !canByGate) return tasks.get(1);
+		if(canByGate && !canByShip) return new TransportTroopsByGateTask();
+		if(canByShip && !canByGate) return new TransportTroopsByShipTask();
 		if(canByShip && canByGate) {
-			if(tasks.get(0).getFlavorMatch(faction) > tasks.get(1).getFlavorMatch(faction)) return tasks.get(0);
-			else return tasks.get(1);
+			if(new TransportTroopsByGateTask().getFlavorMatch(faction) > new TransportTroopsByShipTask().getFlavorMatch(faction)) return new TransportTroopsByGateTask();
+			else return new TransportTroopsByShipTask();
 		}
 		return null;
 	}

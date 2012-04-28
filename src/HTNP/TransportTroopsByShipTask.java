@@ -5,22 +5,19 @@ import Faction.Faction;
 public class TransportTroopsByShipTask extends Task {
 
 	public TransportTroopsByShipTask() {
-		super(false, "Transport Troops By Ship Task");
-		tasks.add(new GatherShipTask());
-		tasks.add(new FlyTroopsWithShipsTask());
-		
+		super(false, "Transport Troops By Ship Task");		
 	}
 
 	@Override
 	public int stepsToCompletion(Faction faction) {
-		return 0;
+		return new GatherShipTask(faction.getNumArmies() - faction.getNumShips()).stepsToCompletion(faction) + 1;
 	}
 
 	@Override
 	public Task getNextStep(Faction faction) {
 		if(faction.getNumShips() < faction.getNumArmies())
-			return tasks.get(0);
-		return tasks.get(1);
+			return new GatherShipTask(faction.getNumArmies());
+		return new FlyTroopsWithShipsTask();
 	}
 
 	@Override

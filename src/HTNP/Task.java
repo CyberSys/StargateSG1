@@ -8,7 +8,7 @@ import Faction.Faction;
 //Check to see that we do the first task in our list that looks unfinished (i.e., it doesn't look completed)
 public abstract class Task {
 	//Tasks should 
-	protected ArrayList<Task> tasks = new ArrayList<Task>();
+	//protected ArrayList<Task> tasks = new ArrayList<Task>();
 	protected boolean isBaseTask;
 	protected String name;
 

@@ -7,10 +7,6 @@ public class AttackTask extends Task {
 
 	public AttackTask() {
 		super(false, "Attack Task");
-		tasks.add(new GatherTroopsTask()); //0
-		tasks.add(new TransportTroopsTask()); //1
-		tasks.add(new AssaultTask()); // 2
-		tasks.add(new ConquerTask()); // 3
 	}
 
 	public int stepsToCompletion(Faction faction) {
@@ -22,30 +18,29 @@ public class AttackTask extends Task {
 	}
 
 	public Task getNextStep(Faction faction) {
-		
 		if(!(faction.getCombatStrength() > faction.getEnemy().getCombatStrength()))
-			return tasks.get(0);
+			return new GatherTroopsTask(faction.getEnemy().getCombatStrength());
 		if(!faction.isReadyToAttack())
-			return tasks.get(1);
-		if(tasks.get(2).getFlavorMatch(faction) > tasks.get(3).getFlavorMatch(faction))
-			return tasks.get(2);
-		else return tasks.get(3);
+			return new TransportTroopsTask();
+		if(new AssaultTask().getFlavorMatch(faction) > new ConquerTask().getFlavorMatch(faction))
+			return new AssaultTask();
+		else return new ConquerTask();
 	}
 
 	public boolean isCompleted(Faction faction) {
-		if(tasks.get(2).getFlavorMatch(faction) > tasks.get(3).getFlavorMatch(faction))
-			return tasks.get(2).isCompleted(faction);
-		else return tasks.get(3).isCompleted(faction);
+		if(new AssaultTask().getFlavorMatch(faction) > new ConquerTask().getFlavorMatch(faction))
+			return new AssaultTask().isCompleted(faction);
+		else return new ConquerTask().isCompleted(faction);
 	}
 
 	public boolean canPerform(Faction faction) {
 		if(!(faction.getCombatStrength() > faction.getEnemy().getCombatStrength()))
-			return tasks.get(0).canPerform(faction);
+			return new GatherTroopsTask(faction.getEnemy().getCombatStrength()).canPerform(faction);
 		if(!faction.isReadyToAttack())
-			return tasks.get(1).canPerform(faction);
-		if(tasks.get(2).getFlavorMatch(faction) > tasks.get(3).getFlavorMatch(faction))
-			return tasks.get(2).canPerform(faction);
-		else return tasks.get(3).canPerform(faction);
+			return new TransportTroopsTask().canPerform(faction);
+		if(new AssaultTask().getFlavorMatch(faction) > new ConquerTask().getFlavorMatch(faction))
+			return new AssaultTask().canPerform(faction);
+		else return new ConquerTask().canPerform(faction);
 	}
 	
 	public double getFlavorMatch(Faction faction) {

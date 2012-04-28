@@ -6,13 +6,15 @@ import Faction.Faction;
 
 public class StealShipTask extends Task {
 
-	public StealShipTask() {
+	private int limit;
+	public StealShipTask(int limit) {
 		super(true, "Steal Ship Task");
+		this.limit = limit;
 	}
 
 	@Override
 	public int stepsToCompletion(Faction faction) {
-		return 1;
+		return limit - faction.getNumShips();
 	}
 
 	@Override
@@ -22,7 +24,7 @@ public class StealShipTask extends Task {
 
 	@Override
 	public boolean isCompleted(Faction faction) {
-		return faction.getNumShips() > 0;
+		return faction.getNumShips() >= limit;
 	}
 
 	@Override

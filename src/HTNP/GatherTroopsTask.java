@@ -4,13 +4,15 @@ import Faction.Faction;
 
 public class GatherTroopsTask extends Task {
 
-	public GatherTroopsTask() {
+	public int limit;
+	public GatherTroopsTask(int limit) {
 		super(true, "Gather Troops Task");
+		this.limit = limit;
 	}
 
 	@Override
 	public int stepsToCompletion(Faction faction) {
-		return 1;
+		return limit - faction.getNumArmies();
 	}
 
 	@Override
@@ -20,7 +22,7 @@ public class GatherTroopsTask extends Task {
 
 	@Override
 	public boolean isCompleted(Faction faction) {
-		return false;
+		return faction.getNumArmies() >= limit;
 	}
 
 	@Override

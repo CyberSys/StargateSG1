@@ -4,13 +4,15 @@ import Faction.Faction;
 
 public class BuildShipTask extends Task {
 	
-	public BuildShipTask() {
-		super(true, "Build Ship Task");
+	private int limit;
+	public BuildShipTask(int limit) {
+		super(true, "Build Ship Task " + limit);
+		this.limit = limit;
 	}
 	
 	@Override
 	public int stepsToCompletion(Faction faction) {
-		return 1;
+		return faction.getNumArmies() - faction.getNumShips();
 	}
 
 	@Override
@@ -20,12 +22,12 @@ public class BuildShipTask extends Task {
 
 	@Override
 	public boolean isCompleted(Faction faction) {
-		return faction.getNumShips() > 0;
+		return faction.getNumShips() >= limit;
 	}
 
 	@Override
 	public boolean canPerform(Faction faction) {
-		return faction.getNumResources() > 0;
+		return faction.getNumResources() + faction.getNumShips() >= limit;
 	}
 	
 	public void perform(Faction faction) {

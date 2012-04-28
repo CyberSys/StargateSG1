@@ -4,40 +4,40 @@ import Faction.Faction;
 
 public class GatherShipTask extends Task {
 
-	public GatherShipTask() {
+	private int limit;
+	public GatherShipTask(int limit) {
 		super(false, "Gather Ships Task");
-		tasks.add(new GatherResourcesTask(1));
-		tasks.add(new BuildShipTask());
-		tasks.add(new StealShipTask());
+		this.limit = limit;
 	}
 
 	@Override
 	public int stepsToCompletion(Faction faction) {
-		if(tasks.get(1).getFlavorMatch(faction) > tasks.get(2).getFlavorMatch(faction))
+		if(new BuildShipTask(limit).getFlavorMatch(faction) > new StealShipTask(limit).getFlavorMatch(faction))
 		{
-			return tasks.get(0).stepsToCompletion(faction);
+			return new BuildShipTask(limit).stepsToCompletion(faction) + new GatherResourcesTask(limit).stepsToCompletion(faction);
 		}
-		else return tasks.get(2).stepsToCompletion(faction);
+		else return new StealShipTask(limit).stepsToCompletion(faction);
 	}
 
 	@Override
 	public Task getNextStep(Faction faction) {
-		if(tasks.get(1).getFlavorMatch(faction) > tasks.get(2).getFlavorMatch(faction))
+		if(new BuildShipTask(limit).getFlavorMatch(faction) > new StealShipTask(limit).getFlavorMatch(faction))
 		{
-			if(tasks.get(1).canPerform(faction))
-				return tasks.get(1);
-			else return tasks.get(0);
+			if(new BuildShipTask(limit).canPerform(faction))
+				return new BuildShipTask(limit);
+			else return new GatherResourcesTask(limit);
 		}
-		else return tasks.get(2);
+		else return new StealShipTask(limit);
 	}
 
 	@Override
 	public boolean isCompleted(Faction faction) {
-		return faction.getNumShips() > 0;
+		return faction.getNumShips() >= limit;
 	}
 
 	@Override
 	public boolean canPerform(Faction faction) {
+		//TODO: 
 		return false;
 	}
 

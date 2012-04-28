@@ -14,7 +14,7 @@ public class GatherResourcesTask extends Task {
 	
 	@Override
 	public int stepsToCompletion(Faction faction) {
-		return 1;
+		return limit - faction.getNumResources();
 	}
 
 	@Override
