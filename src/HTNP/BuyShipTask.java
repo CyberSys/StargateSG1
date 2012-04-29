@@ -40,7 +40,7 @@ public class BuyShipTask extends Task {
 	@Override
 	public double getFlavorMatch(Faction faction) {
 		// TODO Auto-generated method stub
-		return 1;
+		return 0;
 	}
 
 }

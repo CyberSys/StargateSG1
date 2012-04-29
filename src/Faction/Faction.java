@@ -30,6 +30,8 @@ public abstract class Faction
 	
 	protected TechLevel tech = new TechLevel();
 	
+	protected boolean hasGate = false;
+	
 	// Personality
 	protected int aggression;
 	protected int diplomacy;
@@ -38,7 +40,6 @@ public abstract class Faction
 	// Planning Data
 	public int timeToReplan = 0;
 	public Stack<Task> plan = new Stack<Task>();
-	protected boolean isReadyToAttack = false;
 	
 	//
 	// TROOP AND SHIP MANAGEMENT
@@ -258,14 +259,6 @@ public abstract class Faction
 	//
 	// PLANNING STUFFS
 	//
-	public String toString() 
-	{
-		return "CombatStrength = " + getCombatStrength() + ", NumArmies = " + getNumArmies() + ", numShips = " + getNumShips() + ", NumResources = " + numResources;
-	}
-	
-	public boolean isReadyToAttack() {
-		return isReadyToAttack;
-	}
 	
 	public void replan() {
 		//Do things
@@ -274,7 +267,7 @@ public abstract class Faction
 		if(timeToReplan <= 0 || plan.isEmpty()) { 
 			plan.clear(); 
 			timeToReplan = 10;
-			Task attack = new AttackTask(getEnemy().getWorld(), getEnemy(), null);
+			Task attack = new AttackTask(getHomeWorld(), getEnemies().get(0).getHomeWorld(), getEnemies().get(0), getEnemies().get(0).getNumArmies(getEnemies().get(0).getHomeWorld()) * 2, null);
 			plan.add(attack);
 		}
 		while(plan.peek().isBaseTask() != true) {
@@ -296,21 +289,14 @@ public abstract class Faction
 		return plan.pop();
 	}
 	
-	public boolean didWin() {
-		Task attack = new AttackTask(getEnemy().getWorld(), getEnemy(), null);
-		return attack.isCompleted(this);
-	}
-	
-	public void setIsReadyToAttack(boolean isReady) 
-	{
-		this.isReadyToAttack = isReady;
-	}
-	
 	public int getCombatStrength() 
 	{
 		return getNumArmies();
 	}
 	
+	public boolean hasGate() {
+		return hasGate;
+	}
 	//
 	// Inner Class
 	//

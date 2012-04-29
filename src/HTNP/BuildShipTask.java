@@ -39,7 +39,7 @@ public class BuildShipTask extends Task {
 	@Override
 	public double getFlavorMatch(Faction faction) {
 		// TODO Auto-generated method stub
-		return 0;
+		return 1;
 	}
 
 }

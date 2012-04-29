@@ -10,20 +10,23 @@ public class Play {
 		Faction f = new TestFaction();
 		Faction f2 = new TestFaction();
 		World targetWorld = Universe.generateWorld();
+		World homeWorld = Universe.generateWorld();
+		f.setHomeWorld(homeWorld);
 		f2.setHomeWorld(targetWorld);
 		f.learnWorldLocation(targetWorld);
-		f2.increaseTroops(15);
+		targetWorld.setControllingFaction(f2);
+		homeWorld.setControllingFaction(f);
 		f.decreaseReputation(f2, 50);
+		targetWorld.addTroops(f2, 10);
 		f.replan();
 	
 		while(true) {
-			System.out.println(f);
-			System.out.println(f2);
-			//System.out.println(f.plan.firstElement().stepsToCompletion(f));
+			System.out.println(homeWorld);
+			System.out.println(targetWorld);
 			f.doTurn();
-			if(f.didWin())
+			if(targetWorld.getControllingFaction() == f)
 				break;
 		}
-		System.out.println(f.didWin());
+		System.out.println(targetWorld.getControllingFaction() == f);
 	}
 }

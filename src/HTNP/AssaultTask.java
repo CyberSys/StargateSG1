@@ -28,12 +28,13 @@ public class AssaultTask extends Task {
 	}
 
 	public boolean canPerform(Faction faction) {
-		return faction.isReadyToAttack();
+		return world.getTroopCount(faction) > 0;
 	}
 
 	public void perform(Faction faction) {
 		System.out.println("Doing " + name);
-		target.increaseTroops(-1, world);
+		target.decreaseTroops(2, world);
+		faction.decreaseTroops(3, world);
 	}
 	
 	@Override

@@ -1,15 +1,17 @@
 package HTNP;
 
-import World.World;
+import universe.World;
 import Faction.Faction;
 
 public class FlyTroopsWithShipsTask extends Task {
 
 	private World from, to;
+	private int limit;
 	public FlyTroopsWithShipsTask(World from, World to, int limit, Task parent) {
 		super(true, "Fly Troops With Ships Task", parent);
 		this.from = from;
 		this.to = to;
+		this.limit = limit;
 	}
 
 	@Override
@@ -25,13 +27,16 @@ public class FlyTroopsWithShipsTask extends Task {
 	@Override
 	public boolean isCompleted(Faction faction) {
 		//set up world stuff to handle this
-		return faction.isReadyToAttack();
+		return to.getTroopCount(faction) >= limit;
 	}
 
 	public void perform(Faction faction) {
 		System.out.println("Doing " + name);
-		//use from, to here
-		faction.setIsReadyToAttack(true);
+		from.removeTroops(faction, limit);
+		to.addTroops(faction, limit);
+		from.removeShips(faction,  limit);
+		to.addShips(faction, limit);
+		
 	}
 	@Override
 	public boolean canPerform(Faction faction) {

@@ -1,6 +1,6 @@
 package HTNP;
 
-import World.World;
+import universe.World;
 import Faction.Faction;
 
 public class TransportTroopsByShipTask extends Task {
@@ -28,7 +28,7 @@ public class TransportTroopsByShipTask extends Task {
 
 	@Override
 	public boolean isCompleted(Faction faction) {
-		return faction.isReadyToAttack();
+		return to.getTroopCount(faction) >= limit && to.getShipCount(faction) >= limit;
 	}
 
 	@Override

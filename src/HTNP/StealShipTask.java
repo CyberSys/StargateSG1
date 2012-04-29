@@ -1,21 +1,19 @@
 package HTNP;
 
 import java.util.Random;
-
 import Faction.Faction;
 
 public class StealShipTask extends Task {
 
-	private int limit;
 	private Faction target;
-	public StealShipTask(int limit, Faction target, Task parent) {
+	public StealShipTask(Faction target, Task parent) {
 		super(true, "Steal Ship Task", parent);
-		this.limit = limit;
+		this.target = target;
 	}
 
 	@Override
 	public int stepsToCompletion(Faction faction) {
-		return limit - faction.getNumShips();
+		return 1;
 	}
 
 	@Override
@@ -25,7 +23,7 @@ public class StealShipTask extends Task {
 
 	@Override
 	public boolean isCompleted(Faction faction) {
-		return faction.getNumShips() >= limit;
+		return true;
 	}
 
 	@Override
@@ -35,8 +33,8 @@ public class StealShipTask extends Task {
 	
 	public void perform(Faction faction) {
 		if(new Random().nextBoolean()) 
-			faction.increaseShips(1);
-			target.increaseShips(-1);
+			faction.increaseShips(1, faction.getHomeWorld());
+			target.decreaseShips(1, faction.getHomeWorld());
 		return;
 	}
 

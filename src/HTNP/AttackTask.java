@@ -25,11 +25,11 @@ public class AttackTask extends Task {
 	}
 
 	public Task getNextStep(Faction faction) {
-		if(!(new TrainTroopsTask(target.getCombatStrength(), this).isCompleted(faction)))
+		if(!new TrainTroopsTask(attackForceSize, this).isCompleted(faction) && !(to.getTroopCount(faction) > to.getTroopCount(target)))
 			return new TrainTroopsTask(target.getCombatStrength(), this);
-		if(!new TransportTroopsTask(from, to, attackForceSize, this).isCompleted(faction))
+		if(!(to.getTroopCount(faction) > to.getTroopCount(target)))
 			return new TransportTroopsTask(from, to, attackForceSize, this);
-		if(!new ConquerTask(to, this).canPerform(faction))
+		if(!(to.getTroopCount(target) < 5))
 			return new AssaultTask(to, target, this);
 		else return new ConquerTask(to, this);
 	}
@@ -39,13 +39,13 @@ public class AttackTask extends Task {
 	}
 
 	public boolean canPerform(Faction faction) {
-		if(!new TrainTroopsTask(attackForceSize, this).isCompleted(faction))
+		if(!new TrainTroopsTask(attackForceSize, this).isCompleted(faction) && !(to.getTroopCount(faction) > to.getTroopCount(target)))
 			return new TrainTroopsTask(attackForceSize, this).canPerform(faction);
-		if(!faction.isReadyToAttack())
+		if(!(to.getTroopCount(faction) > to.getTroopCount(target)))
 			return new TransportTroopsTask(from, to, faction.getNumArmies(), this).canPerform(faction);
-		if(new AssaultTask(to, target, this).getFlavorMatch(faction) > new ConquerTask(to, this).getFlavorMatch(faction))
+		/*if(new AssaultTask(to, target, this).getFlavorMatch(faction) > new ConquerTask(to, this).getFlavorMatch(faction))
 			return new AssaultTask(to, target, this).canPerform(faction);
-		else return new ConquerTask(to, this).canPerform(faction);
+		else return new ConquerTask(to, this).canPerform(faction);*/ return true;
 	}
 	
 	public double getFlavorMatch(Faction faction) {

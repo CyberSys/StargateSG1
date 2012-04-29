@@ -26,18 +26,19 @@ public class TransportTroopsByGateTask extends Task {
 
 	@Override
 	public boolean isCompleted(Faction faction) {
-		return faction.isReadyToAttack();
+		return to.getTroopCount(faction) >= limit;
 	}
 
 	@Override
 	public boolean canPerform(Faction faction) {
-		return faction.knowsGateAddress(to);
+		return faction.knowsGateAddress(to) && from.getTroopCount(faction) >= limit;
 		
 		//figure this out
 	}
 
 	public void perform(Faction faction) {
-		//figure this out
+		from.removeTroops(faction, limit);
+		to.addTroops(faction, limit);
 	}
 	
 	

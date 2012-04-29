@@ -37,10 +37,11 @@ public class World {
 
 	public void setControllingFaction(Faction faction) 
 	{
-		if(controllingFaction.equals(faction))
+		if(controllingFaction != null && controllingFaction.equals(faction))
 			return;
 		
-		controllingFaction.loseWorldControl(this);
+		if(controllingFaction != null)
+			controllingFaction.loseWorldControl(this);
 		controllingFaction = faction;
 		if(!factionStats.containsKey(faction))
 		{
@@ -135,6 +136,15 @@ public class World {
 		return address.hashCode();
 	}
 	
+	public String toString() {
+		String string = "";
+		for(Faction  f : factionStats.keySet()) {
+			string += factionStats.get(f).toString();
+			string += "\n";
+		}
+		return string;
+	}
+	
 	//
 	// INNER CLASS
 	//
@@ -142,5 +152,9 @@ public class World {
 	{
 		int troopCount;
 		int shipCount;
+		
+		public String toString() {
+			return "Troop Count: " + troopCount + ", Ship Count: " + shipCount;
+		}
 	}
 }

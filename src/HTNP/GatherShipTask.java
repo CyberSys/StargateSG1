@@ -12,11 +12,14 @@ public class GatherShipTask extends Task {
 		this.limit = limit;
 	}
 
-	protected List<Task> getTaskList() {
+	protected List<Task> getTaskList(Faction faction) {
 		List<Task> taskList = new ArrayList<Task>();
 		taskList.add(new BuildShipTask(limit, this));
 		//TODO: Find way to determine steal ship target
-		taskList.add(new StealShipTask(limit, target, this));
+		for(Faction enemy : faction.getEnemies()) {
+			if(faction.getNumArmies(faction.getHomeWorld()) > 0 && enemy.getNumShips(faction.getHomeWorld()) > 0)
+				taskList.add(new StealShipTask(enemy, this));
+		}
 		taskList.add(new BuyShipTask(limit, this));
 		return taskList;
 	}
@@ -25,12 +28,12 @@ public class GatherShipTask extends Task {
 	public int stepsToCompletion(Faction faction) {
 		Task task = getFlavorMatchTask(faction);
 		if(task instanceof BuildShipTask)
-			return new BuildShipTask(limit, this).stepsToCompletion(faction) + new GatherResourcesTask(limit, this).stepsToCompletion(faction);
+			return task.stepsToCompletion(faction) + new GatherResourcesTask(limit, this).stepsToCompletion(faction);
 		if(task instanceof StealShipTask)
 			//TODO: Find way to determine steal ship target
-			return new StealShipTask(limit, target, this).stepsToCompletion(faction);
+			return task.stepsToCompletion(faction);
 		else //if(task instanceof BuyShipTask)
-			return new BuyShipTask(limit, this).stepsToCompletion(faction) + new GatherResourcesTask(limit*2, this).stepsToCompletion(faction);
+			return task.stepsToCompletion(faction) + new GatherResourcesTask(limit*2, this).stepsToCompletion(faction);
 	}
 
 	@Override
@@ -38,17 +41,17 @@ public class GatherShipTask extends Task {
 		Task task = getFlavorMatchTask(faction);
 		if(task instanceof BuildShipTask)
 		{
-			if(new BuildShipTask(limit, this).canPerform(faction))
-				return new BuildShipTask(limit, this);
+			if(task.canPerform(faction))
+				return task;
 			else return new GatherResourcesTask(limit, this);
 		}
 		if(task instanceof StealShipTask)
 			//TODO: Find way to determine steal ship target
-			return new StealShipTask(limit, this);
+			return task;
 		else //if(task instanceof BuyShipTask)
 		{
-			if(new BuyShipTask(limit, this).canPerform(faction))
-				return new BuyShipTask(limit, this);
+			if(task.canPerform(faction))
+				return task;
 			else return new GatherResourcesTask(limit*2, this);
 		}
 	}
