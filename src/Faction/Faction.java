@@ -45,16 +45,31 @@ public abstract class Faction
 		w.addTroops(this, amount);
 	}
 	
+	public void decreaseTroops(int amount)
+	{
+		decreaseTroops(amount, homeWorld);
+	}
+	
+	public void decreaseTroops(int amount, World w)
+	{
+		w.removeTroops(this, amount);
+	}
+	
 	public int getNumArmies() 
 	{
 		int armies = 0;
 		
 		for(World w : controlledWorlds)
 		{
-			armies += w.getTroopCount(this);
+			armies += getNumArmies(w);
 		}
 		
 		return armies;
+	}
+	
+	public int getNumArmies(World w)
+	{
+		return w.getTroopCount(this);
 	}
 	
 	public void increaseShips(int amount)
@@ -67,16 +82,31 @@ public abstract class Faction
 		w.addShips(this, amount);
 	}
 	
+	public void decreaseShips(int amount)
+	{
+		decreaseShips(amount, homeWorld);
+	}
+	
+	public void decreaseShips(int amount, World w)
+	{
+		w.removeShips(this, amount);
+	}
+	
 	public int getNumShips() 
 	{
 		int armies = 0;
 		
 		for(World w : controlledWorlds)
 		{
-			armies += w.getTroopCount(this);
+			armies += getNumShips(w);
 		}
 		
 		return armies;
+	}
+	
+	public int getNumShips(World w)
+	{
+		return w.getShipCount(this);
 	}
 	
 	//
