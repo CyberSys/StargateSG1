@@ -5,8 +5,8 @@ import Faction.Faction;
 public class BuildShipTask extends Task {
 	
 	private int limit;
-	public BuildShipTask(int limit) {
-		super(true, "Build Ship Task");
+	public BuildShipTask(int limit, Task parent) {
+		super(true, "Build Ship Task", parent);
 		this.limit = limit;
 	}
 	

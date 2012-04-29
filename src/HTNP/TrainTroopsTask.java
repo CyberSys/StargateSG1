@@ -1,19 +1,18 @@
 package HTNP;
 
-import World.World;
 import Faction.Faction;
 
-public class AssaultTask extends Task {
+public class TrainTroopsTask extends Task {
 
-	private World world;
-	public AssaultTask(World world, Task parent) {
-		super(true, "Assault Task", parent);
-		this.world = world;
+	public int limit;
+	public TrainTroopsTask(int limit, Task parent) {
+		super(true, "Gather Troops Task", parent);
+		this.limit = limit;
 	}
 
 	@Override
 	public int stepsToCompletion(Faction faction) {
-		return 1;
+		return limit - faction.getNumArmies();
 	}
 
 	@Override
@@ -21,22 +20,22 @@ public class AssaultTask extends Task {
 		return this;
 	}
 
+	@Override
 	public boolean isCompleted(Faction faction) {
-		return faction.getEnemy().getWorld().getControllingFaction().equals(faction);
+		return faction.getNumArmies() >= limit;
 	}
 
+	@Override
 	public boolean canPerform(Faction faction) {
-		return faction.isReadyToAttack();
+		return true;
 	}
 
 	public void perform(Faction faction) {
 		System.out.println("Doing " + name);
-		faction.getEnemy().setNumArmies(faction.getEnemy().getNumArmies()-1);
+		faction.setNumArmies(faction.getNumArmies() + 1);
 	}
-	
 	@Override
 	public double getFlavorMatch(Faction faction) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 

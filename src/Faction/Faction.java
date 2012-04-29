@@ -86,7 +86,7 @@ public abstract class Faction {
 		if(timeToReplan <= 0 || plan.isEmpty()) { 
 			plan.clear(); 
 			timeToReplan = 10;
-			Task attack = new AttackTask();
+			Task attack = new AttackTask(getEnemy().getWorld(), getEnemy(), null);
 			plan.add(attack);
 		}
 		while(plan.peek().isBaseTask() != true) {
@@ -111,7 +111,7 @@ public abstract class Faction {
 		getNextPlannedTask().perform(this);		
 	}
 	public boolean didWin() {
-		Task attack = new AttackTask();
+		Task attack = new AttackTask(getEnemy().getWorld(), getEnemy(), null);
 		return attack.isCompleted(this);
 	}
 }

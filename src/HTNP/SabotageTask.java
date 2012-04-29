@@ -1,13 +1,32 @@
 package HTNP;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import World.World;
+
 import Faction.Faction;
 
 public class SabotageTask extends Task {
 
-	public SabotageTask() {
-		super(false, "Sabotage Task");
+	private World world;
+	private Faction target;
+	public SabotageTask(Faction faction, World world, Task parent) {
+		super(false, "Sabotage Task", parent);
 	}
 
+	private List<Task> taskList() {
+		List<Task> taskList = new ArrayList<Task>();
+		taskList.add(new SabotageFleetTask(target, world, this));
+		taskList.add(new SabotageTroopsTask(target, world, this));
+		taskList.add(new StealResourcesTask(target, world, this));
+		taskList.add(new DestroyResourceCampTask(target, world, this));
+		taskList.add(new StealTechTask(target, world, this));
+		taskList.add(new DestroyResearchStationTask(target, world, this));
+		taskList.add(new StuntDevelopmentTask(target, world, this));
+		return taskList;
+	}
+	
 	@Override
 	public int stepsToCompletion(Faction faction) {
 		return new InfiltrateTask().stepsToCompletion(faction) + new CauseHavokTask().stepsToCompletion(faction);

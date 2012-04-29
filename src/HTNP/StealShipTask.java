@@ -7,8 +7,8 @@ import Faction.Faction;
 public class StealShipTask extends Task {
 
 	private int limit;
-	public StealShipTask(int limit) {
-		super(true, "Steal Ship Task");
+	public StealShipTask(int limit, Task parent) {
+		super(true, "Steal Ship Task", parent);
 		this.limit = limit;
 	}
 

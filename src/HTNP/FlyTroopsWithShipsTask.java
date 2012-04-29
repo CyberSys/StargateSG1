@@ -1,11 +1,15 @@
 package HTNP;
 
+import World.World;
 import Faction.Faction;
 
 public class FlyTroopsWithShipsTask extends Task {
 
-	public FlyTroopsWithShipsTask() {
-		super(true, "Fly Troops With Ships Task");
+	private World from, to;
+	public FlyTroopsWithShipsTask(World from, World to, int limit, Task parent) {
+		super(true, "Fly Troops With Ships Task", parent);
+		this.from = from;
+		this.to = to;
 	}
 
 	@Override
@@ -20,7 +24,7 @@ public class FlyTroopsWithShipsTask extends Task {
 
 	@Override
 	public boolean isCompleted(Faction faction) {
-		// TODO Auto-generated method stub
+		//set up world stuff to handle this
 		return faction.isReadyToAttack();
 	}
 

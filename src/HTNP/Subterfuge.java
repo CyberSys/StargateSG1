@@ -1,18 +1,8 @@
 package HTNP;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import Faction.Faction;
 
-public class InfiltrateTask extends Task {
-	
-	private List<Task> getTaskList() {
-		List<Task> taskList = new ArrayList<Task>();
-		taskList.add(new InfiltrateByGateTask());
-		taskList.add(new InfiltrateByShip());
-		return taskList;
-	}
+public class Subterfuge extends Task {
 
 	@Override
 	public int stepsToCompletion(Faction faction) {
@@ -22,8 +12,9 @@ public class InfiltrateTask extends Task {
 
 	@Override
 	public Task getNextStep(Faction faction) {
-		// TODO Auto-generated method stub
-		return null;
+		if(!new PlantSpiesTask().isCompleted())
+			return new PlantSpiesTask();
+		return new SpreadDissentTask();
 	}
 
 	@Override

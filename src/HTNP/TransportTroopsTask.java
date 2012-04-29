@@ -1,11 +1,17 @@
 package HTNP;
 
+import World.World;
 import Faction.Faction;
 
 public class TransportTroopsTask extends Task {
 
-	public TransportTroopsTask() {
-		super(false, "Transport Troops Task");
+	private World from, to;
+	private int limit;
+	public TransportTroopsTask(World from, World to, int limit, Task parent) {
+		super(false, "Transport Troops Task", parent);
+		this.from = from;
+		this.to = to;
+		this.limit = limit;
 	}
 
 	@Override
@@ -17,11 +23,11 @@ public class TransportTroopsTask extends Task {
 		if(faction.knowsLocation(faction.getEnemy().getWorld())) {
 			canByShip = true;
 		}
-		if(canByGate && !canByShip) return new TransportTroopsByGateTask(faction.getEnemy().getWorld()).stepsToCompletion(faction);
-		if(canByShip && !canByGate) return new TransportTroopsByShipTask(faction.getEnemy().getWorld()).stepsToCompletion(faction);
+		if(canByGate && !canByShip) return new TransportTroopsByGateTask(from, to, limit, this).stepsToCompletion(faction);
+		if(canByShip && !canByGate) return new TransportTroopsByShipTask(from, to, limit, this).stepsToCompletion(faction);
 		if(canByShip && canByGate) {
-			if(new TransportTroopsByGateTask(faction.getEnemy().getWorld()).getFlavorMatch(faction) > new TransportTroopsByShipTask(faction.getEnemy().getWorld()).getFlavorMatch(faction)) return new TransportTroopsByGateTask(faction.getEnemy().getWorld()).stepsToCompletion(faction);
-			else return new TransportTroopsByShipTask(faction.getEnemy().getWorld()).stepsToCompletion(faction);
+			if(new TransportTroopsByGateTask(from, to, this).getFlavorMatch(faction) > new TransportTroopsByShipTask(from, to, limit, this).getFlavorMatch(faction)) return new TransportTroopsByGateTask(from, to, this).stepsToCompletion(faction);
+			else return new TransportTroopsByShipTask(from, to, limit, this).stepsToCompletion(faction);
 		}
 		return -1;
 	}
@@ -36,11 +42,11 @@ public class TransportTroopsTask extends Task {
 			canByShip = true;
 		}
 		
-		if(canByGate && !canByShip) return new TransportTroopsByGateTask(faction.getEnemy().getWorld());
-		if(canByShip && !canByGate) return new TransportTroopsByShipTask(faction.getEnemy().getWorld());
+		if(canByGate && !canByShip) return new TransportTroopsByGateTask(from, to, this);
+		if(canByShip && !canByGate) return new TransportTroopsByShipTask(from, to, this);
 		if(canByShip && canByGate) {
-			if(new TransportTroopsByGateTask(faction.getEnemy().getWorld()).getFlavorMatch(faction) > new TransportTroopsByShipTask(faction.getEnemy().getWorld()).getFlavorMatch(faction)) return new TransportTroopsByGateTask(faction.getEnemy().getWorld());
-			else return new TransportTroopsByShipTask(faction.getEnemy().getWorld());
+			if(new TransportTroopsByGateTask(from, to, this).getFlavorMatch(faction) > new TransportTroopsByShipTask(from, to, this).getFlavorMatch(faction)) return new TransportTroopsByGateTask(from, to, this);
+			else return new TransportTroopsByShipTask(from, to, this);
 		}
 		return null;
 	}

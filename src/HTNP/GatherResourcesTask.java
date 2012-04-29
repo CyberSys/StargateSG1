@@ -5,8 +5,8 @@ import Faction.Faction;
 public class GatherResourcesTask extends Task {
 
 	private int limit;
-	public GatherResourcesTask(int limit) {
-		super(true, "Gather Resources Task");
+	public GatherResourcesTask(int limit, Task parent) {
+		super(true, "Gather Resources Task", parent);
 		this.limit = limit;
 	}
 	

@@ -5,9 +5,13 @@ import Faction.Faction;
 
 public class TransportTroopsByGateTask extends Task {
 
-	private World world;
-	public TransportTroopsByGateTask(World world) {
-		super(true, "Transport Troops By Gate Task");
+	private World from, to;
+	private int limit;
+	public TransportTroopsByGateTask(World from, World to, int limit, Task parent) {
+		super(true, "Transport Troops By Gate Task", parent);
+		this.from = from;
+		this.to = to;
+		this.limit = limit;
 	}
 
 	@Override
@@ -27,7 +31,7 @@ public class TransportTroopsByGateTask extends Task {
 
 	@Override
 	public boolean canPerform(Faction faction) {
-		return faction.knowsGateAddress(world);
+		return faction.knowsGateAddress(to);
 		
 		//figure this out
 	}

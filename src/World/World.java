@@ -30,7 +30,7 @@ public class World {
 	//
 	// METHODS
 	//
-	public Object getControllingFaction() 
+	public Faction getControllingFaction() 
 	{
 		return controllingFaction;
 	}

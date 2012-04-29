@@ -5,8 +5,10 @@ import Faction.Faction;
 
 public class ConquerTask extends Task {
 
-	public ConquerTask() {
-		super(true, "Conquer Task");
+	private World world;
+	public ConquerTask(World world, Task parent) {
+		super(true, "Conquer Task", parent);
+		this.world = world;
 	}
 
 	@Override

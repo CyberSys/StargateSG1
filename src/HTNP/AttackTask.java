@@ -3,45 +3,47 @@ package HTNP;
 import World.*;
 import Faction.Faction;
 
+//TODO: dynamically determine from world for transport troops
 public class AttackTask extends Task {
-
-	public AttackTask() {
-		super(false, "Attack Task");
+	
+	private World from, to;
+	private Faction target;
+	public AttackTask(World from, World to, Faction target, Task parent) {
+		super(false, "Attack Task", parent);
+		this.from = from;
+		this.to = to;
+		this.target = target;
 	}
 
 	public int stepsToCompletion(Faction faction) {
-		// TODO Auto-generated method stub
-		//sum of turns until combat strenght up
-		//+ turns until transport ready
-		//+ turns guessed for assault
-		return new GatherTroopsTask(faction.getEnemy().getCombatStrength()).stepsToCompletion(faction)
-				+ new TransportTroopsTask().stepsToCompletion(faction)
-				+ (new AssaultTask().getFlavorMatch(faction) > new ConquerTask().getFlavorMatch(faction) ?
-					new AssaultTask().stepsToCompletion(faction) : new ConquerTask().stepsToCompletion(faction));
+		return new TrainTroopsTask(target.getCombatStrength(), this).stepsToCompletion(faction)
+				+ new TransportTroopsTask(faction.getWorld(), target.getWorld(), faction.getCombatStrength(), this).stepsToCompletion(faction)
+				+ (new AssaultTask(to, this).getFlavorMatch(faction) > new ConquerTask(to, this).getFlavorMatch(faction) ?
+					new AssaultTask(to, this).stepsToCompletion(faction) : new ConquerTask(to, this).stepsToCompletion(faction));
 	}
 
 	public Task getNextStep(Faction faction) {
-		if(!(faction.getCombatStrength() > faction.getEnemy().getCombatStrength()))
-			return new GatherTroopsTask(faction.getEnemy().getCombatStrength());
+		if(!(new TrainTroopsTask(target.getCombatStrength(), this).isCompleted(faction)))
+			return new TrainTroopsTask(target.getCombatStrength(), this);
 		if(!faction.isReadyToAttack())
-			return new TransportTroopsTask();
-		if(!new ConquerTask().canPerform(faction))
-			return new AssaultTask();
-		else return new ConquerTask();
+			return new TransportTroopsTask(from, to, faction.getNumArmies(), this);
+		if(!new ConquerTask(to, this).canPerform(faction))
+			return new AssaultTask(to, this);
+		else return new ConquerTask(to, this);
 	}
 
 	public boolean isCompleted(Faction faction) {
-		return faction.getEnemy().getWorld().getControllingFaction() == faction;
+		return target.getWorld().getControllingFaction() == faction;
 	}
 
 	public boolean canPerform(Faction faction) {
-		if(!(faction.getCombatStrength() > faction.getEnemy().getCombatStrength()))
-			return new GatherTroopsTask(faction.getEnemy().getCombatStrength()).canPerform(faction);
+		if(!(faction.getCombatStrength() > target.getCombatStrength()))
+			return new TrainTroopsTask(target.getCombatStrength(), this).canPerform(faction);
 		if(!faction.isReadyToAttack())
-			return new TransportTroopsTask().canPerform(faction);
-		if(new AssaultTask().getFlavorMatch(faction) > new ConquerTask().getFlavorMatch(faction))
-			return new AssaultTask().canPerform(faction);
-		else return new ConquerTask().canPerform(faction);
+			return new TransportTroopsTask(from, to, faction.getNumArmies(), this).canPerform(faction);
+		if(new AssaultTask(to, this).getFlavorMatch(faction) > new ConquerTask(to, this).getFlavorMatch(faction))
+			return new AssaultTask(to, this).canPerform(faction);
+		else return new ConquerTask(to, this).canPerform(faction);
 	}
 	
 	public double getFlavorMatch(Faction faction) {

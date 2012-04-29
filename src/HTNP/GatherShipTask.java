@@ -7,16 +7,16 @@ import Faction.Faction;
 public class GatherShipTask extends Task {
 
 	private int limit;
-	public GatherShipTask(int limit) {
-		super(false, "Gather Ships Task");
+	public GatherShipTask(int limit, Task parent) {
+		super(false, "Gather Ships Task", parent);
 		this.limit = limit;
 	}
 
 	protected List<Task> getTaskList() {
 		List<Task> taskList = new ArrayList<Task>();
-		taskList.add(new BuildShipTask(limit));
-		taskList.add(new StealShipTask(limit));
-		taskList.add(new BuyShipTask(limit));
+		taskList.add(new BuildShipTask(limit, this));
+		taskList.add(new StealShipTask(limit, this));
+		taskList.add(new BuyShipTask(limit, this));
 		return taskList;
 	}
 	
@@ -24,11 +24,11 @@ public class GatherShipTask extends Task {
 	public int stepsToCompletion(Faction faction) {
 		Task task = getFlavorMatchTask(faction);
 		if(task instanceof BuildShipTask)
-			return new BuildShipTask(limit).stepsToCompletion(faction) + new GatherResourcesTask(limit).stepsToCompletion(faction);
+			return new BuildShipTask(limit, this).stepsToCompletion(faction) + new GatherResourcesTask(limit, this).stepsToCompletion(faction);
 		if(task instanceof StealShipTask)
-			return new StealShipTask(limit).stepsToCompletion(faction);
+			return new StealShipTask(limit, this).stepsToCompletion(faction);
 		else //if(task instanceof BuyShipTask)
-			return new BuyShipTask(limit).stepsToCompletion(faction) + new GatherResourcesTask(limit*2).stepsToCompletion(faction);
+			return new BuyShipTask(limit, this).stepsToCompletion(faction) + new GatherResourcesTask(limit*2, this).stepsToCompletion(faction);
 	}
 
 	@Override
@@ -36,17 +36,17 @@ public class GatherShipTask extends Task {
 		Task task = getFlavorMatchTask(faction);
 		if(task instanceof BuildShipTask)
 		{
-			if(new BuildShipTask(limit).canPerform(faction))
-				return new BuildShipTask(limit);
-			else return new GatherResourcesTask(limit);
+			if(new BuildShipTask(limit, this).canPerform(faction))
+				return new BuildShipTask(limit, this);
+			else return new GatherResourcesTask(limit, this);
 		}
 		if(task instanceof StealShipTask)
-			return new StealShipTask(limit);
+			return new StealShipTask(limit, this);
 		else //if(task instanceof BuyShipTask)
 		{
-			if(new BuyShipTask(limit).canPerform(faction))
-				return new BuyShipTask(limit);
-			else return new GatherResourcesTask(limit*2);
+			if(new BuyShipTask(limit, this).canPerform(faction))
+				return new BuyShipTask(limit, this);
+			else return new GatherResourcesTask(limit*2, this);
 		}
 	}
 

@@ -11,10 +11,13 @@ public abstract class Task {
 	//protected ArrayList<Task> tasks = new ArrayList<Task>();
 	protected boolean isBaseTask;
 	protected String name;
+	protected Task parent;
+	protected boolean didFinish = false;
 
-	public Task(boolean isBaseTask, String taskName) {
+	public Task(boolean isBaseTask, String taskName, Task parent) {
 		this.isBaseTask = isBaseTask;
 		this.name = taskName;
+		this.parent = parent;
 	}
 	
 	public abstract int stepsToCompletion(Faction faction);
@@ -47,7 +50,7 @@ public abstract class Task {
 	}
 	
 	public String toString() {
-		return name.substring(0,  name.length() - 5);
+		return name.substring(0, name.length() - 5);
 	}
 	public boolean isBaseTask() {
 		return isBaseTask;
