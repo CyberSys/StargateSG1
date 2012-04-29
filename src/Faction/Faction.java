@@ -4,6 +4,7 @@ import java.util.*;
 
 import universe.*;
 
+import Faction.Faction.TechLevel;
 import Faction.Reputation.ReputationLevel;
 import HTNP.*;
 
@@ -267,11 +268,16 @@ public abstract class Faction
 		if(timeToReplan <= 0 || plan.isEmpty()) { 
 			plan.clear(); 
 			timeToReplan = 10;
-			Task attack = new AttackTask(getHomeWorld(), getEnemies().get(0).getHomeWorld(), getEnemies().get(0), getEnemies().get(0).getNumArmies(getEnemies().get(0).getHomeWorld()) * 2, null);
-			plan.add(attack);
+//			Task attack = new AttackTask(getHomeWorld(), getEnemies().get(0).getHomeWorld(), getEnemies().get(0), getEnemies().get(0).getNumArmies(getEnemies().get(0).getHomeWorld()) * 2, null);
+//			plan.add(attack);
+			Task sabotage = new SabotageTask(getEnemies().get(0), getEnemies().get(0).getHomeWorld(), null);
+			plan.add(sabotage);
 		}
 		while(plan.peek().isBaseTask() != true) {
-			if(plan.peek().isCompleted(this)) plan.pop();
+			if(plan.peek().isCompleted(this)){ 
+				plan.pop();
+				if(plan.isEmpty()) replan();
+			}
 			else plan.add(plan.peek().getNextStep(this));
 		}
 	}
@@ -297,6 +303,10 @@ public abstract class Faction
 	public boolean hasGate() {
 		return hasGate;
 	}
+	
+	public String toString() {
+		return "Resources: " + getNumResources();
+	}
 	//
 	// Inner Class
 	//
@@ -317,5 +327,54 @@ public abstract class Faction
 		//
 		double defensiveCapabilities = 1;
 		double offensiveCapabilities = 1;
+		
+		public int compareTo(TechLevel techLevel) {
+			return (int)((resourceEfficiency + hyperdriveEfficiency + defensiveCapabilities + offensiveCapabilities)
+					- (techLevel.resourceEfficiency + techLevel.hyperdriveEfficiency + techLevel.defensiveCapabilities + techLevel.offensiveCapabilities));
+		}
+
+		public boolean isMinimum() {
+			return (resourceEfficiency + hyperdriveEfficiency + defensiveCapabilities + offensiveCapabilities) == 0;
+		}
+	}
+	
+	public TechLevel getTechLevel() {
+		return tech;
+	}
+
+	public void improveTechLevel() {
+		switch(new Random().nextInt(4)) {
+		case 0:
+			tech.resourceEfficiency+=.1;
+			break;
+		case 1:
+			tech.hyperdriveEfficiency+=.5;
+			break;
+		case 2:
+			tech.defensiveCapabilities+=.5;
+			break;
+		case 3:
+			tech.offensiveCapabilities+=.5;
+		default:
+			break;
+		}
+	}
+	
+	public void reduceTechLevel() {
+		switch(new Random().nextInt(4)) {
+		case 0:
+			tech.resourceEfficiency-=.1;
+			break;
+		case 1:
+			tech.hyperdriveEfficiency-=.5;
+			break;
+		case 2:
+			tech.defensiveCapabilities-=.5;
+			break;
+		case 3:
+			tech.offensiveCapabilities-=.5;
+		default:
+			break;
+		}
 	}
 }

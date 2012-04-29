@@ -17,7 +17,10 @@ public class BuyShipTask extends Task {
 
 	@Override
 	public Task getNextStep(Faction faction) {
-		return this;
+		if(faction.getNumResources() >= (limit - faction.getNumShips()) * 2)
+			return this;
+		else
+			return new GatherResourcesTask(limit - faction.getNumShips() * 2, this);
 	}
 
 	@Override
@@ -27,7 +30,7 @@ public class BuyShipTask extends Task {
 
 	@Override
 	public boolean canPerform(Faction faction) {
-		return faction.getNumResources() >= (limit - faction.getNumShips()) * 2;
+		return true;
 	}
 	
 	public void perform(Faction faction) {
@@ -40,7 +43,7 @@ public class BuyShipTask extends Task {
 	@Override
 	public double getFlavorMatch(Faction faction) {
 		// TODO Auto-generated method stub
-		return 0;
+		return 2;
 	}
 
 }

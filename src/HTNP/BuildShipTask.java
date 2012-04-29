@@ -17,7 +17,10 @@ public class BuildShipTask extends Task {
 
 	@Override
 	public Task getNextStep(Faction faction) {
-		return this;
+		if(faction.getNumResources() + faction.getNumShips() >= limit)
+			return this;
+		else
+			return new GatherResourcesTask(limit - faction.getNumResources(), this);
 	}
 
 	@Override
@@ -27,7 +30,7 @@ public class BuildShipTask extends Task {
 
 	@Override
 	public boolean canPerform(Faction faction) {
-		return faction.getNumResources() + faction.getNumShips() >= limit;
+		return true;
 	}
 	
 	public void perform(Faction faction) {

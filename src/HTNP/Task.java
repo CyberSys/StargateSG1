@@ -33,6 +33,10 @@ public abstract class Task {
 		getNextStep(faction).perform(faction);
 	}
 	
+	public void reportFinished() {
+		this.didFinish = true;
+	}
+	
 	//Think of way to have this work generically
 	//Flavors are war, science, diplomacy
 	public abstract double getFlavorMatch(Faction faction);
@@ -41,9 +45,10 @@ public abstract class Task {
 
 	protected Task getFlavorMatchTask(Faction faction) {
 		List<Task> taskList = getTaskList(faction);
-		Task bestMatch = taskList.get(0);
+		Task bestMatch = null;
 		for(Task task : taskList) {
-			if(task.getFlavorMatch(faction) > bestMatch.getFlavorMatch(faction))
+			System.out.println(task.canPerform(faction));
+			if((bestMatch == null ||task.getFlavorMatch(faction) > bestMatch.getFlavorMatch(faction)) && task.canPerform(faction))
 				bestMatch = task;
 		}
 		return bestMatch;

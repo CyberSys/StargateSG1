@@ -18,11 +18,15 @@ public class Play {
 		homeWorld.setControllingFaction(f);
 		f.decreaseReputation(f2, 50);
 		targetWorld.addTroops(f2, 10);
+		targetWorld.addShips(f2, 5);
+		
 		f.replan();
 	
 		while(true) {
 			System.out.println(homeWorld);
 			System.out.println(targetWorld);
+			System.out.println(f);
+			System.out.println(f2);
 			f.doTurn();
 			if(targetWorld.getControllingFaction() == f)
 				break;

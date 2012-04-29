@@ -41,18 +41,14 @@ public class GatherShipTask extends Task {
 		Task task = getFlavorMatchTask(faction);
 		if(task instanceof BuildShipTask)
 		{
-			if(task.canPerform(faction))
-				return task;
-			else return new GatherResourcesTask(limit, this);
+			return task.getNextStep(faction);
 		}
 		if(task instanceof StealShipTask)
 			//TODO: Find way to determine steal ship target
 			return task;
 		else //if(task instanceof BuyShipTask)
 		{
-			if(task.canPerform(faction))
-				return task;
-			else return new GatherResourcesTask(limit*2, this);
+			return task.getNextStep(faction);
 		}
 	}
 
