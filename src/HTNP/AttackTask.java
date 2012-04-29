@@ -1,6 +1,6 @@
 package HTNP;
 
-import World.*;
+import universe.*;
 import Faction.Faction;
 
 //TODO: dynamically determine from world for transport troops

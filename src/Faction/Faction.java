@@ -2,9 +2,10 @@ package Faction;
 
 import java.util.*;
 
+import universe.*;
+
 import Faction.Reputation.ReputationLevel;
 import HTNP.*;
-import World.*;
 
 //Todo: The following:
 //Think of stats for factions to have
@@ -15,6 +16,8 @@ public abstract class Faction
 	// DATA
 	//
 	// Faction Data
+	protected String factionName;
+	
 	protected World homeWorld;
 	protected Set<World> controlledWorlds = new HashSet<World>();
 	
@@ -26,6 +29,11 @@ public abstract class Faction
 	protected Map<Faction, Reputation> factionReputations = new HashMap<Faction, Reputation>();
 	
 	protected TechLevel tech = new TechLevel();
+	
+	// Personality
+	protected int aggression;
+	protected int diplomacy;
+	protected int science;
 	
 	// Planning Data
 	public int timeToReplan = 0;
@@ -45,16 +53,31 @@ public abstract class Faction
 		w.addTroops(this, amount);
 	}
 	
+	public void decreaseTroops(int amount)
+	{
+		decreaseTroops(amount, homeWorld);
+	}
+	
+	public void decreaseTroops(int amount, World w)
+	{
+		w.removeTroops(this, amount);
+	}
+	
 	public int getNumArmies() 
 	{
 		int armies = 0;
 		
 		for(World w : controlledWorlds)
 		{
-			armies += w.getTroopCount(this);
+			armies += getNumArmies(w);
 		}
 		
 		return armies;
+	}
+	
+	public int getNumArmies(World w)
+	{
+		return w.getTroopCount(this);
 	}
 	
 	public void increaseShips(int amount)
@@ -67,16 +90,31 @@ public abstract class Faction
 		w.addShips(this, amount);
 	}
 	
+	public void decreaseShips(int amount)
+	{
+		decreaseShips(amount, homeWorld);
+	}
+	
+	public void decreaseShips(int amount, World w)
+	{
+		w.removeShips(this, amount);
+	}
+	
 	public int getNumShips() 
 	{
 		int armies = 0;
 		
 		for(World w : controlledWorlds)
 		{
-			armies += w.getTroopCount(this);
+			armies += getNumShips(w);
 		}
 		
 		return armies;
+	}
+	
+	public int getNumShips(World w)
+	{
+		return w.getShipCount(this);
 	}
 	
 	//
@@ -180,6 +218,12 @@ public abstract class Faction
 	//
 	// WORLDS
 	//
+	public void setHomeWorld(World w)
+	{
+		gainWorldControl(w);
+		homeWorld = w;
+	}
+	
 	public World getHomeWorld()
 	{
 		return homeWorld;
@@ -272,7 +316,20 @@ public abstract class Faction
 	//
 	public class TechLevel
 	{
+		//
+		// RESOURCES
+		//
 		double resourceEfficiency = .2;
 		
+		//
+		// TRANSIT SPEED
+		//
+		double hyperdriveEfficiency = 1;
+		
+		//
+		// COMBAT PROWESS
+		//
+		double defensiveCapabilities = 1;
+		double offensiveCapabilities = 1;
 	}
 }

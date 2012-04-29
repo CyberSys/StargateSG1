@@ -1,6 +1,6 @@
 package HTNP;
 
-import World.World;
+import universe.World;
 import Faction.Faction;
 
 public class ConquerTask extends Task {

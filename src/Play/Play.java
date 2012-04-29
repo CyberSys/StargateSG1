@@ -1,6 +1,7 @@
 package Play;
 
-import World.World;
+import universe.Universe;
+import universe.World;
 import Faction.*;
 import HTNP.*;
 
@@ -8,12 +9,11 @@ public class Play {
 	public static void main(String[] args) {
 		Faction f = new TestFaction();
 		Faction f2 = new TestFaction();
-		World targetWorld = new World();
-		targetWorld.setControllingFaction(f2);
-		f2.gainWorldControl(targetWorld);
+		World targetWorld = Universe.generateWorld();
+		f2.setHomeWorld(targetWorld);
 		f.learnWorldLocation(targetWorld);
-		f2.setNumArmies(15);
-		f.setEnemy(f2);
+		f2.increaseTroops(15);
+		f.decreaseReputation(f2, 50);
 		f.replan();
 	
 		while(true) {
