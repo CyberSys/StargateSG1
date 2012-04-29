@@ -28,7 +28,7 @@ public class World {
 	}
 	
 	//
-	// METHODS
+	// Controlling Faction
 	//
 	public Faction getControllingFaction() 
 	{
@@ -37,19 +37,64 @@ public class World {
 
 	public void setControllingFaction(Faction faction) 
 	{
+		controllingFaction.loseWorldControl(this);
 		controllingFaction = faction;
 		if(!factionStats.containsKey(faction))
 		{
 			factionStats.put(faction, new FactionWorldStats());
 		}
+		controllingFaction.gainWorldControl(this);
 	}
 
+	//
+	// Troops and Ships
+	//
+	public void addTroops(Faction f, int amount)
+	{
+		if(!factionStats.containsKey(f))
+			factionStats.put(f, new FactionWorldStats());
+		
+		FactionWorldStats s = factionStats.get(f);
+		s.troopCount += amount;
+	}
+	
+	public void removeTroops(Faction f, int amount)
+	{
+		if(!factionStats.containsKey(f))
+			factionStats.put(f, new FactionWorldStats());
+		
+		FactionWorldStats s = factionStats.get(f);
+		s.troopCount -= amount;
+		if(s.troopCount < 0)
+			s.troopCount = 0;
+	}
+	
 	public int getTroopCount(Faction f)
 	{
 		if(factionStats.containsKey(f))
 			return factionStats.get(f).troopCount;
 		else
 			return 0;
+	}
+	
+	public void addShips(Faction f, int amount)
+	{
+		if(!factionStats.containsKey(f))
+			factionStats.put(f, new FactionWorldStats());
+		
+		FactionWorldStats s = factionStats.get(f);
+		s.shipCount += amount;
+	}
+	
+	public void removeShips(Faction f, int amount)
+	{
+		if(!factionStats.containsKey(f))
+			factionStats.put(f, new FactionWorldStats());
+		
+		FactionWorldStats s = factionStats.get(f);
+		s.shipCount -= amount;
+		if(s.shipCount < 0)
+			s.shipCount = 0;
 	}
 	
 	public int getShipCount(Faction f)
@@ -60,20 +105,31 @@ public class World {
 			return 0;
 	}
 	
-	public int getPassiveResources(Faction faction)
+	//
+	// RESOURCES
+	//
+	public int getPassiveResources()
 	{
 		return baseResources;
 	}
 	
-	public int getActiveResources(Faction faction)
+	public int getActiveResources()
 	{
 		int activeMultiplier = 3;
-		return (getPassiveResources(faction) * activeMultiplier);
+		return (getPassiveResources() * activeMultiplier);
 	}		
 	
+	//
+	// BOOKKEEPING
+	//
 	public boolean equals(World other) 
 	{
 		return other.address.equals(address);
+	}
+	
+	public int hashCode()
+	{
+		return address.hashCode();
 	}
 	
 	//

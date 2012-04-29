@@ -2,81 +2,225 @@ package Faction;
 
 import java.util.*;
 
+import Faction.Reputation.ReputationLevel;
 import HTNP.*;
 import World.*;
 
 //Todo: The following:
 //Think of stats for factions to have
 //Think of way to keep track of current task so replanning not a bitch
-public abstract class Faction {
+public abstract class Faction 
+{
+	//
+	// DATA
+	//
+	// Faction Data
+	protected World homeWorld;
+	protected Set<World> controlledWorlds = new HashSet<World>();
+	
+	protected int numResources;
+	
+	protected Set<World> knownGateAddresses = new HashSet<World>();
+	protected Set<World> knownWorldLocations = new HashSet<World>();
+	
+	protected Map<Faction, Reputation> factionReputations = new HashMap<Faction, Reputation>();
+	
+	protected TechLevel tech = new TechLevel();
+	
+	// Planning Data
+	public int timeToReplan = 0;
 	public Stack<Task> plan = new Stack<Task>();
 	protected boolean isReadyToAttack = false;
-	protected int numArmies;
-	protected int numShips;
-	protected int numResources;
-	protected Faction enemy;
-	protected List<World> gateAddress = new ArrayList<World>();
-	protected List<World> knownWorldLocations = new ArrayList<World>();
-	protected World world;
-	public int timeToReplan = 0;
 	
-	public void setIsReadyToAttack(boolean isReady) {
-		this.isReadyToAttack = isReady;
+	//
+	// TROOP AND SHIP MANAGEMENT
+	//
+	public void increaseTroops(int amount)
+	{
+		increaseTroops(amount, homeWorld);
 	}
-	public int getCombatStrength() {
-		return numArmies;
+	
+	public void increaseTroops(int amount, World w)
+	{
+		w.addTroops(this, amount);
 	}
-	public int getNumArmies() {
-		return numArmies;
+	
+	public int getNumArmies() 
+	{
+		int armies = 0;
+		
+		for(World w : controlledWorlds)
+		{
+			armies += w.getTroopCount(this);
+		}
+		
+		return armies;
 	}
-	public void setNumArmies(int numArmies) {
-		this.numArmies = numArmies;
+	
+	public void increaseShips(int amount)
+	{
+		increaseShips(amount, homeWorld);
 	}
-	public int getNumShips() {
-		return numShips;
+	
+	public void increaseShips(int amount, World w)
+	{
+		w.addShips(this, amount);
 	}
-	public void setNumShips(int numShips) {
-		this.numShips = numShips;
+	
+	public int getNumShips() 
+	{
+		int armies = 0;
+		
+		for(World w : controlledWorlds)
+		{
+			armies += w.getTroopCount(this);
+		}
+		
+		return armies;
 	}
-	public int getNumResources() {
+	
+	//
+	// RESOURCES
+	//
+	public void gainResourcesPassive()
+	{
+		for(World w : controlledWorlds)
+		{
+			addResources((int)(tech.resourceEfficiency * w.getPassiveResources()));
+		}
+	}
+	
+	public void gainResourcesActive()
+	{
+		for(World w : controlledWorlds)
+		{
+			addResources((int)(tech.resourceEfficiency * w.getActiveResources()));
+		}
+	}
+	
+	public void addResources(int amount)
+	{
+		this.numResources += amount;
+	}
+	
+	public void removeResources(int amount)
+	{
+		this.numResources -= amount;
+	}
+	
+	public int getNumResources() 
+	{
 		return numResources;
 	}
-	public void setNumResources(int numResources) {
-		this.numResources = numResources;
-	}
-	public Faction getEnemy() {
-		return enemy;
-	}
-	public void setEnemy(Faction enemy) {
-		this.enemy = enemy;
-	}
-	public boolean knowsGateAddress(World world) {
-		return gateAddress.contains(world);
+	
+	//
+	// REPUTATIONS
+	//
+	public boolean isEnemy(Faction f)
+	{
+		if(!factionReputations.containsKey(f))
+			return false;
+		
+		Reputation r = factionReputations.get(f);
+		return (r.compareReputation(ReputationLevel.ENEMY) <= 0);
 	}
 	
-	public String toString() {
-		return "CombatStrength = " + getCombatStrength() + ", NumArmies = " + numArmies + ", numShips = " + numShips + ", NumResources = " + numResources;
+	public List<Faction> getEnemies()
+	{
+		List<Faction> enemies = new ArrayList<Faction>();
+		
+		for(Faction f : factionReputations.keySet())
+		{
+			if(isEnemy(f))
+				enemies.add(f);
+		}
+		
+		return enemies;
 	}
+	
+	public void increaseReputation(Faction f, int amount)
+	{
+		if(!factionReputations.containsKey(f))
+			factionReputations.put(f, new Reputation());
+		
+		factionReputations.get(f).adjustReputation(amount);
+	}
+	
+	public void decreaseReputation(Faction f, int amount)
+	{
+		if(!factionReputations.containsKey(f))
+			factionReputations.put(f, new Reputation());
+		
+		factionReputations.get(f).adjustReputation(-1 * amount);
+	}
+	
+	//
+	// KNOWLEDGE
+	//
+	public boolean knowsGateAddress(World world) 
+	{
+		return knownGateAddresses.contains(world);
+	}
+	
+	public void learnGateAddress(World world)
+	{
+		knownGateAddresses.add(world);
+	}
+	
+	public boolean knowsLocation(World world) 
+	{
+		return knownWorldLocations.contains(world);
+	}
+	
+	public void learnWorldLocation(World world) 
+	{
+		knownWorldLocations.add(world);
+	}
+	
+	//
+	// WORLDS
+	//
+	public World getHomeWorld()
+	{
+		return homeWorld;
+	}
+	
+	public void gainWorldControl(World w)
+	{
+		if(!controlledWorlds.contains(w))
+		{
+			w.setControllingFaction(this);
+			controlledWorlds.add(w);
+		}
+	}
+	
+	public void loseWorldControl(World w)
+	{
+		controlledWorlds.remove(w);
+	}
+	
+	//
+	// TURN SIMULATION
+	//
+	public void doTurn() 
+	{
+		// Upkeep
+		gainResourcesPassive();
+		
+		// Planning
+		getNextPlannedTask().perform(this);		
+	}
+	
+	//
+	// PLANNING STUFFS
+	//
+	public String toString() 
+	{
+		return "CombatStrength = " + getCombatStrength() + ", NumArmies = " + getNumArmies() + ", numShips = " + getNumShips() + ", NumResources = " + numResources;
+	}
+	
 	public boolean isReadyToAttack() {
 		return isReadyToAttack;
-	}
-	public World getWorld() {
-		return world;
-	}
-	public boolean hasGate() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	public boolean knowsLocation(World world) {
-		return true;
-		//return knownWorldLocations.contains(world);
-	}
-	public void setWorld(World world) {
-		this.world = world;	
-	}
-	
-	public void addKnownWorldLocation(World world) {
-		knownWorldLocations.add(world);
 	}
 	
 	public void replan() {
@@ -107,11 +251,28 @@ public abstract class Faction {
 		System.out.println(plan);
 		return plan.pop();
 	}
-	public void doTurn() {
-		getNextPlannedTask().perform(this);		
-	}
+	
 	public boolean didWin() {
 		Task attack = new AttackTask(getEnemy().getWorld(), getEnemy(), null);
 		return attack.isCompleted(this);
+	}
+	
+	public void setIsReadyToAttack(boolean isReady) 
+	{
+		this.isReadyToAttack = isReady;
+	}
+	
+	public int getCombatStrength() 
+	{
+		return getNumArmies();
+	}
+	
+	//
+	// Inner Class
+	//
+	public class TechLevel
+	{
+		double resourceEfficiency = .2;
+		
 	}
 }
