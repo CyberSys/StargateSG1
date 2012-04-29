@@ -1,6 +1,7 @@
 package universe;
 
 import java.util.HashMap;
+import java.util.*;
 import java.util.Map;
 
 import Faction.Faction;
@@ -9,13 +10,14 @@ public class World {
 	//
 	// DATA
 	//
-	String name;
-	String address;
-	boolean hasGate;
+	public String name;
+	public String address;
+	public boolean hasGate;
 	Faction controllingFaction;
 	
 	private Map<Faction, FactionWorldStats> factionStats;
 	private int baseResources;
+	private List<Faction> spies = new ArrayList<Faction>();
 	
 	//
 	// CTOR
@@ -116,6 +118,14 @@ public class World {
 			return factionStats.get(f).shipCount;
 		else
 			return 0;
+	}
+	
+	public boolean hasSpy(Faction faction) {
+		return spies.contains(faction);
+	}
+	
+	public void plantSpy(Faction faction) {
+		spies.add(faction);
 	}
 	
 	//

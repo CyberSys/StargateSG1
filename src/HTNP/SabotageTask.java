@@ -24,6 +24,7 @@ public class SabotageTask extends Task {
 		taskList.add(new StealResourcesTask(target, world, this));
 		taskList.add(new StealTechTask(target, world, this));
 		taskList.add(new DestroyTechTask(target, world, this));
+		//taskList.add(new SpreadDissentTask(target, world, this));
 		return taskList;
 	}
 	
@@ -36,8 +37,15 @@ public class SabotageTask extends Task {
 	@Override
 	public Task getNextStep(Faction faction) {
 		Task task = getFlavorMatchTask(faction);
-		if(new TransportTroopsTask(faction.getHomeWorld(), world, 1, this).isCompleted(faction)) return task;
-		return new TransportTroopsTask(faction.getHomeWorld(), world, 1, this);
+		if(!world.hasSpy(faction) && world.getTroopCount(faction) == 0 && faction.getNumArmies(faction.getHomeWorld()) == 0)
+			return new TrainTroopsTask(1, this);
+		if(!world.hasSpy(faction) && world.getTroopCount(faction) == 0)
+			return new TransportTroopsTask(faction.getHomeWorld(), world, 1, this);
+		if(!world.hasSpy(faction) && world.getTroopCount(faction) > 0)
+			return new PlantSpyTask(world, this);
+		else //if(world.hasSpy(faction))
+			return task;
+		//return new TransportTroopsTask(faction.getHomeWorld(), world, 1, this).canPerform(faction);
 	}
 	
 	@Override
@@ -48,8 +56,13 @@ public class SabotageTask extends Task {
 	@Override
 	public boolean canPerform(Faction faction) {
 		Task task = getFlavorMatchTask(faction);
-		if(new TransportTroopsTask(faction.getHomeWorld(), world, 1, this).isCompleted(faction)) return task.canPerform(faction);
-		return new TransportTroopsTask(faction.getHomeWorld(), world, 1, this).canPerform(faction);
+		if(!world.hasSpy(faction) && world.getTroopCount(faction) == 0)
+			return new TransportTroopsTask(faction.getHomeWorld(), world, 1, this).canPerform(faction);
+		if(!world.hasSpy(faction) && world.getTroopCount(faction) > 0)
+			return new PlantSpyTask(world, this).canPerform(faction);
+		else //if(world.hasSpy(faction))
+			return task.canPerform(faction);
+		//return new TransportTroopsTask(faction.getHomeWorld(), world, 1, this).canPerform(faction);
 	}
 
 	@Override

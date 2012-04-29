@@ -32,6 +32,7 @@ public class StealShipTask extends Task {
 	}
 	
 	public void perform(Faction faction) {
+		System.out.println("Doing " + name);
 		if(new Random().nextBoolean()) 
 			faction.increaseShips(1, faction.getHomeWorld());
 			target.decreaseShips(1, faction.getHomeWorld());

@@ -29,13 +29,14 @@ public class StealResourcesTask extends Task {
 	}
 
 	public void perform(Faction faction) {
+		System.out.println("Doing " + name);
 		target.removeResources(50);
 		parent.reportFinished();
 	}
 	
 	@Override
 	public boolean canPerform(Faction faction) {
-		return world.getTroopCount(faction) > 0 && target.getNumResources() >= 50;
+		return world.hasSpy(faction) && target.getNumResources() >= 50;
 	}
 
 	@Override

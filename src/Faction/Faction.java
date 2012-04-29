@@ -3,8 +3,6 @@ package Faction;
 import java.util.*;
 
 import universe.*;
-
-import Faction.Faction.TechLevel;
 import Faction.Reputation.ReputationLevel;
 import HTNP.*;
 
@@ -30,8 +28,6 @@ public abstract class Faction
 	protected Map<Faction, Reputation> factionReputations = new HashMap<Faction, Reputation>();
 	
 	protected TechLevel tech = new TechLevel();
-	
-	protected boolean hasGate = false;
 	
 	// Personality
 	protected int aggression;
@@ -300,10 +296,6 @@ public abstract class Faction
 		return getNumArmies();
 	}
 	
-	public boolean hasGate() {
-		return hasGate;
-	}
-	
 	public String toString() {
 		return "Resources: " + getNumResources();
 	}
@@ -360,19 +352,41 @@ public abstract class Faction
 		}
 	}
 	
+	public void improveTechLevel(int direction) {
+		switch(direction) {
+		case 0:
+			tech.resourceEfficiency+=.1;
+			break;
+		case 1:
+			tech.hyperdriveEfficiency+=.5;
+			break;
+		case 2:
+			tech.defensiveCapabilities+=.5;
+			break;
+		case 3:
+			tech.offensiveCapabilities+=.5;
+		default:
+			break;
+		}
+	}
+	
 	public void reduceTechLevel() {
 		switch(new Random().nextInt(4)) {
 		case 0:
 			tech.resourceEfficiency-=.1;
+			if(tech.resourceEfficiency < 0) tech.resourceEfficiency = 0;
 			break;
 		case 1:
 			tech.hyperdriveEfficiency-=.5;
+			if(tech.hyperdriveEfficiency < 0) tech.hyperdriveEfficiency = 0;
 			break;
 		case 2:
 			tech.defensiveCapabilities-=.5;
+			if(tech.defensiveCapabilities < 0) tech.defensiveCapabilities = 0;
 			break;
 		case 3:
 			tech.offensiveCapabilities-=.5;
+			if(tech.offensiveCapabilities < 0) tech.offensiveCapabilities = 0;
 		default:
 			break;
 		}

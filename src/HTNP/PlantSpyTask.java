@@ -3,13 +3,12 @@ package HTNP;
 import universe.World;
 import Faction.Faction;
 
-public class SabotageTroopsTask extends Task {
+public class PlantSpyTask extends Task {
 
-	private Faction target;
 	private World world;
-	public SabotageTroopsTask(Faction target, World world, Task parent) {
-		super(true, "Sabotage Troops Task", parent);
-		this.target = target;
+	
+	public PlantSpyTask(World world, Task parent) {
+		super(true, "Plant Spy Task", parent);
 		this.world = world;
 	}
 
@@ -23,20 +22,20 @@ public class SabotageTroopsTask extends Task {
 		return this;
 	}
 
-	@Override
-	public boolean isCompleted(Faction faction) {
-		return parent.didFinish;
-	}
-
 	public void perform(Faction faction) {
 		System.out.println("Doing " + name);
-		world.removeTroops(target, 1);
-		parent.reportFinished();
+		world.plantSpy(faction);
+		world.removeTroops(faction,  1);
 	}
 	
 	@Override
+	public boolean isCompleted(Faction faction) {
+		return world.hasSpy(faction);
+	}
+
+	@Override
 	public boolean canPerform(Faction faction) {
-		return world.hasSpy(faction) && world.getTroopCount(target) > 0;
+		return world.getTroopCount(faction) > 0;
 	}
 
 	@Override

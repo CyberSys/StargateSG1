@@ -47,7 +47,7 @@ public abstract class Task {
 		List<Task> taskList = getTaskList(faction);
 		Task bestMatch = null;
 		for(Task task : taskList) {
-			System.out.println(task.canPerform(faction));
+			//System.out.println(task.canPerform(faction));
 			if((bestMatch == null ||task.getFlavorMatch(faction) > bestMatch.getFlavorMatch(faction)) && task.canPerform(faction))
 				bestMatch = task;
 		}

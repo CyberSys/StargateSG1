@@ -1,16 +1,14 @@
 package HTNP;
 
-import universe.World;
+import java.util.Random;
+
 import Faction.Faction;
 
-public class SabotageTroopsTask extends Task {
+public class SearchForTechnologyTask extends Task {
 
-	private Faction target;
-	private World world;
-	public SabotageTroopsTask(Faction target, World world, Task parent) {
-		super(true, "Sabotage Troops Task", parent);
-		this.target = target;
-		this.world = world;
+	private int direction;
+	public SearchForTechnologyTask(Task parent) {
+		super(true, "Search For Technology Task", parent);
 	}
 
 	@Override
@@ -27,16 +25,16 @@ public class SabotageTroopsTask extends Task {
 	public boolean isCompleted(Faction faction) {
 		return parent.didFinish;
 	}
-
+	
 	public void perform(Faction faction) {
 		System.out.println("Doing " + name);
-		world.removeTroops(target, 1);
 		parent.reportFinished();
+		faction.improveTechLevel(new Random().nextInt(4));		
 	}
-	
+
 	@Override
 	public boolean canPerform(Faction faction) {
-		return world.hasSpy(faction) && world.getTroopCount(target) > 0;
+		return true;
 	}
 
 	@Override

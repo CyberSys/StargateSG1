@@ -29,13 +29,14 @@ public class StealTechTask extends Task {
 	}
 
 	public void perform(Faction faction) {
+		System.out.println("Doing " + name);
 		faction.improveTechLevel();
 		parent.reportFinished();
 	}
 	
 	@Override
 	public boolean canPerform(Faction faction) {
-		return world.getTroopCount(faction) > 0 && (target.getTechLevel().compareTo(faction.getTechLevel())) > 0;
+		return world.hasSpy(faction) && (target.getTechLevel().compareTo(faction.getTechLevel())) > 0;
 	}
 
 	@Override

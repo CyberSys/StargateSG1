@@ -29,13 +29,14 @@ public class SabotageFleetTask extends Task {
 	}
 
 	public void perform(Faction faction) {
+		System.out.println("Doing " + name);
 		world.removeShips(target, 1);
 		parent.reportFinished();
 	}
 	
 	@Override
 	public boolean canPerform(Faction faction) {
-		return world.getTroopCount(faction) > 0 && target.getNumShips(world) > 0;
+		return world.hasSpy(faction) && target.getNumShips(world) > 0;
 	}
 
 	@Override

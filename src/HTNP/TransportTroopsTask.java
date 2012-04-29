@@ -17,7 +17,7 @@ public class TransportTroopsTask extends Task {
 	@Override
 	public int stepsToCompletion(Faction faction) {
 		boolean canByGate = false, canByShip = false;
-		if(faction.hasGate() && faction.knowsGateAddress(to)) {
+		if(from.hasGate && to.hasGate && faction.knowsGateAddress(to)) {
 			canByGate = true;
 		}
 		if(faction.knowsLocation(to)) {
@@ -35,7 +35,7 @@ public class TransportTroopsTask extends Task {
 	@Override
 	public Task getNextStep(Faction faction) {
 		boolean canByGate = false, canByShip = false;
-		if(faction.hasGate() && faction.knowsGateAddress(to)) {
+		if(from.hasGate && to.hasGate && faction.knowsGateAddress(to)) {
 			canByGate = true;
 		}		
 		if(faction.knowsLocation(to)) {

@@ -9,10 +9,10 @@ import HTNP.*;
 public class Play {
 	public static void main(String[] args) 
 	{
-		GameFrame.getGameFrame().setVisible(true);
-		Universe.initialize();
+//		GameFrame.getGameFrame().setVisible(true);
+//		Universe.initialize();
 		
-		/*Faction f = new TestFaction();
+		Faction f = new TestFaction();
 		Faction f2 = new TestFaction();
 		World targetWorld = Universe.generateWorld();
 		World homeWorld = Universe.generateWorld();
@@ -35,7 +35,10 @@ public class Play {
 			f.doTurn();
 			if(targetWorld.getControllingFaction() == f)
 				break;
+			if(f2.getTechLevel().isMinimum() && f2.getNumArmies(f2.getHomeWorld()) == 0 && f2.getNumShips(f2.getHomeWorld()) == 0)
+				break;
 		}
-		System.out.println(targetWorld.getControllingFaction() == f);*/
+		System.out.println(targetWorld.getControllingFaction() == f);
+		System.out.println(f2.getTechLevel().isMinimum() && f2.getNumArmies(f2.getHomeWorld()) == 0 && f2.getNumShips(f2.getHomeWorld()) == 0);
 	}
 }

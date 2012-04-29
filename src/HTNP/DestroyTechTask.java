@@ -29,13 +29,14 @@ public class DestroyTechTask extends Task {
 	}
 
 	public void perform(Faction faction) {
+		System.out.println("Doing " + name);
 		target.reduceTechLevel();
 		parent.reportFinished();
 	}
 	
 	@Override
 	public boolean canPerform(Faction faction) {
-		return world.getTroopCount(faction) > 0 && !target.getTechLevel().isMinimum();
+		return world.hasSpy(faction) && !target.getTechLevel().isMinimum();
 	}
 
 	@Override
