@@ -15,6 +15,8 @@ public abstract class Faction
 	// DATA
 	//
 	// Faction Data
+	protected String factionName;
+	
 	protected World homeWorld;
 	protected Set<World> controlledWorlds = new HashSet<World>();
 	
@@ -302,7 +304,20 @@ public abstract class Faction
 	//
 	public class TechLevel
 	{
+		//
+		// RESOURCES
+		//
 		double resourceEfficiency = .2;
 		
+		//
+		// TRANSIT SPEED
+		//
+		double hyperdriveEfficiency = 1;
+		
+		//
+		// COMBAT PROWESS
+		//
+		double defensiveCapabilities = 1;
+		double offensiveCapabilities = 1;
 	}
 }
