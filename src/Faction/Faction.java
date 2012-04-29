@@ -39,6 +39,7 @@ public abstract class Faction
 	protected int science;
 	
 	// Planning Data
+	public boolean isPlayerControlled = false;
 	public int timeToReplan = 0;
 	public Stack<Task> plan = new Stack<Task>();
 	

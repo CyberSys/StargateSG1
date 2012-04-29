@@ -39,13 +39,25 @@ public class Universe
 		
 		GameFrame.getGameFrame().addToLog("Begin Round " + roundNumber++, "");
 		
-		//playerFaction = new HumanityFaction();
+		playerFaction = new HumanityFaction();
 		
-		//factions.add(playerFaction);
+		factions.add(playerFaction);
 		
-		//factions.add(new GoauldFaction());
-		//factions.add(new AsgardFaction());
-		//factions.add(new TokraFaction());
+		Faction goauld = new GoauldFaction();
+		Faction asgard = new AsgardFaction();
+		Faction tokra = new TokraFaction();
+		
+		playerFaction.learnGateAddress(goauld.getHomeWorld());
+		
+		asgard.learnGateAddress(goauld.getHomeWorld());
+		asgard.learnWorldLocation(goauld.getHomeWorld());
+		
+		tokra.learnGateAddress(goauld.getHomeWorld());
+		tokra.learnWorldLocation(goauld.getHomeWorld());
+		
+		factions.add(goauld);
+		factions.add(asgard);
+		factions.add(tokra);
 	}
 	
 	public static World generateWorld()

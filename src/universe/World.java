@@ -9,9 +9,9 @@ public class World {
 	//
 	// DATA
 	//
-	String name;
-	String address;
-	boolean hasGate;
+	protected String name;
+	public String address;
+	public boolean hasGate;
 	Faction controllingFaction;
 	
 	private Map<Faction, FactionWorldStats> factionStats;
