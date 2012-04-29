@@ -1,4 +1,4 @@
-package World;
+package universe;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,6 +37,9 @@ public class World {
 
 	public void setControllingFaction(Faction faction) 
 	{
+		if(controllingFaction.equals(faction))
+			return;
+		
 		controllingFaction.loseWorldControl(this);
 		controllingFaction = faction;
 		if(!factionStats.containsKey(faction))

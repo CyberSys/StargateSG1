@@ -1,4 +1,4 @@
-package World;
+package universe;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,6 +19,7 @@ public class Universe
 	public static Map<String, World> addressBook = new HashMap<String, World>();
 	
 	// Faction Data
+	public static Faction playerFaction;
 	public static final List<Faction> factions = new ArrayList<Faction>();
 	
 	private static final Random rand = new Random();

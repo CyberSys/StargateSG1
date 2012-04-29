@@ -2,9 +2,10 @@ package Faction;
 
 import java.util.*;
 
+import universe.*;
+
 import Faction.Reputation.ReputationLevel;
 import HTNP.*;
-import World.*;
 
 //Todo: The following:
 //Think of stats for factions to have
@@ -217,6 +218,12 @@ public abstract class Faction
 	//
 	// WORLDS
 	//
+	public void setHomeWorld(World w)
+	{
+		gainWorldControl(w);
+		homeWorld = w;
+	}
+	
 	public World getHomeWorld()
 	{
 		return homeWorld;
