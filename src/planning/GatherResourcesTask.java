@@ -1,18 +1,20 @@
-package HTNP;
+package planning;
 
-import Faction.Faction;
+import faction.Faction;
 
-public class TrainTroopsTask extends Task {
+public class GatherResourcesTask extends Task {
 
-	public int limit;
-	public TrainTroopsTask(int limit, Task parent) {
-		super(true, "Gather Troops Task", parent);
+	private int limit;
+	public GatherResourcesTask(int limit, Task parent) {
+		super(true, "Gather Resources Task", parent);
 		this.limit = limit;
 	}
-
+	
+	//Consider resources gathered when limit is reached
+	
 	@Override
 	public int stepsToCompletion(Faction faction) {
-		return limit - faction.getNumArmies();
+		return limit - faction.getNumResources();
 	}
 
 	@Override
@@ -22,20 +24,22 @@ public class TrainTroopsTask extends Task {
 
 	@Override
 	public boolean isCompleted(Faction faction) {
-		return faction.getNumArmies() >= limit;
+		return faction.getNumResources() >= limit;
 	}
 
 	@Override
 	public boolean canPerform(Faction faction) {
 		return true;
 	}
-
+	
 	public void perform(Faction faction) {
 		System.out.println("Doing " + name);
-		faction.increaseTroops(1);
+		faction.addResources(1);
 	}
+
 	@Override
 	public double getFlavorMatch(Faction faction) {
+		// TODO Auto-generated method stub
 		return 0;
 	}
 

@@ -1,13 +1,16 @@
-package HTNP;
+package planning;
 
-import Faction.Faction;
+import faction.Faction;
+import universe.World;
 
-public class DirectedResearchTask extends Task {
+public class DestroyTechTask extends Task {
 
-	private int direction;
-	public DirectedResearchTask(int direction, Task parent) {
-		super(true, "Directed Research Task", parent);
-		this.direction = direction;
+	private Faction target;
+	private World world;
+	public DestroyTechTask(Faction target, World world, Task parent) {
+		super(true, "Destroy Tech Task", parent);
+		this.target = target;
+		this.world = world;
 	}
 
 	@Override
@@ -24,16 +27,16 @@ public class DirectedResearchTask extends Task {
 	public boolean isCompleted(Faction faction) {
 		return parent.didFinish;
 	}
-	
+
 	public void perform(Faction faction) {
 		System.out.println("Doing " + name);
+		target.reduceTechLevel();
 		parent.reportFinished();
-		faction.improveTechLevel(direction);		
 	}
-
+	
 	@Override
 	public boolean canPerform(Faction faction) {
-		return true;
+		return world.hasSpy(faction) && !target.getTechLevel().isMinimum();
 	}
 
 	@Override

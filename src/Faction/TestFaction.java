@@ -1,4 +1,4 @@
-package Faction;
+package faction;
 
 public class TestFaction extends Faction {
 	

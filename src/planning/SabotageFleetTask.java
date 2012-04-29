@@ -1,14 +1,14 @@
-package HTNP;
+package planning;
 
+import faction.Faction;
 import universe.World;
-import Faction.Faction;
 
-public class DestroyTechTask extends Task {
+public class SabotageFleetTask extends Task {
 
 	private Faction target;
 	private World world;
-	public DestroyTechTask(Faction target, World world, Task parent) {
-		super(true, "Destroy Tech Task", parent);
+	public SabotageFleetTask(Faction target, World world, Task parent) {
+		super(true, "Sabotage Fleet Task", parent);
 		this.target = target;
 		this.world = world;
 	}
@@ -30,13 +30,13 @@ public class DestroyTechTask extends Task {
 
 	public void perform(Faction faction) {
 		System.out.println("Doing " + name);
-		target.reduceTechLevel();
+		world.removeShips(target, 1);
 		parent.reportFinished();
 	}
 	
 	@Override
 	public boolean canPerform(Faction faction) {
-		return world.hasSpy(faction) && !target.getTechLevel().isMinimum();
+		return world.hasSpy(faction) && target.getNumShips(world) > 0;
 	}
 
 	@Override

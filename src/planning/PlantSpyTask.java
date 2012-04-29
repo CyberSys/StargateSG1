@@ -1,16 +1,15 @@
-package HTNP;
+package planning;
 
+import faction.Faction;
 import universe.World;
-import Faction.Faction;
 
-public class AssaultTask extends Task {
+public class PlantSpyTask extends Task {
 
 	private World world;
-	private Faction target;
-	public AssaultTask(World world, Faction target, Task parent) {
-		super(true, "Assault Task", parent);
+	
+	public PlantSpyTask(World world, Task parent) {
+		super(true, "Plant Spy Task", parent);
 		this.world = world;
-		this.target = target;
 	}
 
 	@Override
@@ -23,20 +22,22 @@ public class AssaultTask extends Task {
 		return this;
 	}
 
+	public void perform(Faction faction) {
+		System.out.println("Doing " + name);
+		world.plantSpy(faction);
+		world.removeTroops(faction,  1);
+	}
+	
+	@Override
 	public boolean isCompleted(Faction faction) {
-		return world.getControllingFaction().equals(faction);
+		return world.hasSpy(faction);
 	}
 
+	@Override
 	public boolean canPerform(Faction faction) {
 		return world.getTroopCount(faction) > 0;
 	}
 
-	public void perform(Faction faction) {
-		System.out.println("Doing " + name);
-		target.decreaseTroops(2, world);
-		faction.decreaseTroops(3, world);
-	}
-	
 	@Override
 	public double getFlavorMatch(Faction faction) {
 		// TODO Auto-generated method stub

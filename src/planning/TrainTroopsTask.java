@@ -1,19 +1,18 @@
-package HTNP;
+package planning;
 
-import universe.World;
-import Faction.Faction;
+import faction.Faction;
 
-public class ConquerTask extends Task {
+public class TrainTroopsTask extends Task {
 
-	private World world;
-	public ConquerTask(World world, Task parent) {
-		super(true, "Conquer Task", parent);
-		this.world = world;
+	public int limit;
+	public TrainTroopsTask(int limit, Task parent) {
+		super(true, "Gather Troops Task", parent);
+		this.limit = limit;
 	}
 
 	@Override
 	public int stepsToCompletion(Faction faction) {
-		return 1;
+		return limit - faction.getNumArmies();
 	}
 
 	@Override
@@ -21,23 +20,22 @@ public class ConquerTask extends Task {
 		return this;
 	}
 
+	@Override
 	public boolean isCompleted(Faction faction) {
-		return world.getControllingFaction() == faction;
+		return faction.getNumArmies() >= limit;
 	}
 
+	@Override
 	public boolean canPerform(Faction faction) {
 		return true;
 	}
 
 	public void perform(Faction faction) {
 		System.out.println("Doing " + name);
-		//TODO: check for 'if success'
-		world.setControllingFaction(faction);
+		faction.increaseTroops(1);
 	}
-
 	@Override
 	public double getFlavorMatch(Faction faction) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 

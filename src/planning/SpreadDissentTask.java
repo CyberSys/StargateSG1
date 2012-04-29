@@ -1,14 +1,16 @@
-package HTNP;
+package planning;
 
-import java.util.Random;
+import faction.Faction;
+import universe.World;
 
-import Faction.Faction;
+public class SpreadDissentTask extends Task {
 
-public class SearchForTechnologyTask extends Task {
-
-	private int direction;
-	public SearchForTechnologyTask(Task parent) {
-		super(true, "Search For Technology Task", parent);
+	private World world;
+	private Faction target;
+	public SpreadDissentTask(Faction target, World world, Task parent) {
+		super(true, "Spread Dissent", parent);
+		this.world = world;
+		this.target = target;
 	}
 
 	@Override
@@ -25,16 +27,16 @@ public class SearchForTechnologyTask extends Task {
 	public boolean isCompleted(Faction faction) {
 		return parent.didFinish;
 	}
-	
+
 	public void perform(Faction faction) {
 		System.out.println("Doing " + name);
+		//TODO: here is where things will happen
 		parent.reportFinished();
-		faction.improveTechLevel(new Random().nextInt(4));		
 	}
-
+	
 	@Override
 	public boolean canPerform(Faction faction) {
-		return true;
+		return world.hasSpy(faction);
 	}
 
 	@Override

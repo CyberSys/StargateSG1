@@ -1,8 +1,9 @@
-package HTNP;
+package planning;
 
 import java.util.*;
 
-import Faction.Faction;
+import faction.Faction;
+
 //Todo: Make the task check for stuff work as follows:
 //Check to see that every task looks like it has finished (this will have to be personalized to each task
 //Check to see that we do the first task in our list that looks unfinished (i.e., it doesn't look completed)

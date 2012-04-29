@@ -1,7 +1,8 @@
-package HTNP;
+package planning;
 
 import java.util.Random;
-import Faction.Faction;
+
+import faction.Faction;
 
 public class StealShipTask extends Task {
 

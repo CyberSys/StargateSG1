@@ -1,7 +1,7 @@
-package HTNP;
+package planning;
 
+import faction.Faction;
 import universe.*;
-import Faction.Faction;
 
 //TODO: dynamically determine from world for transport troops
 public class AttackTask extends Task {

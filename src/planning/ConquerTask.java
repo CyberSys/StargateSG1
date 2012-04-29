@@ -1,20 +1,19 @@
-package HTNP;
+package planning;
 
-import Faction.Faction;
+import faction.Faction;
+import universe.World;
 
-public class GatherResourcesTask extends Task {
+public class ConquerTask extends Task {
 
-	private int limit;
-	public GatherResourcesTask(int limit, Task parent) {
-		super(true, "Gather Resources Task", parent);
-		this.limit = limit;
+	private World world;
+	public ConquerTask(World world, Task parent) {
+		super(true, "Conquer Task", parent);
+		this.world = world;
 	}
-	
-	//Consider resources gathered when limit is reached
-	
+
 	@Override
 	public int stepsToCompletion(Faction faction) {
-		return limit - faction.getNumResources();
+		return 1;
 	}
 
 	@Override
@@ -22,19 +21,18 @@ public class GatherResourcesTask extends Task {
 		return this;
 	}
 
-	@Override
 	public boolean isCompleted(Faction faction) {
-		return faction.getNumResources() >= limit;
+		return world.getControllingFaction() == faction;
 	}
 
-	@Override
 	public boolean canPerform(Faction faction) {
 		return true;
 	}
-	
+
 	public void perform(Faction faction) {
 		System.out.println("Doing " + name);
-		faction.addResources(1);
+		//TODO: check for 'if success'
+		world.setControllingFaction(faction);
 	}
 
 	@Override

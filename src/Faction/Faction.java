@@ -1,10 +1,12 @@
-package Faction;
+package faction;
 
 import java.util.*;
 
+import faction.Reputation.ReputationLevel;
+
+import planning.*;
+
 import universe.*;
-import Faction.Reputation.ReputationLevel;
-import HTNP.*;
 
 //Todo: The following:
 //Think of stats for factions to have
