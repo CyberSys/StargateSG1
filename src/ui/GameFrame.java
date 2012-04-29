@@ -1,8 +1,22 @@
 package ui;
 
-import java.awt.Dimension;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.*;
+import java.util.List;
 
 import javax.swing.*;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultStyledDocument;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
+
+import universe.Universe;
 
 public class GameFrame extends JFrame 
 {
@@ -11,31 +25,152 @@ public class GameFrame extends JFrame
 	//
 	private static final long serialVersionUID = -8359900383505634479L;
 	
-    private JButton mAcceptButton;
-    
-    private JPanel mStatPanel;
-    private JPanel mAdvisorPanel;
-    
-    private JTextField mPlayerInput;
-    
-    private JScrollPane mLogScroll;
-    private JTextPane mLog;
-    
-    private JScrollPane mPromptScroll;
-    private JTextPane mPrompt;
+	// Instance
+	private static GameFrame mSingleton;
 	
+	// GUI Stuffs
+	private Box.Filler filler1;
+    private Box.Filler filler2;
+    private JButton mAcceptButton;
+    private JPanel mAdvisorPanel;
+    private JButton mDiplomaticAdviceButton;
+    private JTextPane mLog;
+    private JScrollPane mLogScroll;
+    private JButton mMilitaryAdviceButton;
+    private JTextField mPlayerInput;
+    private JTextPane mPrompt;
+    private JScrollPane mPromptScroll;
+    private JButton mScientificAdviceButton;
+    private JPanel mStatsPanel;
+    
+    // GUI Data
+    private List<TitledLine> mCurrentLog;
+    private Stack<List<TitledLine>> mLogHistory;
+    
+    private Object[] mCurrentActions;
+    
 	//
 	// CTOR
 	//
-	public GameFrame()
+	private GameFrame()
 	{
 		init();
+		
+		mCurrentLog = new ArrayList<TitledLine>();
+		mLogHistory = new Stack<List<TitledLine>>();
 	}
+	
+	public static GameFrame getGameFrame()
+	{
+		if(mSingleton == null)
+		{
+			try {
+	            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+	                if ("Nimbus".equals(info.getName())) {
+	                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+	                    break;
+	                }
+	            }
+	        } catch (ClassNotFoundException ex) {
+	            java.util.logging.Logger.getLogger(GameFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+	        } catch (InstantiationException ex) {
+	            java.util.logging.Logger.getLogger(GameFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+	        } catch (IllegalAccessException ex) {
+	            java.util.logging.Logger.getLogger(GameFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+	        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+	            java.util.logging.Logger.getLogger(GameFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+	        }
+			
+			mSingleton = new GameFrame();
+		}
+		
+		return mSingleton;
+	}
+	
+	public void addToLog(String body)
+	{
+		addToLog(null, body);
+	}
+	
+	public void addToLog(String title, String body)
+	{
+		final String lineSep = System.getProperty("line.separator");
+		
+		mCurrentLog.add(new TitledLine(title, body + lineSep));
+		
+		updateTextPane(mLog, mCurrentLog);
+	}
+	
+	public void setCurrentPrompt(String prompt, String[] options, Object[] actions)
+	{
+		mCurrentActions = actions;
+		
+		List<TitledLine> lines = new ArrayList<TitledLine>();
+		
+		lines.add(new TitledLine(null, prompt + ":"));
+		
+		for(int i = 0; i < options.length; i++)
+		{
+			lines.add(new TitledLine("" + i, options[i]));
+		}
+		
+		updateTextPane(mPrompt, lines);
+	}
+	
+	public void enableInput()
+	{
+		mPlayerInput.setEnabled(true);
+		mAcceptButton.setEnabled(true);
+		
+		mPrompt.setEnabled(true);
+	}
+	
+	private void updateTextPane(JTextPane pane, List<TitledLine> data)
+	{
+		StyledDocument doc = new DefaultStyledDocument();
+		
+		for(TitledLine line : data)
+		{
+			writeDocLine(doc, line);
+		}
+		
+		pane.setDocument(doc);		
+	}
+	
+	
+	private void writeDocLine(StyledDocument doc, TitledLine line)
+	{
+		final String lineSep = System.getProperty("line.separator");
+		
+		final SimpleAttributeSet titleStyle = new SimpleAttributeSet();
+		titleStyle.addAttribute(StyleConstants.CharacterConstants.Bold, Boolean.TRUE);
+		
+		final SimpleAttributeSet bodyStyle = new SimpleAttributeSet();
+		bodyStyle.addAttribute(StyleConstants.CharacterConstants.Italic, Boolean.TRUE);
+		
+		try 
+		{
+			if(line.title != null)
+				doc.insertString(doc.getLength(), line.title + ": ", titleStyle);
+			
+			doc.insertString(doc.getLength(), line.body + lineSep, bodyStyle);
+		} 
+		catch (BadLocationException e) 
+		{
+			e.printStackTrace();
+		}
+	}
+	
 	
 	private void init()
 	{
-        mStatPanel = new JPanel();
+		mStatsPanel = new JPanel();
         mAdvisorPanel = new JPanel();
+        mMilitaryAdviceButton = new JButton();
+        mScientificAdviceButton = new JButton();
+        mDiplomaticAdviceButton = new JButton();
+        filler1 = new Box.Filler(new Dimension(0, 0), new Dimension(0, 0), new Dimension(0, 32767));
+        filler2 = new Box.Filler(new Dimension(0, 0), new Dimension(0, 0), new Dimension(0, 32767));
         mPlayerInput = new JTextField();
         mAcceptButton = new JButton();
         mPromptScroll = new JScrollPane();
@@ -44,39 +179,87 @@ public class GameFrame extends JFrame
         mLog = new JTextPane();
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setMinimumSize(new Dimension(800, 600));
 
-        mStatPanel.setBorder(BorderFactory.createEtchedBorder());
+        mStatsPanel.setBorder(BorderFactory.createEtchedBorder());
 
-        GroupLayout jPanel1Layout = new GroupLayout(mStatPanel);
-        mStatPanel.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGap(0, 147, Short.MAX_VALUE)
+        GroupLayout mStatsPanelLayout = new GroupLayout(mStatsPanel);
+        mStatsPanel.setLayout(mStatsPanelLayout);
+        mStatsPanelLayout.setHorizontalGroup(
+            mStatsPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGap(0, 212, Short.MAX_VALUE)
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGap(0, 344, Short.MAX_VALUE)
+        mStatsPanelLayout.setVerticalGroup(
+            mStatsPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGap(0, 390, Short.MAX_VALUE)
         );
 
         mAdvisorPanel.setBorder(BorderFactory.createEtchedBorder());
+
+        mMilitaryAdviceButton.setText("Ask Military Advisor");
+
+        mScientificAdviceButton.setText("Ask Scientific Advisor");
+
+        mDiplomaticAdviceButton.setText("Ask Diplomatic Advisor");
+
+        GroupLayout mAdvisorPanelLayout = new GroupLayout(mAdvisorPanel);
+        mAdvisorPanel.setLayout(mAdvisorPanelLayout);
+        mAdvisorPanelLayout.setHorizontalGroup(
+            mAdvisorPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(mAdvisorPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(mAdvisorPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addComponent(filler1, GroupLayout.Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE)
+                    .addComponent(mMilitaryAdviceButton, GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE)
+                    .addComponent(mScientificAdviceButton, GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE)
+                    .addComponent(filler2, GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE)
+                    .addComponent(mDiplomaticAdviceButton, GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        mAdvisorPanelLayout.setVerticalGroup(
+            mAdvisorPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(mAdvisorPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(mMilitaryAdviceButton)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(filler1, GroupLayout.PREFERRED_SIZE, 12, GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(mScientificAdviceButton)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(filler2, GroupLayout.PREFERRED_SIZE, 12, GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(mDiplomaticAdviceButton)
+                .addContainerGap())
+        );
+
+        mPlayerInput.addKeyListener(new KeyAdapter()
+        {
+			@Override
+			public void keyPressed(KeyEvent arg0) 
+			{
+				if(arg0.getKeyCode() == KeyEvent.VK_ENTER)
+				{
+					doAction();
+				}
+			}
+        });
         
-        GroupLayout jPanel2Layout = new GroupLayout(mAdvisorPanel);
-        mAdvisorPanel.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGap(0, 147, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGap(0, 140, Short.MAX_VALUE)
-        );
-
-        mPlayerInput.setText("");
-
         mAcceptButton.setText("Accept");
+        mAcceptButton.addActionListener(new ActionListener()
+        {
+			@Override
+			public void actionPerformed(ActionEvent arg0) 
+			{
+				doAction();
+			}
+        });
 
+        mPrompt.setEditable(false);
+        mPrompt.setFocusable(false);
         mPromptScroll.setViewportView(mPrompt);
 
+        mLog.setEditable(false);
+        mLog.setFocusable(false);
         mLogScroll.setViewportView(mLog);
 
         GroupLayout layout = new GroupLayout(getContentPane());
@@ -87,13 +270,13 @@ public class GameFrame extends JFrame
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
                     .addComponent(mAdvisorPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(mStatPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(mStatsPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-                    .addComponent(mLogScroll, GroupLayout.DEFAULT_SIZE, 757, Short.MAX_VALUE)
-                    .addComponent(mPromptScroll, GroupLayout.DEFAULT_SIZE, 757, Short.MAX_VALUE)
+                    .addComponent(mPromptScroll, GroupLayout.DEFAULT_SIZE, 673, Short.MAX_VALUE)
+                    .addComponent(mLogScroll, GroupLayout.DEFAULT_SIZE, 673, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(mPlayerInput, GroupLayout.DEFAULT_SIZE, 678, Short.MAX_VALUE)
+                        .addComponent(mPlayerInput, GroupLayout.DEFAULT_SIZE, 602, Short.MAX_VALUE)
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(mAcceptButton)))
                 .addContainerGap())
@@ -103,34 +286,91 @@ public class GameFrame extends JFrame
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addComponent(mStatPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(mLogScroll, GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE))
+                    .addComponent(mLogScroll, GroupLayout.DEFAULT_SIZE, 394, Short.MAX_VALUE)
+                    .addComponent(mStatsPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(mPromptScroll, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE)
+                        .addComponent(mPromptScroll)
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
                             .addComponent(mPlayerInput, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                             .addComponent(mAcceptButton)))
                     .addComponent(mAdvisorPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
-        mAdvisorPanel.setMinimumSize(new Dimension(147, 140));
-        
         pack();
 	}
 	
-	public static void main(String args[]) {
-
+	
+	private void doAction()
+	{
+		String actionString = mPlayerInput.getText();
+		
+		mPlayerInput.setEnabled(false);
+		mAcceptButton.setEnabled(false);
+		
+		mPrompt.setEnabled(false);
+		
+		// TODO: Actually do the action setting.
+				
+		switchLog();
+		
+		Universe.elapseTime();
+	}
+	
+	private void switchLog()
+	{
+		mLogHistory.push(mCurrentLog);
+		mCurrentLog = new ArrayList<TitledLine>();
+		
+		updateTextPane(mLog, mCurrentLog);
+	}
+	
+	public static void main(String args[]) 
+	{
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-
-            public void run() {
-                new GameFrame().setVisible(true);
+        java.awt.EventQueue.invokeLater(new Runnable() 
+        {
+            public void run() 
+            {
+            	GameFrame gf = getGameFrame();
+            	gf.setVisible(true);
+            	
+            	for(int i = 0; i < 10; i++)
+            	{
+            		gf.addToLog("Testing", "123");
+            	}
+            	
+            	String p = "Please select an action";
+        		String[] acts = new String[]
+        				{
+        				"Attack",
+        				"Research",
+        				"Diplomacy",
+        				"Other"
+        				};
+        		
+        		gf.setCurrentPrompt(p, acts, null);
             }
         });
+      
         
     }
+	
+	//
+	// INNER CLASS
+	//
+	private class TitledLine
+	{
+		private String title;
+		private String body;
+		
+		public TitledLine(String t, String b)
+		{
+			title = t;
+			body = b;
+		}
+	}
 }

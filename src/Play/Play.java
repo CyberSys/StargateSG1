@@ -1,13 +1,18 @@
 package Play;
 
+import ui.GameFrame;
 import universe.Universe;
 import universe.World;
 import Faction.*;
 import HTNP.*;
 
 public class Play {
-	public static void main(String[] args) {
-		Faction f = new TestFaction();
+	public static void main(String[] args) 
+	{
+		GameFrame.getGameFrame().setVisible(true);
+		Universe.initialize();
+		
+		/*Faction f = new TestFaction();
 		Faction f2 = new TestFaction();
 		World targetWorld = Universe.generateWorld();
 		World homeWorld = Universe.generateWorld();
@@ -31,6 +36,6 @@ public class Play {
 			if(targetWorld.getControllingFaction() == f)
 				break;
 		}
-		System.out.println(targetWorld.getControllingFaction() == f);
+		System.out.println(targetWorld.getControllingFaction() == f);*/
 	}
 }

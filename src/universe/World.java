@@ -9,6 +9,7 @@ public class World {
 	//
 	// DATA
 	//
+	String name;
 	String address;
 	boolean hasGate;
 	Faction controllingFaction;
@@ -25,6 +26,14 @@ public class World {
 		hasGate = true;
 		
 		factionStats = new HashMap<Faction, FactionWorldStats>();
+	}
+	
+	//
+	// Naming
+	//
+	public void setName(String name)
+	{
+		Universe.updateName(this, name);
 	}
 	
 	//
