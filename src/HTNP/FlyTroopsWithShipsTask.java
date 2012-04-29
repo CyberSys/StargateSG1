@@ -30,6 +30,7 @@ public class FlyTroopsWithShipsTask extends Task {
 
 	public void perform(Faction faction) {
 		System.out.println("Doing " + name);
+		//use from, to here
 		faction.setIsReadyToAttack(true);
 	}
 	@Override

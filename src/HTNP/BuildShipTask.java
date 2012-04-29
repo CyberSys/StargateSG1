@@ -32,8 +32,8 @@ public class BuildShipTask extends Task {
 	
 	public void perform(Faction faction) {
 		System.out.println("Doing " + name);
-		faction.setNumResources(faction.getNumResources() - 1);
-		faction.setNumShips(faction.getNumShips() + 1);
+		faction.removeResources(1);
+		faction.increaseShips(1);
 	}
 
 	@Override

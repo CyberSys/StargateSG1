@@ -22,16 +22,17 @@ public class ConquerTask extends Task {
 	}
 
 	public boolean isCompleted(Faction faction) {
-		return faction.getEnemy().getWorld().getControllingFaction() == faction;
+		return world.getControllingFaction() == faction;
 	}
 
 	public boolean canPerform(Faction faction) {
-		return faction.getNumArmies() > faction.getEnemy().getNumArmies() *  2;
+		return true;
 	}
 
 	public void perform(Faction faction) {
 		System.out.println("Doing " + name);
-		faction.getEnemy().getWorld().setControllingFaction(faction);
+		//TODO: check for 'if success'
+		world.setControllingFaction(faction);
 	}
 
 	@Override

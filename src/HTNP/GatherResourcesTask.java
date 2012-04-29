@@ -34,7 +34,7 @@ public class GatherResourcesTask extends Task {
 	
 	public void perform(Faction faction) {
 		System.out.println("Doing " + name);
-		faction.setNumResources(faction.getNumResources() + 1);
+		faction.addResources(1);
 	}
 
 	@Override

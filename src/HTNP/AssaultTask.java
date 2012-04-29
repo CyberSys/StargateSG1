@@ -6,9 +6,11 @@ import Faction.Faction;
 public class AssaultTask extends Task {
 
 	private World world;
-	public AssaultTask(World world, Task parent) {
+	private Faction target;
+	public AssaultTask(World world, Faction target, Task parent) {
 		super(true, "Assault Task", parent);
 		this.world = world;
+		this.target = target;
 	}
 
 	@Override
@@ -22,7 +24,7 @@ public class AssaultTask extends Task {
 	}
 
 	public boolean isCompleted(Faction faction) {
-		return faction.getEnemy().getWorld().getControllingFaction().equals(faction);
+		return world.getControllingFaction().equals(faction);
 	}
 
 	public boolean canPerform(Faction faction) {
@@ -31,7 +33,7 @@ public class AssaultTask extends Task {
 
 	public void perform(Faction faction) {
 		System.out.println("Doing " + name);
-		faction.getEnemy().setNumArmies(faction.getEnemy().getNumArmies()-1);
+		target.increaseTroops(-1, world);
 	}
 	
 	@Override

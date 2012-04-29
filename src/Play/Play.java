@@ -10,8 +10,8 @@ public class Play {
 		Faction f2 = new TestFaction();
 		World targetWorld = new World();
 		targetWorld.setControllingFaction(f2);
-		f2.setWorld(targetWorld);
-		f.addKnownWorldLocation(targetWorld);
+		f2.gainWorldControl(targetWorld);
+		f.learnWorldLocation(targetWorld);
 		f2.setNumArmies(15);
 		f.setEnemy(f2);
 		f.replan();

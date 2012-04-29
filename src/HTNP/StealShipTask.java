@@ -7,7 +7,8 @@ import Faction.Faction;
 public class StealShipTask extends Task {
 
 	private int limit;
-	public StealShipTask(int limit, Task parent) {
+	private Faction target;
+	public StealShipTask(int limit, Faction target, Task parent) {
 		super(true, "Steal Ship Task", parent);
 		this.limit = limit;
 	}
@@ -34,7 +35,8 @@ public class StealShipTask extends Task {
 	
 	public void perform(Faction faction) {
 		if(new Random().nextBoolean()) 
-			faction.setNumShips(faction.getNumShips() + 1);
+			faction.increaseShips(1);
+			target.increaseShips(-1);
 		return;
 	}
 

@@ -32,7 +32,7 @@ public class TrainTroopsTask extends Task {
 
 	public void perform(Faction faction) {
 		System.out.println("Doing " + name);
-		faction.setNumArmies(faction.getNumArmies() + 1);
+		faction.increaseTroops(1);
 	}
 	@Override
 	public double getFlavorMatch(Faction faction) {

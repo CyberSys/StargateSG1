@@ -15,7 +15,8 @@ public class GatherShipTask extends Task {
 	protected List<Task> getTaskList() {
 		List<Task> taskList = new ArrayList<Task>();
 		taskList.add(new BuildShipTask(limit, this));
-		taskList.add(new StealShipTask(limit, this));
+		//TODO: Find way to determine steal ship target
+		taskList.add(new StealShipTask(limit, target, this));
 		taskList.add(new BuyShipTask(limit, this));
 		return taskList;
 	}
@@ -26,7 +27,8 @@ public class GatherShipTask extends Task {
 		if(task instanceof BuildShipTask)
 			return new BuildShipTask(limit, this).stepsToCompletion(faction) + new GatherResourcesTask(limit, this).stepsToCompletion(faction);
 		if(task instanceof StealShipTask)
-			return new StealShipTask(limit, this).stepsToCompletion(faction);
+			//TODO: Find way to determine steal ship target
+			return new StealShipTask(limit, target, this).stepsToCompletion(faction);
 		else //if(task instanceof BuyShipTask)
 			return new BuyShipTask(limit, this).stepsToCompletion(faction) + new GatherResourcesTask(limit*2, this).stepsToCompletion(faction);
 	}
@@ -41,6 +43,7 @@ public class GatherShipTask extends Task {
 			else return new GatherResourcesTask(limit, this);
 		}
 		if(task instanceof StealShipTask)
+			//TODO: Find way to determine steal ship target
 			return new StealShipTask(limit, this);
 		else //if(task instanceof BuyShipTask)
 		{

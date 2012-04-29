@@ -33,8 +33,8 @@ public class BuyShipTask extends Task {
 	public void perform(Faction faction) {
 		System.out.println("Doing " + name);
 		int numShipsBought = Math.min(faction.getNumResources() / 2, limit - faction.getNumShips());
-		faction.setNumShips(faction.getNumShips() + numShipsBought);
-		faction.setNumResources(faction.getNumResources() - 2*numShipsBought);
+		faction.increaseShips(numShipsBought);
+		faction.removeResources(2*numShipsBought);
 	}
 
 	@Override
