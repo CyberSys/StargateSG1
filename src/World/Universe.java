@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import settings.Globals;
+
 import Faction.Faction;
 
 public class Universe 
@@ -14,7 +16,6 @@ public class Universe
 	// DATA
 	//
 	// World Data
-	public static final int ADDRESS_LENGTH = 7;
 	public static Map<String, World> addressBook = new HashMap<String, World>();
 	
 	// Faction Data
@@ -44,7 +45,7 @@ public class Universe
 	public static int getDistance(String addr1, String addr2)
 	{
 		int dist = 0;
-		for(int i = 0; i < ADDRESS_LENGTH; i++)
+		for(int i = 0; i < Globals.ADDRESS_LENGTH; i++)
 		{
 			dist += Math.abs(addr1.charAt(i) - addr2.charAt(i));
 		}
@@ -60,7 +61,7 @@ public class Universe
 		{
 			addr = "";
 			
-			for(int i = 0; i < ADDRESS_LENGTH; i++)
+			for(int i = 0; i < Globals.ADDRESS_LENGTH; i++)
 			{
 				int r = rand.nextInt(26);
 				char letter = (char)('A' + r);
