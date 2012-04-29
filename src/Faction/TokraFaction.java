@@ -15,9 +15,9 @@ public class TokraFaction extends Faction
 		
 		setHomeWorld(hw);
 		
-		increaseTroops(10);
+		increaseTroops(5);
 		
-		tech.defensiveCapabilities = 2;
+		tech.defensiveCapabilities = 2.5;
 		tech.offensiveCapabilities = .5;
 		tech.hyperdriveEfficiency = 0;
 		tech.resourceEfficiency = .2;

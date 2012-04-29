@@ -21,7 +21,7 @@ public class HumanityFaction extends Faction
 		
 		tech.hyperdriveEfficiency = 0;
 		tech.offensiveCapabilities = .75;
-		tech.defensiveCapabilities = 1;
+		tech.defensiveCapabilities = .75;
 		tech.resourceEfficiency = .2;
 	}
 }

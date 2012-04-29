@@ -37,8 +37,6 @@ public class Universe
 		if(isInitialized)
 			return;
 		
-		GameFrame.getGameFrame().addToLog("Begin Round " + roundNumber++, "");
-		
 		playerFaction = new HumanityFaction();
 		
 		factions.add(playerFaction);

@@ -16,11 +16,11 @@ public class AsgardFaction extends Faction
 		setHomeWorld(val);
 		
 		increaseTroops(5);
-		increaseShips(2);
+		increaseShips(1);
 		
-		tech.offensiveCapabilities = 2;
-		tech.defensiveCapabilities = 2;
-		tech.hyperdriveEfficiency = 2;
-		tech.resourceEfficiency = 0.3;
+		tech.offensiveCapabilities = 2.5;
+		tech.defensiveCapabilities = 2.5;
+		tech.hyperdriveEfficiency = 2.5;
+		tech.resourceEfficiency = 0.4;
 	}
 }

@@ -12,4 +12,9 @@ public class Globals
 	 */
 	public static final int WORLD_NAME_PREFIX_LENGTH = 2;
 	public static final int WORLD_NAME_SUFFIX_LENGTH = 5;
+	
+	/**
+	 * Determines how much more powerful ships are than troops.
+	 */
+	public static final int SHIP_TROOP_POWER_RATIO = 3;
 }
