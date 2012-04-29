@@ -29,6 +29,11 @@ public abstract class Faction
 	
 	protected TechLevel tech = new TechLevel();
 	
+	// Personality
+	protected int aggression;
+	protected int diplomacy;
+	protected int science;
+	
 	// Planning Data
 	public int timeToReplan = 0;
 	public Stack<Task> plan = new Stack<Task>();
