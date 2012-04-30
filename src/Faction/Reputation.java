@@ -58,8 +58,8 @@ public class Reputation
 		FRIEND("Friend", 90),
 		COMRADE("Comrade", 100);		
 		
-		private int threshold;
-		private String name;
+		public int threshold;
+		public String name;
 		
 		ReputationLevel(String n, int t)
 		{

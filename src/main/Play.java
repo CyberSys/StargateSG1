@@ -9,8 +9,8 @@ import universe.World;
 public class Play {
 	public static void main(String[] args) 
 	{
-		GameFrame.getGameFrame().setVisible(true);
 		Universe.initialize();
+		GameFrame.getGameFrame().setVisible(true);
 		
 		/*Faction f = new TestFaction();
 		Faction f2 = new TestFaction();

@@ -8,6 +8,8 @@ public class HumanityFaction extends Faction
 	{
 		isPlayerControlled = true;
 		
+		factionName = "Humanity";
+		
 		aggression = 50;
 		diplomacy = 50;
 		science = 50;
