@@ -3,7 +3,6 @@ package planning;
 import faction.Faction;
 import universe.*;
 
-//TODO: dynamically determine from world for transport troops
 public class AttackTask extends Task {
 	
 	private World from, to;
@@ -18,20 +17,33 @@ public class AttackTask extends Task {
 	}
 
 	public int stepsToCompletion(Faction faction) {
-		return new TrainTroopsTask(target.getCombatStrength(), this).stepsToCompletion(faction)
-				+ new TransportTroopsTask(from, to, faction.getCombatStrength(), this).stepsToCompletion(faction)
+		return new TrainTroopsTask(attackForceSize, this).stepsToCompletion(faction)
+				+ new TransportTroopsTask(from, to, attackForceSize, this).stepsToCompletion(faction)
 				+ (new AssaultTask(to, target, this).getFlavorMatch(faction) > new ConquerTask(to, this).getFlavorMatch(faction) ?
 					new AssaultTask(to, target, this).stepsToCompletion(faction) : new ConquerTask(to, this).stepsToCompletion(faction));
 	}
 
+	//TODO: Think about how to determine if you should proceed with the attack - how many troops to move and whatnot
 	public Task getNextStep(Faction faction) {
 		if(!new TrainTroopsTask(attackForceSize, this).isCompleted(faction) && !(to.getTroopCount(faction) > to.getTroopCount(target)))
-			return new TrainTroopsTask(target.getCombatStrength(), this);
+			return new TrainTroopsTask(attackForceSize, this);
 		if(!(to.getTroopCount(faction) > to.getTroopCount(target)))
-			return new TransportTroopsTask(from, to, attackForceSize, this);
+			return new TransportTroopsTask(from, to, attackForceSize/2 + to.getTroopCount(faction), this);
 		if(!(to.getTroopCount(target) < 5))
 			return new AssaultTask(to, target, this);
 		else return new ConquerTask(to, this);
+		/*int fromEnemyTroops = 0;
+		for(Faction f : Universe.factions) {
+			fromEnemyTroops += f.getNumArmies(from);
+		}
+		if(!new TrainTroopsTask(attackForceSize + fromEnemyTroops / 2, this).isCompleted(faction)) //build up enough troops to hold your own
+			return new TrainTroopsTask(attackForceSize + fromEnemyTroops, this);
+		if(from.getTroopCount(faction) - attackForceSize >= fromEnemyTroops / 2 )
+			return new TransportTroopsTask(from, to, attackForceSize, this);
+		if(!(to.getTroopCount(faction) >= to.getTroopCount(target)))
+			return new AssaultTask(to, target, this);
+		return new ConquerTask(to, this);*/
+		
 	}
 
 	public boolean isCompleted(Faction faction) {
@@ -49,8 +61,7 @@ public class AttackTask extends Task {
 	}
 	
 	public double getFlavorMatch(Faction faction) {
-		// TODO Auto-generated method stub
-		return 0;
+		return faction.getAggression();
 	}
 
 }

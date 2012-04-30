@@ -14,6 +14,7 @@ public abstract class Task {
 	protected String name;
 	protected Task parent;
 	protected boolean didFinish = false;
+	protected Random random = new Random();
 
 	public Task(boolean isBaseTask, String taskName, Task parent) {
 		this.isBaseTask = isBaseTask;

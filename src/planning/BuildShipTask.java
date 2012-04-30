@@ -1,13 +1,17 @@
 package planning;
 
 import faction.Faction;
+import settings.Globals;
+import universe.World;
 
 public class BuildShipTask extends Task {
 	
+	private World world;
 	private int limit;
-	public BuildShipTask(int limit, Task parent) {
+	public BuildShipTask(World world, int limit, Task parent) {
 		super(true, "Build Ship Task", parent);
-		this.limit = limit;
+		this.limit = Math.min(limit, 100);
+		this.world = world;
 	}
 	
 	@Override
@@ -17,10 +21,10 @@ public class BuildShipTask extends Task {
 
 	@Override
 	public Task getNextStep(Faction faction) {
-		if(faction.getNumResources() + faction.getNumShips() >= limit)
+		if(faction.getNumResources() + faction.getNumShips()*Globals.SHIP_RESOURCE_BUILD_COST >= limit*Globals.SHIP_RESOURCE_BUILD_COST)
 			return this;
 		else
-			return new GatherResourcesTask(limit - faction.getNumResources(), this);
+			return new GatherResourcesTask((limit - faction.getNumShips(world))*Globals.SHIP_RESOURCE_BUILD_COST - faction.getNumResources(), this);
 	}
 
 	@Override
@@ -35,14 +39,13 @@ public class BuildShipTask extends Task {
 	
 	public void perform(Faction faction) {
 		System.out.println("Doing " + name);
-		faction.removeResources(1);
-		faction.increaseShips(1);
+		faction.removeResources(Globals.SHIP_RESOURCE_BUILD_COST);
+		faction.increaseShips(1, world);
 	}
 
 	@Override
 	public double getFlavorMatch(Faction faction) {
-		// TODO Auto-generated method stub
-		return 1;
+		return 0;
 	}
 
 }

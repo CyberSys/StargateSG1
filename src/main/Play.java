@@ -12,33 +12,41 @@ public class Play {
 		Universe.initialize();
 		GameFrame.getGameFrame().setVisible(true);
 		
-		/*Faction f = new TestFaction();
-		Faction f2 = new TestFaction();
-		World targetWorld = Universe.generateWorld();
-		World homeWorld = Universe.generateWorld();
-		f.setHomeWorld(homeWorld);
-		f2.setHomeWorld(targetWorld);
-		f.learnWorldLocation(targetWorld);
-		targetWorld.setControllingFaction(f2);
-		homeWorld.setControllingFaction(f);
+		Faction f = null, f2 = null;
+		for(Faction faction : Universe.factions) {
+			if(faction instanceof GoauldFaction)
+				f = faction;
+			else if(faction instanceof AsgardFaction)
+				f2 = faction;
+		}
+		f.learnWorldLocation(f2.getHomeWorld());
+
 		f.decreaseReputation(f2, 50);
-		targetWorld.addTroops(f2, 10);
-		targetWorld.addShips(f2, 5);
+		f2.decreaseReputation(f, 50);
 		
 		f.replan();
 	
 		while(true) {
-			System.out.println(homeWorld);
-			System.out.println(targetWorld);
+			System.out.println(f.getHomeWorld());
+			System.out.println(f2.getHomeWorld());
 			System.out.println(f);
 			System.out.println(f2);
 			f.doTurn();
-			if(targetWorld.getControllingFaction() == f)
+			f2.doTurn();
+			if(f2.getHomeWorld().getControllingFaction() == f && f.getHomeWorld().getControllingFaction() == f)
 				break;
+			if(f2.getHomeWorld().getControllingFaction() == f2 && f.getHomeWorld().getControllingFaction() == f2)
+				break;
+//			if(f2.getHomeWorld().getControllingFaction() == f || f.getHomeWorld().getControllingFaction() == f2)
+//				break;
 			if(f2.getTechLevel().isMinimum() && f2.getNumArmies(f2.getHomeWorld()) == 0 && f2.getNumShips(f2.getHomeWorld()) == 0)
 				break;
+			if(f.getTechLevel().isMinimum() && f.getNumArmies(f.getHomeWorld()) == 0 && f.getNumShips(f.getHomeWorld()) == 0)
+				break;
 		}
-		System.out.println(targetWorld.getControllingFaction() == f);
-		System.out.println(f2.getTechLevel().isMinimum() && f2.getNumArmies(f2.getHomeWorld()) == 0 && f2.getNumShips(f2.getHomeWorld()) == 0);*/
+//		System.out.println(f2.getHomeWorld().getControllingFaction() == f);
+//		System.out.println(f.getHomeWorld().getControllingFaction() == f2);
+		System.out.println(f2.getTechLevel().isMinimum() && f2.getNumArmies(f2.getHomeWorld()) == 0 && f2.getNumShips(f2.getHomeWorld()) == 0);
+		System.out.println(f.getTechLevel().isMinimum() && f.getNumArmies(f.getHomeWorld()) == 0 && f.getNumShips(f.getHomeWorld()) == 0);
 	}
 }

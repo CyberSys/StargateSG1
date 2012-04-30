@@ -42,8 +42,7 @@ public class StealShipTask extends Task {
 
 	@Override
 	public double getFlavorMatch(Faction faction) {
-		// TODO Auto-generated method stub
-		return -1;
+		return faction.getAggression();
 	}
 
 }

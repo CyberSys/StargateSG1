@@ -7,7 +7,6 @@ import faction.Faction;
 
 public class SearchForTechnologyTask extends Task {
 
-	private int direction;
 	public SearchForTechnologyTask(Task parent) {
 		super(true, "Search For Technology Task", parent);
 	}

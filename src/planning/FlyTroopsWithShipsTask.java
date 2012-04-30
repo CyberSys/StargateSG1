@@ -11,7 +11,7 @@ public class FlyTroopsWithShipsTask extends Task {
 		super(true, "Fly Troops With Ships Task", parent);
 		this.from = from;
 		this.to = to;
-		this.limit = limit;
+		this.limit = Math.min(limit, 100);
 	}
 
 	@Override

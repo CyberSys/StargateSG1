@@ -2,20 +2,22 @@ package planning;
 
 import java.util.*;
 
+import universe.World;
 import faction.Faction;
-
 
 public class GatherShipTask extends Task {
 
 	private int limit;
-	public GatherShipTask(int limit, Task parent) {
+	private World world;
+	public GatherShipTask(World world, int limit, Task parent) {
 		super(false, "Gather Ships Task", parent);
-		this.limit = limit;
+		this.limit = Math.min(limit, 100);
+		this.world = world;
 	}
 
 	protected List<Task> getTaskList(Faction faction) {
 		List<Task> taskList = new ArrayList<Task>();
-		taskList.add(new BuildShipTask(limit, this));
+		taskList.add(new BuildShipTask(world, limit, this));
 		//TODO: Find way to determine steal ship target
 		for(Faction enemy : faction.getEnemies()) {
 			if(faction.getNumArmies(faction.getHomeWorld()) > 0 && enemy.getNumShips(faction.getHomeWorld()) > 0)
@@ -28,13 +30,13 @@ public class GatherShipTask extends Task {
 	@Override
 	public int stepsToCompletion(Faction faction) {
 		Task task = getFlavorMatchTask(faction);
-		if(task instanceof BuildShipTask)
-			return task.stepsToCompletion(faction) + new GatherResourcesTask(limit, this).stepsToCompletion(faction);
-		if(task instanceof StealShipTask)
-			//TODO: Find way to determine steal ship target
-			return task.stepsToCompletion(faction);
-		else //if(task instanceof BuyShipTask)
-			return task.stepsToCompletion(faction) + new GatherResourcesTask(limit*2, this).stepsToCompletion(faction);
+//		if(task instanceof BuildShipTask)
+//			return task.stepsToCompletion(faction);
+//		if(task instanceof StealShipTask)
+//			//TODO: Find way to determine steal ship target
+//			return task.stepsToCompletion(faction);
+//		else //if(task instanceof BuyShipTask)
+		return task.stepsToCompletion(faction);
 	}
 
 	@Override

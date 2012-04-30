@@ -2,10 +2,10 @@ package faction;
 
 import java.util.*;
 
+import settings.Globals;
 import faction.Reputation.ReputationLevel;
 
 import planning.*;
-
 import universe.*;
 
 //Todo: The following:
@@ -33,6 +33,18 @@ public abstract class Faction
 	
 	// Personality
 	protected int aggression;
+	public int getAggression() {
+		return aggression;
+	}
+
+	public int getDiplomacy() {
+		return diplomacy;
+	}
+
+	public int getScience() {
+		return science;
+	}
+
 	protected int diplomacy;
 	protected int science;
 	
@@ -282,11 +294,12 @@ public abstract class Faction
 		//or one that gives an end result of victory condition
 		if(timeToReplan <= 0 || plan.isEmpty()) { 
 			plan.clear(); 
-			timeToReplan = 10;
-//			Task attack = new AttackTask(getHomeWorld(), getEnemies().get(0).getHomeWorld(), getEnemies().get(0), getEnemies().get(0).getNumArmies(getEnemies().get(0).getHomeWorld()) * 2, null);
-//			plan.add(attack);
-			Task sabotage = new SabotageTask(getEnemies().get(0), getEnemies().get(0).getHomeWorld(), null);
-			plan.add(sabotage);
+			timeToReplan = 5;
+			int enemyIndex = new Random().nextInt(getEnemies().size());
+			Task attack = new AttackTask(getHomeWorld(), getEnemies().get(enemyIndex).getHomeWorld(), getEnemies().get(enemyIndex), 50, null);
+			plan.add(attack);
+//			Task sabotage = new SabotageTask(getEnemies().get(0), getEnemies().get(0).getHomeWorld(), null);
+//			plan.add(sabotage);
 		}
 		while(plan.peek().isBaseTask() != true) {
 			if(plan.peek().isCompleted(this)){ 
@@ -310,9 +323,12 @@ public abstract class Faction
 		return plan.pop();
 	}
 	
-	public int getCombatStrength() 
-	{
-		return getNumArmies();
+	public double getAttackStrength(World world) {
+		return tech.offensiveCapabilities*(getNumArmies(world) + Globals.SHIP_TROOP_POWER_RATIO*getNumShips(world));
+	}
+	
+	public double getDefenseStrength(World world) {
+		return tech.defensiveCapabilities*(getNumArmies(world) + Globals.SHIP_TROOP_POWER_RATIO*getNumShips(world));
 	}
 	
 	public String toString() {
@@ -345,7 +361,7 @@ public abstract class Faction
 		}
 
 		public boolean isMinimum() {
-			return (resourceEfficiency + hyperdriveEfficiency + defensiveCapabilities + offensiveCapabilities) == 0;
+			return (resourceEfficiency + hyperdriveEfficiency + defensiveCapabilities + offensiveCapabilities) == .1;
 		}
 	}
 	
@@ -393,7 +409,7 @@ public abstract class Faction
 		switch(new Random().nextInt(4)) {
 		case 0:
 			tech.resourceEfficiency-=.1;
-			if(tech.resourceEfficiency < 0) tech.resourceEfficiency = 0;
+			if(tech.resourceEfficiency < .1) tech.resourceEfficiency = .1;
 			break;
 		case 1:
 			tech.hyperdriveEfficiency-=.5;
@@ -410,4 +426,6 @@ public abstract class Faction
 			break;
 		}
 	}
+
+	
 }

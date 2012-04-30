@@ -11,7 +11,7 @@ public class TransportTroopsTask extends Task {
 		super(false, "Transport Troops Task", parent);
 		this.from = from;
 		this.to = to;
-		this.limit = limit;
+		this.limit = Math.min(limit, 100);
 	}
 
 	@Override
@@ -26,7 +26,7 @@ public class TransportTroopsTask extends Task {
 		if(canByGate && !canByShip) return new TransportTroopsByGateTask(from, to, limit, this).stepsToCompletion(faction);
 		if(canByShip && !canByGate) return new TransportTroopsByShipTask(from, to, limit, this).stepsToCompletion(faction);
 		if(canByShip && canByGate) {
-			if(new TransportTroopsByGateTask(from, to, limit, this).getFlavorMatch(faction) > new TransportTroopsByShipTask(from, to, limit, this).getFlavorMatch(faction)) return new TransportTroopsByGateTask(from, to, limit, this).stepsToCompletion(faction);
+			if(new TransportTroopsByGateTask(from, to, limit, this).getFlavorMatch(faction) >= new TransportTroopsByShipTask(from, to, limit, this).getFlavorMatch(faction)) return new TransportTroopsByGateTask(from, to, limit, this).stepsToCompletion(faction);
 			else return new TransportTroopsByShipTask(from, to, limit, this).stepsToCompletion(faction);
 		}
 		return -1;
@@ -45,7 +45,7 @@ public class TransportTroopsTask extends Task {
 		if(canByGate && !canByShip) return new TransportTroopsByGateTask(from, to, limit, this);
 		if(canByShip && !canByGate) return new TransportTroopsByShipTask(from, to, limit, this);
 		if(canByShip && canByGate) {
-			if(new TransportTroopsByGateTask(from, to, limit, this).getFlavorMatch(faction) > new TransportTroopsByShipTask(from, to, limit, this).getFlavorMatch(faction)) return new TransportTroopsByGateTask(from, to, limit, this);
+			if(new TransportTroopsByGateTask(from, to, limit, this).getFlavorMatch(faction) >= new TransportTroopsByShipTask(from, to, limit, this).getFlavorMatch(faction)) return new TransportTroopsByGateTask(from, to, limit, this);
 			else return new TransportTroopsByShipTask(from, to, limit, this);
 		}
 		return null;
