@@ -16,6 +16,8 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
+import planning.Task;
+
 import universe.Universe;
 
 public class GameFrame extends JFrame 
@@ -47,7 +49,7 @@ public class GameFrame extends JFrame
     private List<TitledLine> mCurrentLog;
     private Stack<List<TitledLine>> mLogHistory;
     
-    private Object[] mCurrentActions;
+    private Task[] mCurrentActions;
     
 	//
 	// CTOR
@@ -58,6 +60,8 @@ public class GameFrame extends JFrame
 		
 		mCurrentLog = new ArrayList<TitledLine>();
 		mLogHistory = new Stack<List<TitledLine>>();
+		
+		mCurrentActions = new Task[0];
 	}
 	
 	public static GameFrame getGameFrame()
@@ -101,7 +105,7 @@ public class GameFrame extends JFrame
 		updateTextPane(mLog, mCurrentLog);
 	}
 	
-	public void setCurrentPrompt(String prompt, String[] options, Object[] actions)
+	public void setCurrentPrompt(String prompt, String[] options, Task[] actions)
 	{
 		mCurrentActions = actions;
 		
@@ -294,21 +298,46 @@ public class GameFrame extends JFrame
         pack();
 	}
 	
+	public void setVisible(boolean v)
+	{
+		super.setVisible(v);
+		
+		mAcceptButton.requestFocusInWindow();
+	}
 	
 	private void doAction()
 	{
 		String actionString = mPlayerInput.getText();
+		int action;
+		
+		try
+		{
+			action = Integer.parseInt(actionString);
+		}
+		catch(NumberFormatException nfe)
+		{
+			addToLog("Invalid input, please enter one of the available options (0 - " + mCurrentActions.length + ").");
+			return;
+		}
+			
+		if(action < 0 || action >= mCurrentActions.length)
+		{
+			addToLog("Invalid input, please enter one of the available options (0 - " + mCurrentActions.length + ").");
+			return;
+		}
 		
 		mPlayerInput.setEnabled(false);
 		mAcceptButton.setEnabled(false);
-		
 		mPrompt.setEnabled(false);
+			
+		Task perfTask = mCurrentActions[action];
+		// TODO: Actually implement performing the task.
 		
-		// TODO: Actually do the action setting.
-				
 		switchLog();
 		
 		Universe.elapseTime();
+		
+		mAcceptButton.requestFocusInWindow();
 	}
 	
 	private void switchLog()
