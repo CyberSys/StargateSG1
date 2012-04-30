@@ -30,8 +30,12 @@ public class DestroyTechTask extends Task {
 
 	public void perform(Faction faction) {
 		System.out.println("Doing " + name);
-		target.reduceTechLevel();
-		parent.reportFinished();
+		if(random.nextBoolean()) //Spy was caught
+			world.exposeSpy(faction);
+		else {
+			target.reduceTechLevel();
+			parent.reportFinished();
+		}
 	}
 	
 	@Override
@@ -41,8 +45,7 @@ public class DestroyTechTask extends Task {
 
 	@Override
 	public double getFlavorMatch(Faction faction) {
-		// TODO Auto-generated method stub
-		return 0;
+		return faction.getDiplomacy() + faction.getAggression()*.5 + faction.getScience();
 	}
 
 }

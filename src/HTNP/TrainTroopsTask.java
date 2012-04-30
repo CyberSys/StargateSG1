@@ -6,8 +6,8 @@ public class TrainTroopsTask extends Task {
 
 	public int limit;
 	public TrainTroopsTask(int limit, Task parent) {
-		super(true, "Gather Troops Task", parent);
-		this.limit = limit;
+		super(true, "Train Troops Task", parent);
+		this.limit = Math.min(limit, 100);
 	}
 
 	@Override

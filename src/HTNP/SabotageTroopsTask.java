@@ -30,8 +30,12 @@ public class SabotageTroopsTask extends Task {
 
 	public void perform(Faction faction) {
 		System.out.println("Doing " + name);
-		world.removeTroops(target, 1);
-		parent.reportFinished();
+		if(random.nextBoolean()) //Spy was caught
+			world.exposeSpy(faction);
+		else {
+			world.removeTroops(target, 1);
+			parent.reportFinished();
+		}
 	}
 	
 	@Override

@@ -11,7 +11,7 @@ public class TransportTroopsByGateTask extends Task {
 		super(true, "Transport Troops By Gate Task", parent);
 		this.from = from;
 		this.to = to;
-		this.limit = limit;
+		this.limit = Math.min(limit, 100);
 	}
 
 	@Override

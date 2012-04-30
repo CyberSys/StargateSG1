@@ -1,5 +1,7 @@
 package HTNP;
 
+import java.util.Random;
+
 import universe.World;
 import Faction.Faction;
 
@@ -24,7 +26,7 @@ public class AssaultTask extends Task {
 	}
 
 	public boolean isCompleted(Faction faction) {
-		return world.getControllingFaction().equals(faction);
+		return world.getTroopCount(target) == 0;
 	}
 
 	public boolean canPerform(Faction faction) {
@@ -33,14 +35,15 @@ public class AssaultTask extends Task {
 
 	public void perform(Faction faction) {
 		System.out.println("Doing " + name);
-		target.decreaseTroops(2, world);
-		faction.decreaseTroops(3, world);
+		double attackStrength = faction.getAttackStrength(world);
+		double defenseStrength = target.getDefenseStrength(world);
+		target.decreaseTroops((int)(attackStrength/(2*defenseStrength)), world);
+		faction.decreaseTroops((int)((attackStrength/ defenseStrength)), world);
 	}
 	
 	@Override
 	public double getFlavorMatch(Faction faction) {
-		// TODO Auto-generated method stub
-		return 0;
+		return faction.getAggression() - .5 * faction.getDiplomacy();
 	}
 
 }

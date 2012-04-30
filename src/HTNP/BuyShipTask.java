@@ -1,5 +1,6 @@
 package HTNP;
 
+import settings.Globals;
 import Faction.Faction;
 
 public class BuyShipTask extends Task {
@@ -7,7 +8,7 @@ public class BuyShipTask extends Task {
 	private int limit;
 	public BuyShipTask(int limit, Task parent) {
 		super(true, "Buy Ship Task", parent);
-		this.limit = limit;
+		this.limit = Math.min(limit, 100);
 	}
 
 	@Override
@@ -17,10 +18,10 @@ public class BuyShipTask extends Task {
 
 	@Override
 	public Task getNextStep(Faction faction) {
-		if(faction.getNumResources() >= (limit - faction.getNumShips()) * 2)
+		if(faction.getNumResources() >= (limit - faction.getNumShips()) * Globals.SHIP_RESOURCE_BUY_COST)
 			return this;
 		else
-			return new GatherResourcesTask(limit - faction.getNumShips() * 2, this);
+			return new GatherResourcesTask(limit - faction.getNumShips() * Globals.SHIP_RESOURCE_BUY_COST, this);
 	}
 
 	@Override
@@ -35,15 +36,14 @@ public class BuyShipTask extends Task {
 	
 	public void perform(Faction faction) {
 		System.out.println("Doing " + name);
-		int numShipsBought = Math.min(faction.getNumResources() / 2, limit - faction.getNumShips());
+		int numShipsBought = Math.min(faction.getNumResources() / Globals.SHIP_RESOURCE_BUY_COST, limit - faction.getNumShips());
 		faction.increaseShips(numShipsBought);
-		faction.removeResources(2*numShipsBought);
+		faction.removeResources(Globals.SHIP_RESOURCE_BUY_COST*numShipsBought);
 	}
 
 	@Override
 	public double getFlavorMatch(Faction faction) {
-		// TODO Auto-generated method stub
-		return 2;
+		return faction.getDiplomacy();
 	}
 
 }

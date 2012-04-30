@@ -30,13 +30,19 @@ public class StealResourcesTask extends Task {
 
 	public void perform(Faction faction) {
 		System.out.println("Doing " + name);
-		target.removeResources(50);
-		parent.reportFinished();
+		if(random.nextBoolean()) //Spy was caught
+			world.exposeSpy(faction);
+		else {
+			int resourcesToTake = Math.min(target.getNumResources(), 100);
+			target.removeResources(resourcesToTake);
+			faction.addResources(resourcesToTake/2);
+			parent.reportFinished();
+		}
 	}
 	
 	@Override
 	public boolean canPerform(Faction faction) {
-		return world.hasSpy(faction) && target.getNumResources() >= 50;
+		return world.hasSpy(faction) && target.getNumResources() >= 100;
 	}
 
 	@Override

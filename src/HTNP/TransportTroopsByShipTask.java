@@ -11,18 +11,18 @@ public class TransportTroopsByShipTask extends Task {
 		super(false, "Transport Troops By Ship Task", parent);	
 		this.from = from;
 		this.to = to;
-		this.limit = limit;
+		this.limit = Math.min(limit, 100);
 	}
 
 	@Override
 	public int stepsToCompletion(Faction faction) {
-		return new GatherShipTask(faction.getNumArmies() - faction.getNumShips(), this).stepsToCompletion(faction) + 1;
+		return new GatherShipTask(from, faction.getNumArmies() - faction.getNumShips(), this).stepsToCompletion(faction) + 1;
 	}
 
 	@Override
 	public Task getNextStep(Faction faction) {
 		if(faction.getNumShips() < limit)
-			return new GatherShipTask(limit, this);
+			return new GatherShipTask(from, limit, this);
 		return new FlyTroopsWithShipsTask(from, to, limit, this);
 	}
 

@@ -7,7 +7,7 @@ public class GatherResourcesTask extends Task {
 	private int limit;
 	public GatherResourcesTask(int limit, Task parent) {
 		super(true, "Gather Resources Task", parent);
-		this.limit = limit;
+		this.limit = Math.min(limit, 100);
 	}
 	
 	//Consider resources gathered when limit is reached
@@ -34,7 +34,7 @@ public class GatherResourcesTask extends Task {
 	
 	public void perform(Faction faction) {
 		System.out.println("Doing " + name);
-		faction.addResources(1);
+		faction.gainResourcesActive();
 	}
 
 	@Override

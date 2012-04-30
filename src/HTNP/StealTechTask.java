@@ -30,8 +30,12 @@ public class StealTechTask extends Task {
 
 	public void perform(Faction faction) {
 		System.out.println("Doing " + name);
-		faction.improveTechLevel();
-		parent.reportFinished();
+		if(random.nextBoolean()) //Spy was caught
+			world.exposeSpy(faction);
+		else {
+			faction.improveTechLevel();
+			parent.reportFinished();
+		}
 	}
 	
 	@Override

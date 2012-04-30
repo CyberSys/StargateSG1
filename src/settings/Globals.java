@@ -17,4 +17,10 @@ public class Globals
 	 * Determines how much more powerful ships are than troops.
 	 */
 	public static final int SHIP_TROOP_POWER_RATIO = 3;
+	
+	/**
+	 * Determines the price of various things
+	 */
+	public static final int SHIP_RESOURCE_BUILD_COST = 5;
+	public static final int SHIP_RESOURCE_BUY_COST = 20;
 }

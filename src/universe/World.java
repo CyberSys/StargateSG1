@@ -125,7 +125,12 @@ public class World {
 	}
 	
 	public void plantSpy(Faction faction) {
-		spies.add(faction);
+		if(!hasSpy(faction))
+			spies.add(faction);
+	}
+	
+	public void exposeSpy(Faction faction) {
+		spies.remove(faction);
 	}
 	
 	//
