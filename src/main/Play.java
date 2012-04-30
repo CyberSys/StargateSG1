@@ -36,8 +36,6 @@ public class Play {
 				break;
 			if(f2.getHomeWorld().getControllingFaction() == f2 && f.getHomeWorld().getControllingFaction() == f2)
 				break;
-//			if(f2.getHomeWorld().getControllingFaction() == f || f.getHomeWorld().getControllingFaction() == f2)
-//				break;
 			if(f2.getTechLevel().isMinimum() && f2.getNumArmies(f2.getHomeWorld()) == 0 && f2.getNumShips(f2.getHomeWorld()) == 0)
 				break;
 			if(f.getTechLevel().isMinimum() && f.getNumArmies(f.getHomeWorld()) == 0 && f.getNumShips(f.getHomeWorld()) == 0)
