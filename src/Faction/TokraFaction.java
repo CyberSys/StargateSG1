@@ -6,6 +6,8 @@ public class TokraFaction extends Faction
 {
 	public TokraFaction()
 	{
+		factionName = "Tok'ra";
+		
 		aggression = 50;
 		diplomacy = 80;
 		science = 20;

@@ -9,8 +9,9 @@ import universe.World;
 public class Play {
 	public static void main(String[] args) 
 	{
-		GameFrame.getGameFrame().setVisible(true);
 		Universe.initialize();
+		GameFrame.getGameFrame().setVisible(true);
+		
 		Faction f = null, f2 = null;
 		for(Faction faction : Universe.factions) {
 			if(faction instanceof GoauldFaction)

@@ -319,36 +319,6 @@ public class GameFrame extends JFrame
 		updateTextPane(mLog, mCurrentLog);
 	}
 	
-	public static void main(String args[]) 
-	{
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() 
-        {
-            public void run() 
-            {
-            	GameFrame gf = getGameFrame();
-            	gf.setVisible(true);
-            	
-            	for(int i = 0; i < 10; i++)
-            	{
-            		gf.addToLog("Testing", "123");
-            	}
-            	
-            	String p = "Please select an action";
-        		String[] acts = new String[]
-        				{
-        				"Attack",
-        				"Research",
-        				"Diplomacy",
-        				"Other"
-        				};
-        		
-        		gf.setCurrentPrompt(p, acts, null);
-            }
-        });
-      
-        
-    }
 	
 	//
 	// INNER CLASS

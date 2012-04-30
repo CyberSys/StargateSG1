@@ -17,7 +17,7 @@ public abstract class Faction
 	// DATA
 	//
 	// Faction Data
-	protected String factionName;
+	public String factionName;
 	
 	protected World homeWorld;
 	protected Set<World> controlledWorlds = new HashSet<World>();
@@ -189,6 +189,14 @@ public abstract class Faction
 		return enemies;
 	}
 	
+	public ReputationLevel getReputation(Faction f)
+	{
+		if(!factionReputations.containsKey(f))
+			factionReputations.put(f, new Reputation());
+		
+		return factionReputations.get(f).reputationLevel;
+	}
+	
 	public void increaseReputation(Faction f, int amount)
 	{
 		if(!factionReputations.containsKey(f))
@@ -215,7 +223,8 @@ public abstract class Faction
 	
 	public void learnGateAddress(World world)
 	{
-		knownGateAddresses.add(world);
+		if(world.hasGate)
+			knownGateAddresses.add(world);
 	}
 	
 	public boolean knowsLocation(World world) 
@@ -242,12 +251,19 @@ public abstract class Faction
 		return homeWorld;
 	}
 	
+	public Set<World> getControlledWorlds()
+	{
+		return controlledWorlds;
+	}
+	
 	public void gainWorldControl(World w)
 	{
 		if(!controlledWorlds.contains(w))
 		{
 			w.setControllingFaction(this);
 			controlledWorlds.add(w);
+			learnGateAddress(w);
+			learnWorldLocation(w);
 		}
 	}
 	

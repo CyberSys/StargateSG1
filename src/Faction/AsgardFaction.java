@@ -6,6 +6,8 @@ public class AsgardFaction extends Faction
 {
 	public AsgardFaction()
 	{	
+		factionName = "Asgard";
+		
 		aggression = 20;
 		diplomacy = 50;
 		science = 80;

@@ -48,6 +48,9 @@ public class Universe
 		
 		playerFaction.learnGateAddress(goauld.getHomeWorld());
 		
+		goauld.decreaseReputation(playerFaction, 50);		
+		asgard.increaseReputation(playerFaction, 41);
+		
 		asgard.learnGateAddress(goauld.getHomeWorld());
 		asgard.learnWorldLocation(goauld.getHomeWorld());
 		

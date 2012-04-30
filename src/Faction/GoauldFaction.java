@@ -6,6 +6,8 @@ public class GoauldFaction extends Faction
 {
 	public GoauldFaction()
 	{
+		factionName = "Goa'uld";
+		
 		aggression = 80;
 		diplomacy = 20;
 		science = 50;
