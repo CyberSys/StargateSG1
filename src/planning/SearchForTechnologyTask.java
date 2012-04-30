@@ -28,7 +28,7 @@ public class SearchForTechnologyTask extends Task {
 	
 	public void perform(Faction faction) {
 		System.out.println("Doing " + name);
-		parent.reportFinished();
+		parent.reportFinished(this);
 		faction.improveTechLevel(new Random().nextInt(4));		
 	}
 

@@ -41,7 +41,6 @@ public class TransportTroopsTask extends Task {
 		if(faction.knowsLocation(to)) {
 			canByShip = true;
 		}
-		
 		if(canByGate && !canByShip) return new TransportTroopsByGateTask(from, to, limit, this);
 		if(canByShip && !canByGate) return new TransportTroopsByShipTask(from, to, limit, this);
 		if(canByShip && canByGate) {
@@ -51,9 +50,14 @@ public class TransportTroopsTask extends Task {
 		return null;
 	}
 
+	public void perform(Faction faction) {
+		System.out.println("Doing " + name);
+		getNextStep(faction).perform(faction);
+	}
+	
 	@Override
 	public boolean isCompleted(Faction faction) {
-		return to.getTroopCount(faction) >= limit;
+		return didFinish;
 	}
 
 	@Override

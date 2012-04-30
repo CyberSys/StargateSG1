@@ -45,7 +45,7 @@ public class BuildShipTask extends Task {
 
 	@Override
 	public double getFlavorMatch(Faction faction) {
-		return 0;
+		return faction.getAggression();
 	}
 
 }

@@ -16,7 +16,7 @@ public class TransportTroopsByGateTask extends Task {
 
 	@Override
 	public int stepsToCompletion(Faction faction) {
-		return 1;
+		return canPerform(faction) ? 1 : -1;
 	}
 
 	@Override
@@ -37,8 +37,10 @@ public class TransportTroopsByGateTask extends Task {
 	}
 
 	public void perform(Faction faction) {
+		System.out.println("Doing " + name);
 		from.removeTroops(faction, limit);
 		to.addTroops(faction, limit);
+		parent.reportFinished(this);
 	}
 	
 	

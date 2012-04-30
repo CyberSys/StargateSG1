@@ -7,7 +7,7 @@ public class TrainTroopsTask extends Task {
 	public int limit;
 	public TrainTroopsTask(int limit, Task parent) {
 		super(true, "Train Troops Task", parent);
-		this.limit = Math.min(limit, 100);
+		this.limit = limit;
 	}
 
 	@Override
@@ -27,12 +27,13 @@ public class TrainTroopsTask extends Task {
 
 	@Override
 	public boolean canPerform(Faction faction) {
-		return true;
+		return faction.getNumArmies() < limit;
 	}
 
 	public void perform(Faction faction) {
 		System.out.println("Doing " + name);
-		faction.increaseTroops(1);
+		faction.increaseTroops(5);
+		parent.reportFinished(this);
 	}
 	@Override
 	public double getFlavorMatch(Faction faction) {

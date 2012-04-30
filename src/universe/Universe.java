@@ -48,7 +48,7 @@ public class Universe
 		
 		playerFaction.learnGateAddress(goauld.getHomeWorld());
 		
-		goauld.decreaseReputation(playerFaction, 50);		
+		//goauld.decreaseReputation(playerFaction, 50);		
 		asgard.increaseReputation(playerFaction, 41);
 		
 		asgard.learnGateAddress(goauld.getHomeWorld());
@@ -81,13 +81,17 @@ public class Universe
 	{
 		GameFrame.getGameFrame().addToLog("Begin Round " + roundNumber, "");
 		
+		for(World w : addressBook.values()) {
+			w.doCombat();
+		}
+		/*
 		for(Faction f : factions)
 		{
 			f.doTurn();
 		}
-		
-		roundNumber++;
-		GameFrame.getGameFrame().enableInput();
+		*/
+		roundNumber++;/*
+		GameFrame.getGameFrame().enableInput();*/
 	}
 	
 	public static int getDistance(World w1, World w2)

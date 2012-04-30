@@ -33,9 +33,15 @@ public class ConquerTask extends Task {
 		System.out.println("Doing " + name);
 		double attackStrength = faction.getAttackStrength(world);
 		double defenseStrength = world.getControllingFaction().getDefenseStrength(world);
-		if(attackStrength > defenseStrength)
-			if(random.nextDouble() > defenseStrength/attackStrength)
+		System.out.println(attackStrength + " " + defenseStrength);
+		if(attackStrength > defenseStrength) {
+			double temp = random.nextDouble();
+			System.out.println(temp);
+			System.out.println(defenseStrength/attackStrength);
+			if(temp/2 > defenseStrength/attackStrength)
 				world.setControllingFaction(faction);
+		}
+				
 	}
 
 	@Override

@@ -11,7 +11,7 @@ public class FlyTroopsWithShipsTask extends Task {
 		super(true, "Fly Troops With Ships Task", parent);
 		this.from = from;
 		this.to = to;
-		this.limit = Math.min(limit, 100);
+		this.limit = limit;
 	}
 
 	@Override
@@ -34,8 +34,9 @@ public class FlyTroopsWithShipsTask extends Task {
 		System.out.println("Doing " + name);
 		from.removeTroops(faction, limit);
 		to.addTroops(faction, limit);
-		from.removeShips(faction,  limit);
-		to.addShips(faction, limit);
+		from.removeShips(faction,  limit/5 + 1);
+		to.addShips(faction, limit/5 + 1);
+		parent.reportFinished(this);
 		
 	}
 	@Override

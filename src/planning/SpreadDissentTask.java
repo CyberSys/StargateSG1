@@ -31,7 +31,7 @@ public class SpreadDissentTask extends Task {
 	public void perform(Faction faction) {
 		System.out.println("Doing " + name);
 		//TODO: here is where things will happen
-		parent.reportFinished();
+		parent.reportFinished(this);
 	}
 	
 	@Override

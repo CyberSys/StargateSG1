@@ -8,6 +8,7 @@ public class AttackTask extends Task {
 	private World from, to;
 	private Faction target;
 	private int attackForceSize;
+	private boolean completedTroopTraining;
 	public AttackTask(World from, World to, Faction target, int attackForceSize, Task parent) {
 		super(false, "Attack Task", parent);
 		this.from = from;
@@ -25,10 +26,10 @@ public class AttackTask extends Task {
 
 	//TODO: Think about how to determine if you should proceed with the attack - how many troops to move and whatnot
 	public Task getNextStep(Faction faction) {
-		if(!new TrainTroopsTask(attackForceSize, this).isCompleted(faction) && !(to.getTroopCount(faction) > to.getTroopCount(target)))
+		/*if(!new TrainTroopsTask(attackForceSize, this).isCompleted(faction) && !(to.getTroopCount(faction) > to.getTroopCount(target)))
 			return new TrainTroopsTask(attackForceSize, this);
 		if(!(to.getTroopCount(faction) > to.getTroopCount(target)))
-			return new TransportTroopsTask(from, to, attackForceSize/2 + to.getTroopCount(faction), this);
+			return new TransportTroopsTask(from, to, Math.min(from.getTroopCount(faction)- 25, attackForceSize), this);
 		if(!(to.getTroopCount(target) < 5))
 			return new AssaultTask(to, target, this);
 		else return new ConquerTask(to, this);
@@ -43,9 +44,34 @@ public class AttackTask extends Task {
 		if(!(to.getTroopCount(faction) >= to.getTroopCount(target)))
 			return new AssaultTask(to, target, this);
 		return new ConquerTask(to, this);*/
-		
+		double fromEnemyTroops = 0;
+		for(Faction f : Universe.factions) {
+			if(f != faction)
+				fromEnemyTroops += f.getAttackStrength(from);
+		}
+		//System.out.println(completedTroopTraining);
+		if(!completedTroopTraining && !(from.getTroopCount(faction) >= attackForceSize))
+			return new TrainTroopsTask(attackForceSize, this);
+		else if((from.getTroopCount(faction) - attackForceSize)*faction.getTechLevel().offensiveCapabilities < fromEnemyTroops)
+			return new TrainTroopsTask((int)(fromEnemyTroops/faction.getTechLevel().offensiveCapabilities) , this);
+		else if((from.getTroopCount(faction) - attackForceSize)*faction.getTechLevel().offensiveCapabilities >= fromEnemyTroops && from.getTroopCount(faction) >= attackForceSize)
+			return new TransportTroopsTask(from, to, attackForceSize, this);
+		else if(from.getTroopCount(faction)*faction.getTechLevel().offensiveCapabilities < fromEnemyTroops)
+			return new TrainTroopsTask((int)(fromEnemyTroops/faction.getTechLevel().offensiveCapabilities), this);
+//		else if(from.getTroopCount(faction)*faction.getTechLevel().offensiveCapabilities >= fromEnemyTroops && !(faction.getAttackStrength(to) > target.getDefenseStrength(to)))
+//			return new AssaultTask(to, target, this);
+//		else if(faction.getAttackStrength(to) > target.getDefenseStrength(to))
+//			return new ConquerTask(to, this);
+		else {
+			completedTroopTraining = false;
+			return getNextStep(faction);
+		}
 	}
 
+	public void reportFinished(Task child) {
+		if(child instanceof TrainTroopsTask) completedTroopTraining = true;
+	}
+	
 	public boolean isCompleted(Faction faction) {
 		return to.getControllingFaction() == faction;
 	}
