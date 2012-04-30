@@ -52,6 +52,7 @@ public abstract class Faction
 	public boolean isPlayerControlled = false;
 	public int timeToReplan = 0;
 	public Stack<Task> plan = new Stack<Task>();
+	public Task mNextTask;
 	
 	//
 	// TROOP AND SHIP MANAGEMENT
@@ -281,7 +282,26 @@ public abstract class Faction
 		gainResourcesPassive();
 		
 		// Planning
-		getNextPlannedTask().perform(this);		
+		if(isPlayerControlled)
+		{
+			mNextTask.perform(this);
+		}
+		else
+		{
+			getNextPlannedTask().perform(this);	
+		}
+	}
+	
+	public Task[] getAvailableActions()
+	{
+		if(isPlayerControlled)
+		{
+			return new Task[0];
+		}
+		else
+		{
+			return new Task[0];
+		}
 	}
 	
 	//
@@ -332,8 +352,9 @@ public abstract class Faction
 	}
 	
 	public String toString() {
-		return "Resources: " + getNumResources();
+		return factionName + " Resources: " + getNumResources();
 	}
+	
 	//
 	// Inner Class
 	//

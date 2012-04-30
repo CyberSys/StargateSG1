@@ -87,7 +87,6 @@ public class Universe
 		}
 		
 		roundNumber++;
-		GameFrame.getGameFrame().enableInput();
 	}
 	
 	public static int getDistance(World w1, World w2)

@@ -105,7 +105,7 @@ public class GameFrame extends JFrame
 		updateTextPane(mLog, mCurrentLog);
 	}
 	
-	public void setCurrentPrompt(String prompt, String[] options, Task[] actions)
+	public void setCurrentPrompt(String prompt, Task[] actions)
 	{
 		mCurrentActions = actions;
 		
@@ -113,9 +113,9 @@ public class GameFrame extends JFrame
 		
 		lines.add(new TitledLine(null, prompt + ":"));
 		
-		for(int i = 0; i < options.length; i++)
+		for(int i = 0; i < actions.length; i++)
 		{
-			lines.add(new TitledLine("" + i, options[i]));
+			lines.add(new TitledLine("" + i, actions[i].toString()));
 		}
 		
 		updateTextPane(mPrompt, lines);
@@ -331,12 +331,15 @@ public class GameFrame extends JFrame
 		mPrompt.setEnabled(false);
 			
 		Task perfTask = mCurrentActions[action];
-		// TODO: Actually implement performing the task.
+		// TODO: Parameterize the action.		
 		
 		switchLog();
 		
 		Universe.elapseTime();
 		
+		mCurrentActions = Universe.playerFaction.getAvailableActions();
+		
+		enableInput();
 		mAcceptButton.requestFocusInWindow();
 	}
 	
