@@ -21,6 +21,7 @@ public abstract class Faction
 	
 	protected World homeWorld;
 	protected Set<World> controlledWorlds = new HashSet<World>();
+	protected Set<World> knownWorlds = new HashSet<World>();
 	
 	protected int numResources;
 	
@@ -80,7 +81,7 @@ public abstract class Faction
 	{
 		int armies = 0;
 		
-		for(World w : controlledWorlds)
+		for(World w : knownWorlds)
 		{
 			armies += getNumArmies(w);
 		}
@@ -117,7 +118,7 @@ public abstract class Faction
 	{
 		int armies = 0;
 		
-		for(World w : controlledWorlds)
+		for(World w : knownWorlds)
 		{
 			armies += getNumShips(w);
 		}
@@ -223,8 +224,10 @@ public abstract class Faction
 	
 	public void learnGateAddress(World world)
 	{
-		if(world.hasGate)
+		if(world.hasGate) {
 			knownGateAddresses.add(world);
+			knownWorlds.add(world);
+		}
 	}
 	
 	public boolean knowsLocation(World world) 
@@ -235,6 +238,7 @@ public abstract class Faction
 	public void learnWorldLocation(World world) 
 	{
 		knownWorldLocations.add(world);
+		knownWorlds.add(world);
 	}
 	
 	//
@@ -254,6 +258,10 @@ public abstract class Faction
 	public Set<World> getControlledWorlds()
 	{
 		return controlledWorlds;
+	}
+	
+	public Set<World> getKnownWorlds() {
+		return knownWorlds;
 	}
 	
 	public void gainWorldControl(World w)
@@ -295,13 +303,13 @@ public abstract class Faction
 		if(timeToReplan <= 0 || plan.isEmpty()) { 
 			plan.clear(); 
 			timeToReplan = 5;
-			int enemyIndex = new Random().nextInt(getEnemies().size());
-			Task attack = new AttackTask(getHomeWorld(), getEnemies().get(enemyIndex).getHomeWorld(), getEnemies().get(enemyIndex), 50, null);
+			Task attack = new AttackTask(getHomeWorld(), getEnemies().get(0).getHomeWorld(), getEnemies().get(0), 50, null);
 			plan.add(attack);
 //			Task sabotage = new SabotageTask(getEnemies().get(0), getEnemies().get(0).getHomeWorld(), null);
 //			plan.add(sabotage);
 		}
 		while(plan.peek().isBaseTask() != true) {
+			System.out.println(plan.peek());
 			if(plan.peek().isCompleted(this)){ 
 				plan.pop();
 				if(plan.isEmpty()) replan();
@@ -312,7 +320,7 @@ public abstract class Faction
 	
 	public boolean needToReplan() {
 		//Replan if your plan is empty, you need to replan, or you don't have a base task to perform
-		return plan.isEmpty() || timeToReplan <= 0 || plan.peek().isBaseTask() != true;
+		return plan.isEmpty() || timeToReplan <= 0 || plan.peek().isBaseTask() != true; //TODO: add in checks here for other things, like needing to defend 
 	}
 	
 	public Task getNextPlannedTask() {
@@ -352,8 +360,8 @@ public abstract class Faction
 		//
 		// COMBAT PROWESS
 		//
-		double defensiveCapabilities = 1;
-		double offensiveCapabilities = 1;
+		public double defensiveCapabilities = 1;
+		public double offensiveCapabilities = 1;
 		
 		public int compareTo(TechLevel techLevel) {
 			return (int)((resourceEfficiency + hyperdriveEfficiency + defensiveCapabilities + offensiveCapabilities)
