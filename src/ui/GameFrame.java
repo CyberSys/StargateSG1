@@ -61,7 +61,10 @@ public class GameFrame extends JFrame
 		mCurrentLog = new ArrayList<TitledLine>();
 		mLogHistory = new Stack<List<TitledLine>>();
 		
-		mCurrentActions = new Task[0];
+		mCurrentActions = Universe.playerFaction.getAvailableActions();
+		setCurrentPrompt("Please select an action", mCurrentActions);
+		
+		addToLog("Game Start");
 	}
 	
 	public static GameFrame getGameFrame()
@@ -310,37 +313,40 @@ public class GameFrame extends JFrame
 		String actionString = mPlayerInput.getText();
 		int action;
 		
+		mPlayerInput.setEnabled(false);
+		mAcceptButton.setEnabled(false);
+		mPrompt.setEnabled(false);
+		
 		try
 		{
 			action = Integer.parseInt(actionString);
+			
+			if(action < 0 || action >= mCurrentActions.length)
+			{
+				addToLog("Invalid input, please enter one of the available options (0 - " + mCurrentActions.length + ").");
+				return;
+			}
+			
+			Task perfTask = mCurrentActions[action];
+			// TODO: Parameterize the action.		
+			
+			switchLog();
+			
+			Universe.elapseTime();
+			
+			mCurrentActions = Universe.playerFaction.getAvailableActions();
+			setCurrentPrompt("Please select an action", mCurrentActions);
 		}
 		catch(NumberFormatException nfe)
 		{
 			addToLog("Invalid input, please enter one of the available options (0 - " + mCurrentActions.length + ").");
 			return;
 		}
-			
-		if(action < 0 || action >= mCurrentActions.length)
+		finally
 		{
-			addToLog("Invalid input, please enter one of the available options (0 - " + mCurrentActions.length + ").");
-			return;
+			enableInput();
+			mAcceptButton.requestFocusInWindow();
 		}
-		
-		mPlayerInput.setEnabled(false);
-		mAcceptButton.setEnabled(false);
-		mPrompt.setEnabled(false);
-			
-		Task perfTask = mCurrentActions[action];
-		// TODO: Parameterize the action.		
-		
-		switchLog();
-		
-		Universe.elapseTime();
-		
-		mCurrentActions = Universe.playerFaction.getAvailableActions();
-		
-		enableInput();
-		mAcceptButton.requestFocusInWindow();
 	}
 	
 	private void switchLog()
