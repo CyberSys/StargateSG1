@@ -1,10 +1,9 @@
-package HTNP;
+package planning;
 
 import java.util.*;
 
 import universe.World;
-
-import Faction.Faction;
+import faction.Faction;
 
 public class GatherShipTask extends Task {
 

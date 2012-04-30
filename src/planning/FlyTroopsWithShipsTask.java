@@ -1,14 +1,14 @@
-package HTNP;
+package planning;
 
+import faction.Faction;
 import universe.World;
-import Faction.Faction;
 
-public class TransportTroopsByGateTask extends Task {
+public class FlyTroopsWithShipsTask extends Task {
 
 	private World from, to;
 	private int limit;
-	public TransportTroopsByGateTask(World from, World to, int limit, Task parent) {
-		super(true, "Transport Troops By Gate Task", parent);
+	public FlyTroopsWithShipsTask(World from, World to, int limit, Task parent) {
+		super(true, "Fly Troops With Ships Task", parent);
 		this.from = from;
 		this.to = to;
 		this.limit = Math.min(limit, 100);
@@ -26,22 +26,23 @@ public class TransportTroopsByGateTask extends Task {
 
 	@Override
 	public boolean isCompleted(Faction faction) {
+		//set up world stuff to handle this
 		return to.getTroopCount(faction) >= limit;
 	}
 
-	@Override
-	public boolean canPerform(Faction faction) {
-		return faction.knowsGateAddress(to) && from.getTroopCount(faction) >= limit;
-		
-		//figure this out
-	}
-
 	public void perform(Faction faction) {
+		System.out.println("Doing " + name);
 		from.removeTroops(faction, limit);
 		to.addTroops(faction, limit);
+		from.removeShips(faction,  limit);
+		to.addShips(faction, limit);
+		
 	}
-	
-	
+	@Override
+	public boolean canPerform(Faction faction) {
+		return faction.getNumShips() >= faction.getNumArmies();
+	}
+
 	@Override
 	public double getFlavorMatch(Faction faction) {
 		// TODO Auto-generated method stub

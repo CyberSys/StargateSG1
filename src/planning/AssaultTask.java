@@ -1,9 +1,9 @@
-package HTNP;
+package planning;
 
 import java.util.Random;
 
+import faction.Faction;
 import universe.World;
-import Faction.Faction;
 
 public class AssaultTask extends Task {
 

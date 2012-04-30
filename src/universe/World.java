@@ -1,10 +1,9 @@
 package universe;
 
-import java.util.HashMap;
 import java.util.*;
-import java.util.Map;
 
-import Faction.Faction;
+import faction.Faction;
+
 
 public class World {
 	//

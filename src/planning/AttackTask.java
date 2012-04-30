@@ -1,7 +1,7 @@
-package HTNP;
+package planning;
 
+import faction.Faction;
 import universe.*;
-import Faction.Faction;
 
 public class AttackTask extends Task {
 	

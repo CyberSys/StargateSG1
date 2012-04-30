@@ -1,7 +1,7 @@
-package HTNP;
+package planning;
 
+import faction.Faction;
 import universe.World;
-import Faction.Faction;
 
 public class PlantSpyTask extends Task {
 

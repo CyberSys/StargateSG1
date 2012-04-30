@@ -6,10 +6,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import faction.*;
+
 import settings.Globals;
 import ui.GameFrame;
 
-import Faction.*;
 
 public class Universe 
 {
@@ -116,31 +117,32 @@ public class Universe
 		
 		do
 		{
-			name = "";
+			name = "P";
 			suffix = "";
 			
-			for(int i = 0; i < Globals.WORLD_NAME_PREFIX_LENGTH; i++)
-			{
-				int r = rand.nextInt(26);
-				char letter = (char)('A' + r);
-				name += letter;
-			}
+			int r = rand.nextInt(9);
+			char num = (char)('1' + r);
+			name += num;
+			
+			r = rand.nextInt(26);
+			char letter = (char)('A' + r);
+			name += letter;
 			
 			name += "-";
 			
 			for(int i = 0; i < Globals.WORLD_NAME_SUFFIX_LENGTH - 1; i++)
 			{
-				int r = rand.nextInt(10);
+				r = rand.nextInt(10);
 				
 				if(r == 0 && suffix.length() == 0)
 					continue;
 				
-				char num = (char)('0' + r);
+				num = (char)('0' + r);
 				suffix += num;
 			}
 			
-			int r = rand.nextInt(10);
-			char num = (char)('0' + r);
+			r = rand.nextInt(10);
+			num = (char)('0' + r);
 			suffix += num;
 			
 			name += suffix;

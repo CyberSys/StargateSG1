@@ -1,13 +1,14 @@
-package HTNP;
+package planning;
 
-import Faction.Faction;
+import java.util.Random;
 
-public class DirectedResearchTask extends Task {
+import faction.Faction;
 
-	private int direction;
-	public DirectedResearchTask(int direction, Task parent) {
-		super(true, "Directed Research Task", parent);
-		this.direction = direction;
+
+public class SearchForTechnologyTask extends Task {
+
+	public SearchForTechnologyTask(Task parent) {
+		super(true, "Search For Technology Task", parent);
 	}
 
 	@Override
@@ -28,7 +29,7 @@ public class DirectedResearchTask extends Task {
 	public void perform(Faction faction) {
 		System.out.println("Doing " + name);
 		parent.reportFinished();
-		faction.improveTechLevel(direction);		
+		faction.improveTechLevel(new Random().nextInt(4));		
 	}
 
 	@Override

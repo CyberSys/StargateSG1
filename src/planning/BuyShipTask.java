@@ -1,7 +1,7 @@
-package HTNP;
+package planning;
 
+import faction.Faction;
 import settings.Globals;
-import Faction.Faction;
 
 public class BuyShipTask extends Task {
 

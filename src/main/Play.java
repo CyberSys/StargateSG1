@@ -1,10 +1,10 @@
-package Play;
+package main;
 
+import faction.*;
+import planning.*;
 import ui.GameFrame;
 import universe.Universe;
 import universe.World;
-import Faction.*;
-import HTNP.*;
 
 public class Play {
 	public static void main(String[] args) 
@@ -12,13 +12,14 @@ public class Play {
 		GameFrame.getGameFrame().setVisible(true);
 		Universe.initialize();
 		Faction f = null, f2 = null;
-		for(Faction faction : Universe.factions)
+		for(Faction faction : Universe.factions) {
 			if(faction instanceof GoauldFaction)
 				f = faction;
 			else if(faction instanceof AsgardFaction)
 				f2 = faction;
-				
+		}
 		f.learnWorldLocation(f2.getHomeWorld());
+
 		f.decreaseReputation(f2, 50);
 		f2.decreaseReputation(f, 50);
 		

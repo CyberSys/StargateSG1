@@ -1,8 +1,8 @@
-package HTNP;
+package planning;
 
+import faction.Faction;
 import settings.Globals;
 import universe.World;
-import Faction.Faction;
 
 public class BuildShipTask extends Task {
 	

@@ -1,8 +1,9 @@
-package HTNP;
+package planning;
 
 import java.util.*;
 
-import Faction.Faction;
+import faction.Faction;
+
 
 public class ResearchTask extends Task {
 

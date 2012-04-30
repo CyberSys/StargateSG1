@@ -1,14 +1,14 @@
-package HTNP;
+package planning;
 
+import faction.Faction;
 import universe.World;
-import Faction.Faction;
 
-public class StealResourcesTask extends Task {
+public class SabotageFleetTask extends Task {
 
 	private Faction target;
 	private World world;
-	public StealResourcesTask(Faction target, World world, Task parent) {
-		super(true, "Steal Resources Task", parent);
+	public SabotageFleetTask(Faction target, World world, Task parent) {
+		super(true, "Sabotage Fleet Task", parent);
 		this.target = target;
 		this.world = world;
 	}
@@ -33,16 +33,14 @@ public class StealResourcesTask extends Task {
 		if(random.nextBoolean()) //Spy was caught
 			world.exposeSpy(faction);
 		else {
-			int resourcesToTake = Math.min(target.getNumResources(), 100);
-			target.removeResources(resourcesToTake);
-			faction.addResources(resourcesToTake/2);
+			world.removeShips(target, 1);
 			parent.reportFinished();
 		}
 	}
 	
 	@Override
 	public boolean canPerform(Faction faction) {
-		return world.hasSpy(faction) && target.getNumResources() >= 100;
+		return world.hasSpy(faction) && target.getNumShips(world) > 0;
 	}
 
 	@Override

@@ -1,11 +1,12 @@
-package HTNP;
+package planning;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import faction.Faction;
+
 import universe.World;
 
-import Faction.Faction;
 
 public class SabotageTask extends Task {
 

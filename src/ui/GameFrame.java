@@ -41,7 +41,7 @@ public class GameFrame extends JFrame
     private JTextPane mPrompt;
     private JScrollPane mPromptScroll;
     private JButton mScientificAdviceButton;
-    private JPanel mStatsPanel;
+    private StatsPanel mStatsPanel;
     
     // GUI Data
     private List<TitledLine> mCurrentLog;
@@ -123,6 +123,8 @@ public class GameFrame extends JFrame
 		mAcceptButton.setEnabled(true);
 		
 		mPrompt.setEnabled(true);
+		
+		mStatsPanel.updateDisplay();
 	}
 	
 	private void updateTextPane(JTextPane pane, List<TitledLine> data)
@@ -164,7 +166,7 @@ public class GameFrame extends JFrame
 	
 	private void init()
 	{
-		mStatsPanel = new JPanel();
+		mStatsPanel = new StatsPanel(Universe.playerFaction);
         mAdvisorPanel = new JPanel();
         mMilitaryAdviceButton = new JButton();
         mScientificAdviceButton = new JButton();
@@ -182,17 +184,6 @@ public class GameFrame extends JFrame
         setMinimumSize(new Dimension(800, 600));
 
         mStatsPanel.setBorder(BorderFactory.createEtchedBorder());
-
-        GroupLayout mStatsPanelLayout = new GroupLayout(mStatsPanel);
-        mStatsPanel.setLayout(mStatsPanelLayout);
-        mStatsPanelLayout.setHorizontalGroup(
-            mStatsPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGap(0, 212, Short.MAX_VALUE)
-        );
-        mStatsPanelLayout.setVerticalGroup(
-            mStatsPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGap(0, 390, Short.MAX_VALUE)
-        );
 
         mAdvisorPanel.setBorder(BorderFactory.createEtchedBorder());
 

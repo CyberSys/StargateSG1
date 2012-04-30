@@ -1,4 +1,4 @@
-package Faction;
+package faction;
 
 import java.util.Arrays;
 

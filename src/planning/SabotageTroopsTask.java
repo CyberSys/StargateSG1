@@ -1,14 +1,14 @@
-package HTNP;
+package planning;
 
+import faction.Faction;
 import universe.World;
-import Faction.Faction;
 
-public class DestroyTechTask extends Task {
+public class SabotageTroopsTask extends Task {
 
 	private Faction target;
 	private World world;
-	public DestroyTechTask(Faction target, World world, Task parent) {
-		super(true, "Destroy Tech Task", parent);
+	public SabotageTroopsTask(Faction target, World world, Task parent) {
+		super(true, "Sabotage Troops Task", parent);
 		this.target = target;
 		this.world = world;
 	}
@@ -33,19 +33,20 @@ public class DestroyTechTask extends Task {
 		if(random.nextBoolean()) //Spy was caught
 			world.exposeSpy(faction);
 		else {
-			target.reduceTechLevel();
+			world.removeTroops(target, 1);
 			parent.reportFinished();
 		}
 	}
 	
 	@Override
 	public boolean canPerform(Faction faction) {
-		return world.hasSpy(faction) && !target.getTechLevel().isMinimum();
+		return world.hasSpy(faction) && world.getTroopCount(target) > 0;
 	}
 
 	@Override
 	public double getFlavorMatch(Faction faction) {
-		return faction.getDiplomacy() + faction.getAggression()*.5 + faction.getScience();
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }
