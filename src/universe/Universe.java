@@ -120,14 +120,7 @@ public class Universe
 			name = "";
 			suffix = "";
 			
-			for(int i = 0; i < Globals.WORLD_NAME_PREFIX_LENGTH; i++)
-			{
-				int r = rand.nextInt(26);
-				char letter = (char)('A' + r);
-				name += letter;
-			}
-			
-			name += "-";
+			name += "P3X-";
 			
 			for(int i = 0; i < Globals.WORLD_NAME_SUFFIX_LENGTH - 1; i++)
 			{

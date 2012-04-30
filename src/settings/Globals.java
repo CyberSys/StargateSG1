@@ -10,7 +10,6 @@ public class Globals
 	/**
 	 * Data to determine the standard name generation convention for planets.
 	 */
-	public static final int WORLD_NAME_PREFIX_LENGTH = 2;
 	public static final int WORLD_NAME_SUFFIX_LENGTH = 5;
 	
 	/**
