@@ -276,6 +276,11 @@ public abstract class Faction
 	//
 	// TURN SIMULATION
 	//
+	public void setNextAction(Task next)
+	{
+		mNextTask = next;
+	}
+	
 	public void doTurn() 
 	{
 		// Upkeep
@@ -363,18 +368,18 @@ public abstract class Faction
 		//
 		// RESOURCES
 		//
-		double resourceEfficiency = .2;
+		public double resourceEfficiency = .2;
 		
 		//
 		// TRANSIT SPEED
 		//
-		double hyperdriveEfficiency = 1;
+		public double hyperdriveEfficiency = 1;
 		
 		//
 		// COMBAT PROWESS
 		//
-		double defensiveCapabilities = 1;
-		double offensiveCapabilities = 1;
+		public double defensiveCapabilities = 1;
+		public double offensiveCapabilities = 1;
 		
 		public int compareTo(TechLevel techLevel) {
 			return (int)((resourceEfficiency + hyperdriveEfficiency + defensiveCapabilities + offensiveCapabilities)

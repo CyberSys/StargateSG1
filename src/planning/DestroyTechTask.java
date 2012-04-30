@@ -34,7 +34,7 @@ public class DestroyTechTask extends Task {
 			world.exposeSpy(faction);
 		else {
 			target.reduceTechLevel();
-			parent.reportFinished();
+			parent.reportFinished(this);
 		}
 	}
 	

@@ -1,13 +1,17 @@
 package planning;
 
+import universe.World;
 import faction.Faction;
 
-public class DirectedResearchTask extends Task {
+public class TransferShips extends Task {
 
-	private int direction;
-	public DirectedResearchTask(int direction, Task parent) {
-		super(true, "Directed Research Task", parent);
-		this.direction = direction;
+	private int limit;
+	private World from, to;
+	public TransferShips(World from, World to, int limit, Task parent) {
+		super(true, "Transfer Ships Task", parent);
+		this.limit = Math.min(limit, 100);
+		this.from = from;
+		this.to = to;
 	}
 
 	@Override
@@ -22,18 +26,17 @@ public class DirectedResearchTask extends Task {
 
 	@Override
 	public boolean isCompleted(Faction faction) {
-		return parent.didFinish;
-	}
-	
-	public void perform(Faction faction) {
-		System.out.println("Doing " + name);
-		parent.reportFinished(this);
-		faction.improveTechLevel(direction);		
+		return true;
 	}
 
+	public void perform(Faction faction) {
+		from.removeShips(faction, limit);
+		to.addShips(faction, limit);
+	}
+	
 	@Override
 	public boolean canPerform(Faction faction) {
-		return true;
+		return from.getShipCount(faction) >= limit;
 	}
 
 	@Override

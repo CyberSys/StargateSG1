@@ -16,13 +16,14 @@ public class Play {
 		for(Faction faction : Universe.factions) {
 			if(faction instanceof GoauldFaction)
 				f = faction;
-			else if(faction instanceof AsgardFaction)
+			else if(faction instanceof HumanityFaction)
 				f2 = faction;
 		}
 		f.learnWorldLocation(f2.getHomeWorld());
 
 		f.decreaseReputation(f2, 50);
 		f2.decreaseReputation(f, 50);
+		System.out.println(f.isEnemy(f2) + " " + f2.isEnemy(f));
 		
 		f.replan();
 	
@@ -33,12 +34,11 @@ public class Play {
 			System.out.println(f2);
 			f.doTurn();
 			f2.doTurn();
+			Universe.elapseTime();
 			if(f2.getHomeWorld().getControllingFaction() == f && f.getHomeWorld().getControllingFaction() == f)
 				break;
 			if(f2.getHomeWorld().getControllingFaction() == f2 && f.getHomeWorld().getControllingFaction() == f2)
 				break;
-//			if(f2.getHomeWorld().getControllingFaction() == f || f.getHomeWorld().getControllingFaction() == f2)
-//				break;
 			if(f2.getTechLevel().isMinimum() && f2.getNumArmies(f2.getHomeWorld()) == 0 && f2.getNumShips(f2.getHomeWorld()) == 0)
 				break;
 			if(f.getTechLevel().isMinimum() && f.getNumArmies(f.getHomeWorld()) == 0 && f.getNumShips(f.getHomeWorld()) == 0)

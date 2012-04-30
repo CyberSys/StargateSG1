@@ -2,6 +2,9 @@ package universe;
 
 import java.util.*;
 
+import planning.ConquerTask;
+import settings.Globals;
+
 import faction.Faction;
 
 
@@ -178,6 +181,30 @@ public class World {
 		
 		public String toString() {
 			return "Troop Count: " + troopCount + ", Ship Count: " + shipCount;
+		}
+	}
+
+	public void doCombat() {
+		Map<Faction, Integer> cm = new HashMap<Faction, Integer>();
+		for(Faction f : factionStats.keySet()) {
+			cm.put(f, getControllingFaction() == f ? (int)((f.getDefenseStrength(this)*Globals.DEFENSE_STRENGTH_BONUS)/100 + 1) : (int)(f.getAttackStrength(this)/100 + 1));
+		}
+		for(Faction f : factionStats.keySet()) {
+			for(Faction f2 : factionStats.keySet()) {
+				if(f == f2)
+					continue;
+				else if(f.isEnemy(f2) && (getTroopCount(f) > 0 || getShipCount(f) > 0) && (getTroopCount(f2) > 0 || getShipCount(f2) > 0)) {
+					removeShips(f, cm.get(f2));
+					removeShips(f2, cm.get(f));
+					removeTroops(f, cm.get(f2));
+					removeTroops(f2, cm.get(f));
+				}
+			}
+		}
+		for(Faction f : factionStats.keySet()) {
+			if(f != getControllingFaction() && f.getAttackStrength(this) > getControllingFaction().getDefenseStrength(this) && f.isEnemy(getControllingFaction())) {
+				new ConquerTask(this, null).perform(f);
+			}
 		}
 	}
 }

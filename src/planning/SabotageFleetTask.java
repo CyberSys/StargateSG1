@@ -34,7 +34,7 @@ public class SabotageFleetTask extends Task {
 			world.exposeSpy(faction);
 		else {
 			world.removeShips(target, 1);
-			parent.reportFinished();
+			parent.reportFinished(this);
 		}
 	}
 	

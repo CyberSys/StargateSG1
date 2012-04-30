@@ -34,7 +34,7 @@ public class SabotageTroopsTask extends Task {
 			world.exposeSpy(faction);
 		else {
 			world.removeTroops(target, 1);
-			parent.reportFinished();
+			parent.reportFinished(this);
 		}
 	}
 	

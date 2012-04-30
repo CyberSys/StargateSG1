@@ -22,4 +22,6 @@ public class Globals
 	 */
 	public static final int SHIP_RESOURCE_BUILD_COST = 5;
 	public static final int SHIP_RESOURCE_BUY_COST = 20;
+
+	public static final double DEFENSE_STRENGTH_BONUS = 3;
 }

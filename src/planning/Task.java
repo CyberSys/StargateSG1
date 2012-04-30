@@ -35,7 +35,7 @@ public abstract class Task {
 		getNextStep(faction).perform(faction);
 	}
 	
-	public void reportFinished() {
+	public void reportFinished(Task child) {
 		this.didFinish = true;
 	}
 	

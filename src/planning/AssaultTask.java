@@ -35,10 +35,12 @@ public class AssaultTask extends Task {
 
 	public void perform(Faction faction) {
 		System.out.println("Doing " + name);
-		double attackStrength = faction.getAttackStrength(world);
-		double defenseStrength = target.getDefenseStrength(world);
-		target.decreaseTroops((int)(attackStrength/(2*defenseStrength)), world);
-		faction.decreaseTroops((int)((attackStrength/ defenseStrength)), world);
+		//double attackStrength = faction.getAttackStrength(world);
+		//double defenseStrength = target.getDefenseStrength(world);
+		target.decreaseTroops(2, world);
+		target.decreaseShips(2, world);
+		faction.decreaseTroops(2, world);
+		faction.decreaseShips(2, world);
 	}
 	
 	@Override
