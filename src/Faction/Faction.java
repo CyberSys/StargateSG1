@@ -23,6 +23,7 @@ public abstract class Faction
 	protected Set<World> controlledWorlds = new HashSet<World>();
 	
 	protected int numResources;
+	public double morale = 0.25;
 	
 	protected Set<World> knownGateAddresses = new HashSet<World>();
 	protected Set<World> knownWorldLocations = new HashSet<World>();
@@ -65,6 +66,19 @@ public abstract class Faction
 	public void increaseTroops(int amount, World w)
 	{
 		w.addTroops(this, amount);
+	}
+	
+	private void gainTroopsPassive()
+	{
+		for(World w : controlledWorlds)
+		{
+			gainTroopsPassive(w);
+		}
+	}
+	
+	private void gainTroopsPassive(World w)
+	{
+		increaseTroops((int)(w.getPassiveTroops() * morale), w);
 	}
 	
 	public void decreaseTroops(int amount)
@@ -134,7 +148,7 @@ public abstract class Faction
 	//
 	// RESOURCES
 	//
-	public void gainResourcesPassive()
+	private void gainResourcesPassive()
 	{
 		for(World w : controlledWorlds)
 		{
@@ -285,6 +299,7 @@ public abstract class Faction
 	{
 		// Upkeep
 		gainResourcesPassive();
+		gainTroopsPassive();
 		
 		// Planning
 		if(isPlayerControlled)

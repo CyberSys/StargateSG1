@@ -17,8 +17,10 @@ public class World {
 	public boolean hasGate;
 	Faction controllingFaction;
 	
-	private Map<Faction, FactionWorldStats> factionStats;
 	private int baseResources;
+	private int basePopulation;
+	
+	private Map<Faction, FactionWorldStats> factionStats;
 	private List<Faction> spies = new ArrayList<Faction>();
 	
 	//
@@ -26,7 +28,9 @@ public class World {
 	//
 	public World()
 	{
-		baseResources = 50;
+		baseResources = Globals.DEFAULT_RESOURCE_LEVEL;
+		basePopulation = Globals.DEFAULT_POPULATION_LEVEL;
+		
 		hasGate = true;
 		
 		factionStats = new HashMap<Faction, FactionWorldStats>();
@@ -148,6 +152,14 @@ public class World {
 		int activeMultiplier = 3;
 		return (getPassiveResources() * activeMultiplier);
 	}		
+	
+	//
+	// PASSIVE TROOP GAIN
+	//
+	public int getPassiveTroops()
+	{
+		return basePopulation; 
+	}
 	
 	//
 	// BOOKKEEPING
