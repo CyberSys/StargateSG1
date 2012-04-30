@@ -84,14 +84,13 @@ public class Universe
 		for(World w : addressBook.values()) {
 			w.doCombat();
 		}
-		/*
+		
 		for(Faction f : factions)
 		{
 			f.doTurn();
 		}
-		*/
-		roundNumber++;/*
-		GameFrame.getGameFrame().enableInput();*/
+
+		roundNumber++;
 	}
 	
 	public static int getDistance(World w1, World w2)

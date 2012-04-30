@@ -53,6 +53,7 @@ public abstract class Faction
 	public boolean isPlayerControlled = false;
 	public int timeToReplan = 0;
 	public Stack<Task> plan = new Stack<Task>();
+	public Task mNextTask;
 	
 	//
 	// TROOP AND SHIP MANAGEMENT
@@ -283,13 +284,37 @@ public abstract class Faction
 	//
 	// TURN SIMULATION
 	//
+	public void setNextAction(Task next)
+	{
+		mNextTask = next;
+	}
+	
 	public void doTurn() 
 	{
 		// Upkeep
 		gainResourcesPassive();
 		
 		// Planning
-		getNextPlannedTask().perform(this);		
+		if(isPlayerControlled)
+		{
+			mNextTask.perform(this);
+		}
+		else
+		{
+			getNextPlannedTask().perform(this);	
+		}
+	}
+	
+	public Task[] getAvailableActions()
+	{
+		if(isPlayerControlled)
+		{
+			return new Task[0];
+		}
+		else
+		{
+			return new Task[0];
+		}
 	}
 	
 	//
@@ -340,8 +365,9 @@ public abstract class Faction
 	}
 	
 	public String toString() {
-		return "Resources: " + getNumResources();
+		return factionName + " Resources: " + getNumResources();
 	}
+	
 	//
 	// Inner Class
 	//
@@ -350,12 +376,12 @@ public abstract class Faction
 		//
 		// RESOURCES
 		//
-		double resourceEfficiency = .2;
+		public double resourceEfficiency = .2;
 		
 		//
 		// TRANSIT SPEED
 		//
-		double hyperdriveEfficiency = 1;
+		public double hyperdriveEfficiency = 1;
 		
 		//
 		// COMBAT PROWESS
