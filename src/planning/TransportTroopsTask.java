@@ -17,7 +17,7 @@ public class TransportTroopsTask extends Task {
 
 	@Override
 	public int stepsToCompletion(Faction faction) {
-		limit = Math.min(Globals.WORLD_POPULATION_CAP - to.getTroopCount(faction), limit);
+		limit = Math.min(Globals.WORLD_TROOP_POPULATION_CAP - to.getTroopCount(faction), limit);
 		boolean canByGate = false, canByShip = false;
 		if(from.hasGate && to.hasGate && faction.knowsGateAddress(to)) {
 			canByGate = true;
@@ -36,7 +36,7 @@ public class TransportTroopsTask extends Task {
 
 	@Override
 	public Task getNextStep(Faction faction) {
-		limit = Math.min(Globals.WORLD_POPULATION_CAP - to.getTroopCount(faction), limit);
+		limit = Math.min(Globals.WORLD_TROOP_POPULATION_CAP - to.getTroopCount(faction), limit);
 		boolean canByGate = false, canByShip = false;
 		if(from.hasGate && to.hasGate && faction.knowsGateAddress(to)) {
 			canByGate = true;
@@ -69,9 +69,9 @@ public class TransportTroopsTask extends Task {
 	}
 
 	@Override
-	public double getFlavorMatch(Faction faction) {
-		// TODO Auto-generated method stub
-		return 0;
+	public double getFlavorMatch(Faction faction) 
+	{
+		return (faction.getAggression() + faction.getDiplomacy() + faction.getScience()) / 3.0;
 	}
 
 }

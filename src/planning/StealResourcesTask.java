@@ -46,9 +46,12 @@ public class StealResourcesTask extends Task {
 	}
 
 	@Override
-	public double getFlavorMatch(Faction faction) {
-		// TODO Auto-generated method stub
-		return 0;
+	public double getFlavorMatch(Faction faction) 
+	{
+		int resourceAdjustCap = 250;
+		double selfAdjustFactor = (1 - (Math.min(faction.getNumResources(), resourceAdjustCap) / resourceAdjustCap)) * 0.5;
+		double enemyAdjustFactor = (Math.min(target.getNumResources(), resourceAdjustCap) / resourceAdjustCap) * 0.5;
+		return ((enemyAdjustFactor + selfAdjustFactor) * ((faction.getAggression() + faction.getDiplomacy()) / 2.0));
 	}
 
 }

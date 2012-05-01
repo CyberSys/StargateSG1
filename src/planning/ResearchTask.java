@@ -44,9 +44,9 @@ public class ResearchTask extends Task {
 	}
 
 	@Override
-	public double getFlavorMatch(Faction faction) {
-		// TODO Auto-generated method stub
-		return 0;
+	public double getFlavorMatch(Faction faction) 
+	{
+		return faction.getScience();
 	}
 
 }

@@ -17,7 +17,9 @@ public class AttackTask extends Task {
 		this.attackForceSize = attackForceSize;
 	}
 
-	public int stepsToCompletion(Faction faction) {
+	public int stepsToCompletion(Faction faction) 
+	{
+		// TODO: Implement steps to completion.
 		return 0;
 	}
 	
@@ -67,7 +69,8 @@ public class AttackTask extends Task {
 		else return new ConquerTask(to, this).canPerform(faction);*/ return true;
 	}
 	
-	public double getFlavorMatch(Faction faction) {
+	public double getFlavorMatch(Faction faction) 
+	{
 		return faction.getAggression();
 	}
 

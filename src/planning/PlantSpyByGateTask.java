@@ -40,8 +40,9 @@ public class PlantSpyByGateTask extends Task {
 	}
 
 	@Override
-	public double getFlavorMatch(Faction faction) {
-		return faction.getDiplomacy();
+	public double getFlavorMatch(Faction faction) 
+	{
+		return (faction.getAggression() + faction.getDiplomacy()) / 2.0;
 	}
 
 }

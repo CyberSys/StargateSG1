@@ -6,6 +6,7 @@ import faction.Faction;
 
 public class StealShipTask extends Task {
 
+	// TODO: Implement this class more fully.  Currently not really up to date.
 	private Faction target;
 	public StealShipTask(Faction target, Task parent) {
 		super(true, "Steal Ship Task", parent);
@@ -41,8 +42,10 @@ public class StealShipTask extends Task {
 	}
 
 	@Override
-	public double getFlavorMatch(Faction faction) {
-		return faction.getAggression();
+	public double getFlavorMatch(Faction faction) 
+	{
+		// TODO: Perhaps make this dependant on the number of ships the target has. 
+		return (faction.getAggression() * 3 + faction.getDiplomacy()) / 4.0;
 	}
 
 }

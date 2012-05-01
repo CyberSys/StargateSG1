@@ -48,10 +48,12 @@ public abstract class Task {
 	protected Task getFlavorMatchTask(Faction faction) {
 		List<Task> taskList = getTaskList(faction);
 		Task bestMatch = null;
-		double totalFlavor = 0;
+		double totalFlavor = 0;		
 		
-		for(Task task : taskList) 
+		for(Task task : taskList)
+		{
 			totalFlavor += task.getFlavorMatch(faction);
+		}
 		
 		double flavorPick = random.nextDouble() * totalFlavor;
 		

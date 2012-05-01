@@ -1,6 +1,7 @@
 package planning;
 
 import faction.Faction;
+import settings.Globals;
 import universe.World;
 
 public class SabotageTroopsTask extends Task {
@@ -44,9 +45,9 @@ public class SabotageTroopsTask extends Task {
 	}
 
 	@Override
-	public double getFlavorMatch(Faction faction) {
-		// TODO Auto-generated method stub
-		return 0;
+	public double getFlavorMatch(Faction faction) 
+	{
+		return ((world.getTroopCount(target) / Globals.WORLD_TROOP_POPULATION_CAP) * ((faction.getAggression() + faction.getDiplomacy()) / 2.0));
 	}
 
 }
