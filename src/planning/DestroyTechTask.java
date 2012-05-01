@@ -7,9 +7,9 @@ public class DestroyTechTask extends Task {
 
 	private Faction target;
 	private World world;
-	public DestroyTechTask(Faction target, World world, Task parent) {
+	public DestroyTechTask(World world, Task parent) {
 		super(true, "Destroy Tech Task", parent);
-		this.target = target;
+		this.target = world.getControllingFaction();
 		this.world = world;
 	}
 

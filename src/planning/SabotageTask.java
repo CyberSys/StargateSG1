@@ -11,20 +11,18 @@ import universe.World;
 public class SabotageTask extends Task {
 
 	private World world;
-	private Faction target;
-	public SabotageTask(Faction target, World world, Task parent) {
+	public SabotageTask(World world, Task parent) {
 		super(false, "Sabotage Task", parent);
 		this.world = world;
-		this.target = target;
 	}
 
 	protected List<Task> getTaskList(Faction faction) {
 		List<Task> taskList = new ArrayList<Task>();
-		taskList.add(new SabotageFleetTask(target, world, this));
-		taskList.add(new SabotageTroopsTask(target, world, this));
-		taskList.add(new StealResourcesTask(target, world, this));
-		taskList.add(new StealTechTask(target, world, this));
-		taskList.add(new DestroyTechTask(target, world, this));
+		taskList.add(new SabotageFleetTask(world, this));
+		taskList.add(new SabotageTroopsTask(world, this));
+		taskList.add(new StealResourcesTask(world, this));
+		taskList.add(new StealTechTask(world, this));
+		taskList.add(new DestroyTechTask(world, this));
 		//taskList.add(new SpreadDissentTask(target, world, this));
 		return taskList;
 	}
@@ -38,15 +36,17 @@ public class SabotageTask extends Task {
 	@Override
 	public Task getNextStep(Faction faction) {
 		Task task = getFlavorMatchTask(faction);
-		if(!world.hasSpy(faction) && world.getTroopCount(faction) == 0 && faction.getNumArmies(faction.getHomeWorld()) == 0)
-			return new TrainTroopsTask(1, this);
-		if(!world.hasSpy(faction) && world.getTroopCount(faction) == 0)
-			return new TransportTroopsTask(faction.getHomeWorld(), world, 1, this);
-		if(!world.hasSpy(faction) && world.getTroopCount(faction) > 0)
-			return new PlantSpyTask(world, this);
-		else //if(world.hasSpy(faction))
+		if(!world.hasSpy(faction)) {
+			if(new PlantSpyFromPlanetTask(world, this).canPerform(faction))
+				return new PlantSpyFromPlanetTask(world, this);
+			if(new PlantSpyByGateTask(faction.getHomeWorld(), world, this).canPerform(faction))
+				return new PlantSpyByGateTask(faction.getHomeWorld(), world, this);
+			if(new PlantSpyByShipTask(faction.getHomeWorld(), world, this).canPerform(faction))
+				return new PlantSpyByShipTask(faction.getHomeWorld(), world, this);
+		}
+		else if(world.hasSpy(faction))
 			return task;
-		//return new TransportTroopsTask(faction.getHomeWorld(), world, 1, this).canPerform(faction);
+		return null;
 	}
 	
 	@Override
@@ -60,7 +60,7 @@ public class SabotageTask extends Task {
 		if(!world.hasSpy(faction) && world.getTroopCount(faction) == 0)
 			return new TransportTroopsTask(faction.getHomeWorld(), world, 1, this).canPerform(faction);
 		if(!world.hasSpy(faction) && world.getTroopCount(faction) > 0)
-			return new PlantSpyTask(world, this).canPerform(faction);
+			return new PlantSpyFromPlanetTask(world, this).canPerform(faction);
 		else //if(world.hasSpy(faction))
 			return task.canPerform(faction);
 		//return new TransportTroopsTask(faction.getHomeWorld(), world, 1, this).canPerform(faction);

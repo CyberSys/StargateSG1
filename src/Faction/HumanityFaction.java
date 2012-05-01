@@ -6,7 +6,7 @@ public class HumanityFaction extends Faction
 {
 	public HumanityFaction()
 	{
-		isPlayerControlled = true;
+		isPlayerControlled = false;
 		
 		factionName = "Humanity";
 		

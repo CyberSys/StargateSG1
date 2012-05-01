@@ -7,9 +7,9 @@ public class StealResourcesTask extends Task {
 
 	private Faction target;
 	private World world;
-	public StealResourcesTask(Faction target, World world, Task parent) {
+	public StealResourcesTask(World world, Task parent) {
 		super(true, "Steal Resources Task", parent);
-		this.target = target;
+		this.target = world.getControllingFaction();;
 		this.world = world;
 	}
 
@@ -42,7 +42,7 @@ public class StealResourcesTask extends Task {
 	
 	@Override
 	public boolean canPerform(Faction faction) {
-		return world.hasSpy(faction) && target.getNumResources() >= 100;
+		return world.hasSpy(faction) && target.getNumResources() > 0;
 	}
 
 	@Override

@@ -58,8 +58,8 @@ public class Universe
 		tokra.learnWorldLocation(goauld.getHomeWorld());
 		
 		factions.add(goauld);
-		factions.add(asgard);
-		factions.add(tokra);
+//		factions.add(asgard);
+//		factions.add(tokra);
 	}
 	
 	public static World generateWorld()

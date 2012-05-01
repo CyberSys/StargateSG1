@@ -22,7 +22,7 @@ public class Play {
 		f.learnWorldLocation(f2.getHomeWorld());
 
 		f.decreaseReputation(f2, 50);
-		f2.decreaseReputation(f, 50);
+		f2.decreaseReputation(f, 100);
 		System.out.println(f.isEnemy(f2) + " " + f2.isEnemy(f));
 		
 		f.replan();
@@ -32,8 +32,8 @@ public class Play {
 			System.out.println(f2.getHomeWorld());
 			System.out.println(f);
 			System.out.println(f2);
-			f.doTurn();
-			f2.doTurn();
+//			f.doTurn();
+//			f2.doTurn();
 			Universe.elapseTime();
 			if(f2.getHomeWorld().getControllingFaction() == f && f.getHomeWorld().getControllingFaction() == f)
 				break;

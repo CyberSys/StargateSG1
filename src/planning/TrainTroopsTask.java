@@ -31,7 +31,7 @@ public class TrainTroopsTask extends Task {
 	}
 
 	public void perform(Faction faction) {
-		System.out.println("Doing " + name);
+		System.out.println("Doing " + name + " for " + limit + " troops.");
 		faction.increaseTroops(5);
 		parent.reportFinished(this);
 	}

@@ -3,13 +3,14 @@ package planning;
 import faction.Faction;
 import universe.World;
 
-public class PlantSpyTask extends Task {
+public class PlantSpyByGateTask extends Task {
 
-	private World world;
+	private World world, from;
 	
-	public PlantSpyTask(World world, Task parent) {
-		super(true, "Plant Spy Task", parent);
+	public PlantSpyByGateTask(World from, World world, Task parent) {
+		super(true, "Plant Spy By Gate Task", parent);
 		this.world = world;
+		this.from = from;
 	}
 
 	@Override
@@ -25,7 +26,7 @@ public class PlantSpyTask extends Task {
 	public void perform(Faction faction) {
 		System.out.println("Doing " + name);
 		world.plantSpy(faction);
-		world.removeTroops(faction,  1);
+		from.removeTroops(faction,  1);
 	}
 	
 	@Override
@@ -35,7 +36,7 @@ public class PlantSpyTask extends Task {
 
 	@Override
 	public boolean canPerform(Faction faction) {
-		return world.getTroopCount(faction) > 0;
+		return from.getTroopCount(faction) > 0 && from.hasGate && faction.knowsGateAddress(world);
 	}
 
 	@Override

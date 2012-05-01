@@ -327,14 +327,16 @@ public abstract class Faction
 		//or one that gives an end result of victory condition
 		if(timeToReplan <= 0 || plan.isEmpty()) { 
 			plan.clear(); 
-			timeToReplan = 5;
+			timeToReplan = 1;
+//			System.out.println(this);
+//			System.out.println(getEnemies());
 			Task attack = new AttackTask(getHomeWorld(), getEnemies().get(0).getHomeWorld(), getEnemies().get(0), 50, null);
 			plan.add(attack);
 //			Task sabotage = new SabotageTask(getEnemies().get(0), getEnemies().get(0).getHomeWorld(), null);
 //			plan.add(sabotage);
 		}
 		while(plan.peek().isBaseTask() != true) {
-			System.out.println(plan.peek());
+			//System.out.println(plan.peek());
 			if(plan.peek().isCompleted(this)){ 
 				plan.pop();
 				if(plan.isEmpty()) replan();

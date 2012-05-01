@@ -34,8 +34,8 @@ public class FlyTroopsWithShipsTask extends Task {
 		System.out.println("Doing " + name);
 		from.removeTroops(faction, limit);
 		to.addTroops(faction, limit);
-		from.removeShips(faction,  limit/5 + 1);
-		to.addShips(faction, limit/5 + 1);
+		from.removeShips(faction,  (int)Math.ceil(limit/5.));
+		to.addShips(faction, (int)Math.ceil(limit/5.));
 		parent.reportFinished(this);
 		
 	}

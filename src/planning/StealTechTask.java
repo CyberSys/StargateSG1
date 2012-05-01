@@ -7,9 +7,9 @@ public class StealTechTask extends Task {
 
 	private Faction target;
 	private World world;
-	public StealTechTask(Faction target, World world, Task parent) {
+	public StealTechTask(World world, Task parent) {
 		super(true, "Steal Tech Task", parent);
-		this.target = target;
+		this.target = world.getControllingFaction();
 		this.world = world;
 	}
 

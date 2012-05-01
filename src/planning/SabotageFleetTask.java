@@ -7,9 +7,9 @@ public class SabotageFleetTask extends Task {
 
 	private Faction target;
 	private World world;
-	public SabotageFleetTask(Faction target, World world, Task parent) {
+	public SabotageFleetTask(World world, Task parent) {
 		super(true, "Sabotage Fleet Task", parent);
-		this.target = target;
+		this.target = world.getControllingFaction();
 		this.world = world;
 	}
 
@@ -33,7 +33,7 @@ public class SabotageFleetTask extends Task {
 		if(random.nextBoolean()) //Spy was caught
 			world.exposeSpy(faction);
 		else {
-			world.removeShips(target, 1);
+			world.removeShips(target, random.nextInt(10));
 			parent.reportFinished(this);
 		}
 	}
