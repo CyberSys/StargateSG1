@@ -12,6 +12,10 @@ public class Globals
 	 */
 	public static final int WORLD_NAME_SUFFIX_LENGTH = 5;
 	
+	
+	public static final int MAX_REPUTATION = 100;
+	public static final int MIN_REPUTATION = 0;
+	
 	/**
 	 * Determines how much more powerful ships are than troops.
 	 */

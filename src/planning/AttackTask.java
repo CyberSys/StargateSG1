@@ -1,6 +1,8 @@
 package planning;
 
 import faction.Faction;
+import faction.Reputation;
+import settings.Globals;
 import universe.*;
 
 public class AttackTask extends Task {
@@ -71,8 +73,7 @@ public class AttackTask extends Task {
 	
 	public double getFlavorMatch(Faction faction) 
 	{
-		//TODO: flavor based on target
-		return faction.getAggression();
+		return (((Globals.MAX_REPUTATION - faction.getReputationNumber(target)) / Globals.MAX_REPUTATION) * (faction.getAggression()));
 	}
 
 }

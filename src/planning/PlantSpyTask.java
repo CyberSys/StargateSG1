@@ -44,9 +44,9 @@ public class PlantSpyTask extends Task {
 	}
 
 	@Override
-	public double getFlavorMatch(Faction faction) {
-		// TODO Auto-generated method stub
-		return 0;
+	public double getFlavorMatch(Faction faction) 
+	{
+		return (faction.getAggression() + faction.getDiplomacy()) / 2.0;
 	}
 
 }
