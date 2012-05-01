@@ -390,8 +390,8 @@ public abstract class Faction
 				continue;
 			totalFlavor += task.getFlavorMatch(this);
 		}
-		if(totalFlavor <= 0)
-			return new WaitTask(null);
+//		if(totalFlavor <= 0)
+//			return new WaitTask(null);
 		double flavorPick = new Random().nextDouble() * totalFlavor;
 		for(Task task : taskList)
 		{
@@ -512,7 +512,7 @@ public abstract class Faction
 		//
 		// TRANSIT SPEED
 		//
-		public double hyperdriveEfficiency = 1;
+		//public double hyperdriveEfficiency = 1;
 		
 		//
 		// COMBAT PROWESS
@@ -521,21 +521,21 @@ public abstract class Faction
 		public double offensiveCapabilities = 1;
 		
 		public int compareTo(TechLevel techLevel) {
-			return (int)((resourceEfficiency + hyperdriveEfficiency + defensiveCapabilities + offensiveCapabilities)
-					- (techLevel.resourceEfficiency + techLevel.hyperdriveEfficiency + techLevel.defensiveCapabilities + techLevel.offensiveCapabilities));
+			return (int)((resourceEfficiency + /*hyperdriveEfficiency +*/ defensiveCapabilities + offensiveCapabilities)
+					- (techLevel.resourceEfficiency + /*techLevel.hyperdriveEfficiency +*/ techLevel.defensiveCapabilities + techLevel.offensiveCapabilities));
 		}
 
 		public boolean isMinimum() {
-			return (resourceEfficiency + hyperdriveEfficiency + defensiveCapabilities + offensiveCapabilities) == .1;
+			return (resourceEfficiency + /*hyperdriveEfficiency +*/ defensiveCapabilities + offensiveCapabilities) == Globals.MIN_TECH_LEVEL;
 		}
 		
 		public boolean isMaximum() {
-			return (resourceEfficiency + hyperdriveEfficiency + defensiveCapabilities + offensiveCapabilities) == 16;
+			return (resourceEfficiency + /*hyperdriveEfficiency +*/ defensiveCapabilities + offensiveCapabilities) == Globals.MAX_TECH_LEVEL;
 		}
 		
 		public double getTotalTechLevel()
 		{
-			return resourceEfficiency + hyperdriveEfficiency + defensiveCapabilities + offensiveCapabilities;
+			return resourceEfficiency + /*hyperdriveEfficiency +*/ defensiveCapabilities + offensiveCapabilities;
 		}
 		
 		public double getCurrentLevel(int direction)
@@ -543,8 +543,8 @@ public abstract class Faction
 			switch(direction){
 			case Globals.RESOURCE_RESEARCH:
 				return tech.resourceEfficiency;
-			case Globals.HYPERDRIVE_RESEARCH:
-				return tech.hyperdriveEfficiency;
+//			case Globals.HYPERDRIVE_RESEARCH:
+//				return tech.hyperdriveEfficiency;
 			case Globals.DEFENSE_RESEARCH:
 				return tech.defensiveCapabilities;
 			case Globals.OFFENSE_RESEARCH:
@@ -558,8 +558,8 @@ public abstract class Faction
 			switch(direction){
 			case Globals.RESOURCE_RESEARCH:
 				return tech.resourceEfficiency == Globals.MAX_RESOURCE_EFFICIENCY;
-			case Globals.HYPERDRIVE_RESEARCH:
-				return tech.hyperdriveEfficiency == Globals.MAX_HYPERDRIVE_EFFICIENCY;
+//			case Globals.HYPERDRIVE_RESEARCH:
+//				return tech.hyperdriveEfficiency == Globals.MAX_HYPERDRIVE_EFFICIENCY;
 			case Globals.DEFENSE_RESEARCH:
 				return tech.defensiveCapabilities == Globals.MAX_DEFENSIVE_CAPABILITIES;
 			case Globals.OFFENSE_RESEARCH:
@@ -584,10 +584,10 @@ public abstract class Faction
 			tech.resourceEfficiency+=.1;
 			if(tech.resourceEfficiency > Globals.MAX_RESOURCE_EFFICIENCY) tech.resourceEfficiency = Globals.MAX_RESOURCE_EFFICIENCY;
 			break;
-		case 1:
-			tech.hyperdriveEfficiency+=.5;
-			if(tech.hyperdriveEfficiency > Globals.MAX_HYPERDRIVE_EFFICIENCY) tech.hyperdriveEfficiency = Globals.MAX_HYPERDRIVE_EFFICIENCY;
-			break;
+//		case 1:
+//			tech.hyperdriveEfficiency+=.5;
+//			if(tech.hyperdriveEfficiency > Globals.MAX_HYPERDRIVE_EFFICIENCY) tech.hyperdriveEfficiency = Globals.MAX_HYPERDRIVE_EFFICIENCY;
+//			break;
 		case 2:
 			tech.defensiveCapabilities+=.5;
 			if(tech.defensiveCapabilities > Globals.MAX_DEFENSIVE_CAPABILITIES) tech.defensiveCapabilities = Globals.MAX_DEFENSIVE_CAPABILITIES;
@@ -601,15 +601,19 @@ public abstract class Faction
 	}
 	
 	public void reduceTechLevel() {
-		switch(new Random().nextInt(4)) {
+		reduceTechLevel(new Random().nextInt(4));
+	}
+
+	public void reduceTechLevel(int direction) {
+		switch(direction) {
 		case 0:
 			tech.resourceEfficiency-=.1;
 			if(tech.resourceEfficiency < Globals.MIN_RESOURCE_EFFICIENCY) tech.resourceEfficiency = Globals.MIN_RESOURCE_EFFICIENCY;
 			break;
-		case 1:
-			tech.hyperdriveEfficiency-=.5;
-			if(tech.hyperdriveEfficiency < Globals.MIN_HYPERDRIVE_EFFICIENCY) tech.hyperdriveEfficiency = Globals.MIN_HYPERDRIVE_EFFICIENCY;
-			break;
+//		case 1:
+//			tech.hyperdriveEfficiency-=.5;
+//			if(tech.hyperdriveEfficiency < Globals.MIN_HYPERDRIVE_EFFICIENCY) tech.hyperdriveEfficiency = Globals.MIN_HYPERDRIVE_EFFICIENCY;
+//			break;
 		case 2:
 			tech.defensiveCapabilities-=.5;
 			if(tech.defensiveCapabilities < Globals.MIN_DEFENSIVE_CAPABILITIES) tech.defensiveCapabilities = Globals.MIN_DEFENSIVE_CAPABILITIES;
@@ -621,6 +625,6 @@ public abstract class Faction
 			break;
 		}
 	}
-
+	
 	
 }

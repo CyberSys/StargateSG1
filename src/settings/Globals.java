@@ -54,18 +54,20 @@ public class Globals
 	public static final double MIN_MORALE = 0.0;
 
 	public static final double MAX_RESOURCE_EFFICIENCY = 1;
-	public static final int MAX_HYPERDRIVE_EFFICIENCY = 5;
+	//public static final int MAX_HYPERDRIVE_EFFICIENCY = 5;
 	public static final int MAX_DEFENSIVE_CAPABILITIES = 5;
 	public static final int MAX_OFFENSIVE_CAPABILITIES = 5;
-	public static final double MAX_TECH_LEVEL = MAX_RESOURCE_EFFICIENCY + MAX_HYPERDRIVE_EFFICIENCY + MAX_DEFENSIVE_CAPABILITIES + MAX_OFFENSIVE_CAPABILITIES;
+	public static final double MAX_TECH_LEVEL = MAX_RESOURCE_EFFICIENCY /*+ MAX_HYPERDRIVE_EFFICIENCY*/ + MAX_DEFENSIVE_CAPABILITIES + MAX_OFFENSIVE_CAPABILITIES;
 	
 	public static final double MIN_RESOURCE_EFFICIENCY = .1;
-	public static final int MIN_HYPERDRIVE_EFFICIENCY = 0;
+	//public static final int MIN_HYPERDRIVE_EFFICIENCY = 0;
 	public static final int MIN_DEFENSIVE_CAPABILITIES = 0;
 	public static final int MIN_OFFENSIVE_CAPABILITIES = 0;
+	public static final double MIN_TECH_LEVEL = MIN_RESOURCE_EFFICIENCY /*+ MIN_HYPERDRIVE_EFFICIENCY*/ + MIN_DEFENSIVE_CAPABILITIES + MIN_OFFENSIVE_CAPABILITIES;
+	
 
 	public static final int RESOURCE_RESEARCH = 0;
-	public static final int HYPERDRIVE_RESEARCH = 1;
+	//public static final int HYPERDRIVE_RESEARCH = 1;
 	public static final int DEFENSE_RESEARCH = 2;
 	public static final int OFFENSE_RESEARCH = 3;
 	

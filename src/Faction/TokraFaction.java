@@ -29,7 +29,7 @@ public class TokraFaction extends Faction
 		
 		tech.defensiveCapabilities = 2.5;
 		tech.offensiveCapabilities = .5;
-		tech.hyperdriveEfficiency = 0;
+	//	tech.hyperdriveEfficiency = 0;
 		tech.resourceEfficiency = .2;
 	}
 

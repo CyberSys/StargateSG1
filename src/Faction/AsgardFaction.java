@@ -30,7 +30,7 @@ public class AsgardFaction extends Faction
 		
 		tech.offensiveCapabilities = 2.5;
 		tech.defensiveCapabilities = 2.5;
-		tech.hyperdriveEfficiency = 2.5;
+		//tech.hyperdriveEfficiency = 2.5;
 		tech.resourceEfficiency = 0.4;
 	}
 	

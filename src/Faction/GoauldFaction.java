@@ -31,7 +31,7 @@ public class GoauldFaction extends Faction
 		tech.offensiveCapabilities = 1;
 		tech.defensiveCapabilities = 1;
 		tech.resourceEfficiency = .1;
-		tech.hyperdriveEfficiency = .5;
+		//tech.hyperdriveEfficiency = .5;
 	}
 	
 	protected ArrayList<Task> getTaskList() {

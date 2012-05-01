@@ -25,6 +25,10 @@ public class SabotageTask extends Task {
 		taskList.add(new StealTechTask(world, this));
 		taskList.add(new DestroyTechTask(world, this));
 		taskList.add(new SpreadDissentTask(world, this));
+		taskList.add(new DirectedDestroyTechTask(world, Globals.RESOURCE_RESEARCH, this));
+		taskList.add(new DirectedDestroyTechTask(world, Globals.OFFENSE_RESEARCH, this));
+		taskList.add(new DirectedDestroyTechTask(world, Globals.DEFENSE_RESEARCH, this));
+		//taskList.add(new DirectedDestroyTechTask(world, Globals.HYPERDRIVE_RESEARCH, this));
 		return taskList;
 	}
 	

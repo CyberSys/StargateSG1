@@ -12,14 +12,12 @@ public class ResearchTask extends Task {
 	public ResearchTask(Task parent) {
 		super(false, "Research Task", parent);
 	}
-
-	//TODO remove hyperdrive EVERYWHARE!
 	
 	protected List<Task> getTaskList(Faction faction) {
 		List<Task> taskList = new ArrayList<Task>();
 		taskList.add(new SearchForTechnologyTask(this));
 		taskList.add(new DirectedResearchTask(Globals.RESOURCE_RESEARCH, this));
-		taskList.add(new DirectedResearchTask(Globals.HYPERDRIVE_RESEARCH, this));
+		//taskList.add(new DirectedResearchTask(Globals.HYPERDRIVE_RESEARCH, this));
 		taskList.add(new DirectedResearchTask(Globals.DEFENSE_RESEARCH, this));
 		taskList.add(new DirectedResearchTask(Globals.OFFENSE_RESEARCH, this));
 		return taskList;
