@@ -222,7 +222,7 @@ public abstract class Faction
 	}
 	
 	public int getReputationNumber(Faction f)
-	{
+	{		
 		if(!factionReputations.containsKey(f))
 			factionReputations.put(f, new Reputation());
 		
