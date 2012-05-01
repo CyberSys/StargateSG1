@@ -68,9 +68,6 @@ public class GoauldFaction extends Faction
 	
 	protected ArrayList<Task> getTaskList() {
 		ArrayList<Task> taskList = new ArrayList<Task>();
-		if(getEnemies().isEmpty() && !didWin()) {
-			//TODO: if there are no enemies, pick someone and make them an enemy
-		}
 		for(Faction enemy : getEnemies()) {
 			for(World to : enemy.getControlledWorlds()) {
 				for(World from : getControlledWorlds()) {

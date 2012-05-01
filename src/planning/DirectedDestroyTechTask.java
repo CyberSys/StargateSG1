@@ -50,8 +50,25 @@ public class DirectedDestroyTechTask extends Task {
 	@Override
 	public double getFlavorMatch(Faction faction) 
 	{
-		//TODO make this meaningful based on direction?
-		return ((target.getTechLevel().getTotalTechLevel() / Globals.MAX_TECH_LEVEL) * (faction.getDiplomacy() + faction.getAggression()) / 2.0);
+		double directionFlavor = 0;
+		double maxLevel = 0;
+		if(direction == Globals.OFFENSE_RESEARCH)
+		{
+			directionFlavor = ((faction.getDiplomacy() * 3 + faction.getScience() * 2) / 5.0);
+			maxLevel = Globals.MAX_OFFENSIVE_CAPABILITIES;
+		}
+		else if(direction == Globals.DEFENSE_RESEARCH)
+		{
+			directionFlavor = ((faction.getAggression() * 3 + faction.getScience()) / 4.0);
+			maxLevel = Globals.MAX_DEFENSIVE_CAPABILITIES;
+		}
+		else if(direction == Globals.RESOURCE_RESEARCH)
+		{
+			directionFlavor = ((faction.getScience() + faction.getAggression() + faction.getDiplomacy()) / 3.0);
+			maxLevel = Globals.MAX_RESOURCE_EFFICIENCY;
+		}
+		
+		return (((faction.getTechLevel().getCurrentLevel(direction)) / maxLevel) * directionFlavor);
 	}
 
 }
