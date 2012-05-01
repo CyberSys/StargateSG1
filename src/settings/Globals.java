@@ -18,10 +18,23 @@ public class Globals
 	public static final int SHIP_TROOP_POWER_RATIO = 3;
 	
 	/**
-	 * Determines the price of various things
+	 * Determines the price of various things.
 	 */
 	public static final int SHIP_RESOURCE_BUILD_COST = 5;
 	public static final int SHIP_RESOURCE_BUY_COST = 20;
 
+	/**
+	 * Home field advantage during combat.
+	 */
 	public static final double DEFENSE_STRENGTH_BONUS = 3;
+	
+	/**
+	 * The mean resource amount of a planet.
+	 */
+	public static final int DEFAULT_RESOURCE_LEVEL = 50;
+	
+	/**
+	 * The rate at which a planet generates troops.
+	 */
+	public static final int DEFAULT_POPULATION_LEVEL = 10;
 }
