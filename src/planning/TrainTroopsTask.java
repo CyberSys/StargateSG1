@@ -41,6 +41,7 @@ public class TrainTroopsTask extends Task {
 	@Override
 	public double getFlavorMatch(Faction faction) 
 	{
+		// TODO: Scale by current troops.
 		return (faction.getAggression() + faction.getDiplomacy() + faction.getScience()) / 3.0;
 	}
 
