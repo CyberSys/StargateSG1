@@ -1,6 +1,7 @@
 package planning;
 
 import faction.Faction;
+import settings.Globals;
 import universe.World;
 
 public class StealTechTask extends Task {
@@ -46,8 +47,7 @@ public class StealTechTask extends Task {
 	@Override
 	public double getFlavorMatch(Faction faction) 
 	{
-		// TODO: Scale based on distance from max tech
-		return (((faction.getAggression() + faction.getDiplomacy()) * 3.0) + (faction.getScience() * 2.0)) / 8.0;
+		return ((Globals.MAX_TECH_LEVEL - faction.getTechLevel().getTotalTechLevel()) / Globals.MAX_TECH_LEVEL) * ((((faction.getAggression() + faction.getDiplomacy()) * 3.0) + (faction.getScience() * 2.0)) / 8.0);
 	}
 
 }

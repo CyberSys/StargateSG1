@@ -2,6 +2,8 @@ package planning;
 
 import java.util.Random;
 
+import settings.Globals;
+
 import faction.Faction;
 
 
@@ -40,8 +42,7 @@ public class SearchForTechnologyTask extends Task {
 	@Override
 	public double getFlavorMatch(Faction faction) 
 	{
-		// TODO: Scale based on distance from max tech leve.
-		return faction.getScience();
+		return ((Globals.MAX_TECH_LEVEL - faction.getTechLevel().getTotalTechLevel()) / Globals.MAX_TECH_LEVEL) * faction.getScience();
 	}
 
 }

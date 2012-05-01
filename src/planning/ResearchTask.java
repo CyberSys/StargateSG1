@@ -51,8 +51,7 @@ public class ResearchTask extends Task {
 	@Override
 	public double getFlavorMatch(Faction faction) 
 	{
-		// TODO: Scale by distance from max tech level.
-		return faction.getScience();
+		return ((Globals.MAX_TECH_LEVEL - faction.getTechLevel().getTotalTechLevel()) / Globals.MAX_TECH_LEVEL) * faction.getScience();
 	}
 
 }

@@ -43,8 +43,17 @@ public class DefendTask extends Task {
 	}
 
 	@Override
-	public double getFlavorMatch(Faction faction) {
-		// TODO based on enemy troop amounts possibly?
-		return 0;
+	public double getFlavorMatch(Faction faction) 
+	{
+		double defenseFactor = 0;
+		
+		for(Faction e : faction.getEnemies())
+		{
+			defenseFactor += e.getAttackStrength(world);
+		}
+		
+		defenseFactor = defenseFactor / faction.getDefenseStrength(world);
+		
+		return (defenseFactor) * (faction.getAggression() + faction.getDiplomacy() + faction.getScience()) / 3.0;
 	}
 }
