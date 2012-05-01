@@ -372,9 +372,14 @@ public abstract class Faction
 					new Random().nextInt(100) + 50, null);
 			if(attack.canPerform(this))
 				taskList.add(attack);
-			Task sabotage = new SabotageTask(enemy.getHomeWorld(), null);
-			if(sabotage.canPerform(this))
-				taskList.add(sabotage);
+		}
+		
+		for(Faction faction : Universe.factions) {
+			if(faction != this) {
+				Task sabotage = new SabotageTask(faction.getHomeWorld(), null);
+				if(sabotage.canPerform(this))
+					taskList.add(sabotage);
+			}
 		}
 		
 		Task wait = new WaitTask(null);

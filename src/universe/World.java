@@ -137,6 +137,7 @@ public class World {
 	
 	public void exposeSpy(Faction faction) {
 		spies.remove(faction);
+		getControllingFaction().decreaseReputation(faction, 5);
 	}
 	
 	//
