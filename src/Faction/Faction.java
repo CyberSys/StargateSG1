@@ -393,7 +393,7 @@ public abstract class Faction
 	
 	public boolean needToReplan() {
 		//Replan if your plan is empty, you need to replan, or you don't have a base task to perform
-		return plan.isEmpty() || timeToReplan <= 0 || plan.peek().isBaseTask() != true; //TODO: add in checks here for other things, like needing to defend 
+		return plan.isEmpty() || timeToReplan <= 0 || plan.peek().isBaseTask() != true; 
 	}
 	
 	public Task getNextPlannedTask() {
@@ -445,68 +445,59 @@ public abstract class Faction
 		public boolean isMinimum() {
 			return (resourceEfficiency + hyperdriveEfficiency + defensiveCapabilities + offensiveCapabilities) == .1;
 		}
+		
+		public boolean isMaximum() {
+			return (resourceEfficiency + hyperdriveEfficiency + defensiveCapabilities + offensiveCapabilities) == 16;
+		}
 	}
 	
 	public TechLevel getTechLevel() {
 		return tech;
 	}
 
-	//TODO add in caps
 	public void improveTechLevel() {
-		switch(new Random().nextInt(4)) {
-		case 0:
-			tech.resourceEfficiency+=.1;
-			break;
-		case 1:
-			tech.hyperdriveEfficiency+=.5;
-			break;
-		case 2:
-			tech.defensiveCapabilities+=.5;
-			break;
-		case 3:
-			tech.offensiveCapabilities+=.5;
-		default:
-			break;
-		}
+		improveTechLevel(new Random().nextInt(4));
 	}
 	
-	//TODO add in caps
 	public void improveTechLevel(int direction) {
 		switch(direction) {
-		case 0:
+		case Globals.RESOURCE_RESEARCH:
 			tech.resourceEfficiency+=.1;
+			if(tech.resourceEfficiency > Globals.MAX_RESOURCE_EFFICIENCY) tech.resourceEfficiency = Globals.MAX_RESOURCE_EFFICIENCY;
 			break;
 		case 1:
 			tech.hyperdriveEfficiency+=.5;
+			if(tech.hyperdriveEfficiency > Globals.MAX_HYPERDRIVE_EFFICIENCY) tech.hyperdriveEfficiency = Globals.MAX_HYPERDRIVE_EFFICIENCY;
 			break;
 		case 2:
 			tech.defensiveCapabilities+=.5;
+			if(tech.defensiveCapabilities > Globals.MAX_DEFENSIVE_CAPABILITIES) tech.defensiveCapabilities = Globals.MAX_DEFENSIVE_CAPABILITIES;
 			break;
 		case 3:
 			tech.offensiveCapabilities+=.5;
+			if(tech.offensiveCapabilities > Globals.MAX_OFFENSIVE_CAPABILITIES) tech.offensiveCapabilities = Globals.MAX_OFFENSIVE_CAPABILITIES;
 		default:
 			break;
 		}
 	}
 	
-	//TODO name caps
 	public void reduceTechLevel() {
 		switch(new Random().nextInt(4)) {
 		case 0:
 			tech.resourceEfficiency-=.1;
-			if(tech.resourceEfficiency < .1) tech.resourceEfficiency = .1;
+			if(tech.resourceEfficiency < Globals.MIN_RESOURCE_EFFICIENCY) tech.resourceEfficiency = Globals.MIN_RESOURCE_EFFICIENCY;
 			break;
 		case 1:
 			tech.hyperdriveEfficiency-=.5;
-			if(tech.hyperdriveEfficiency < 0) tech.hyperdriveEfficiency = 0;
+			if(tech.hyperdriveEfficiency < Globals.MIN_HYPERDRIVE_EFFICIENCY) tech.hyperdriveEfficiency = Globals.MIN_HYPERDRIVE_EFFICIENCY;
 			break;
 		case 2:
 			tech.defensiveCapabilities-=.5;
-			if(tech.defensiveCapabilities < 0) tech.defensiveCapabilities = 0;
+			if(tech.defensiveCapabilities < Globals.MIN_DEFENSIVE_CAPABILITIES) tech.defensiveCapabilities = Globals.MIN_DEFENSIVE_CAPABILITIES;
 			break;
 		case 3:
 			tech.offensiveCapabilities-=.5;
-			if(tech.offensiveCapabilities < 0) tech.offensiveCapabilities = 0;
+			if(tech.offensiveCapabilities < Globals.MIN_OFFENSIVE_CAPABILITIES) tech.offensiveCapabilities = Globals.MIN_OFFENSIVE_CAPABILITIES;
 		default:
 			break;
 		}

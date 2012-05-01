@@ -7,7 +7,6 @@ import faction.Faction;
 import settings.Globals;
 import universe.*;
 
-// TODO: THIS WHOLE CLASS!!!!!
 public class DefendTask extends Task {
 	
 	private World world;

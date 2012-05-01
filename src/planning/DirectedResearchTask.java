@@ -5,7 +5,6 @@ import faction.Faction;
 public class DirectedResearchTask extends Task {
 
 	private int direction;
-	//TODO make research directions constants
 	public DirectedResearchTask(int direction, Task parent) {
 		super(true, "Directed Research Task", parent);
 		this.direction = direction;
@@ -40,6 +39,7 @@ public class DirectedResearchTask extends Task {
 	@Override
 	public double getFlavorMatch(Faction faction) 
 	{
+		//TODO based on which direction it is going? (resource, hyperdrive, offense, defense)
 		return faction.getScience();
 	}
 
