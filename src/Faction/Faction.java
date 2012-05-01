@@ -364,16 +364,30 @@ public abstract class Faction
 	}
 	
 	// TODO: IMPLEMENT FOR PLAYER CONTROLLED
+	//Should only be called by playerControlled factions
 	public Task[] getAvailableActions()
 	{
-		if(isPlayerControlled)
-		{
-			return new Task[0];
-		}
-		else
-		{
-			return new Task[0];
-		}
+		/*
+		 * Tasks able to perform:
+		 * 
+		 * GENERAL TASKS:
+		 * Raise Morale
+		 * Research (Search and Directed
+		 * Gather Resources
+		 * Wait
+		 * 
+		 * ELSE CHOOSE PLANET:
+		 * Build Ship
+		 * Buy Ships
+		 * PlantSpy(by gate, ship, from planet)
+		 * FlyTroopsTo
+		 * Sabotage Tasks
+		 * Train Troops
+		 * Steal Ship
+		 * Transfer Ships To
+		 * Transport Troops By Gate
+		 * */
+		return new Task[0];
 	}
 	
 	//

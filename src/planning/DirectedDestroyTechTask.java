@@ -4,7 +4,6 @@ import faction.Faction;
 import settings.Globals;
 import universe.World;
 
-// TODO: Directed sabotage tech.
 public class DirectedDestroyTechTask extends Task {
 
 	private Faction target;
