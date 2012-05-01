@@ -40,7 +40,11 @@ public class Globals
 	/**
 	 * Population and population cap stuffs.
 	 */
-	public static final int DEFAULT_POPULATION_LEVEL = 3;
+	public static final int DEFAULT_POPULATION_LEVEL = 12;
+
+	public static final int TROOP_RESOURCE_BUILD_COST = 1;
+	
+	//TODO: Max and Min all tech levels, others?
 	public static final int WORLD_TROOP_POPULATION_CAP = 200;
 	public static final int WORLD_SHIP_POPULATION_CAP = 50;
 	
@@ -48,5 +52,5 @@ public class Globals
 	 * Morale controlling constants.
 	 */
 	public static final double MAX_MORALE = 0.5;
-	
+	public static final double MIN_MORALE = 0.0;
 }

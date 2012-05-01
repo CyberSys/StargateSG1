@@ -70,7 +70,7 @@ public class SabotageTask extends Task {
 	@Override
 	public double getFlavorMatch(Faction faction) 
 	{
-		return (((Globals.MAX_REPUTATION - faction.getReputationNumber(target)) / Globals.MAX_REPUTATION) *(faction.getDiplomacy() + faction.getAggression()) / 2.0);
+		return (((Globals.MAX_REPUTATION - faction.getReputationNumber(world.getControllingFaction())) / Globals.MAX_REPUTATION) *(faction.getDiplomacy() + faction.getAggression()) / 2.0);
 	}
 
 }

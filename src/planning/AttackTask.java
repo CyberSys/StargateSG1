@@ -34,15 +34,15 @@ public class AttackTask extends Task {
 		}
 		//System.out.println(completedTroopTraining);
 		if(!completedTroopTraining && !(from.getTroopCount(faction) >= attackForceSize))
-			return new TrainTroopsTask(attackForceSize, this);
+			return new TrainTroopsTask(from, attackForceSize, this);
 		else if((Math.max(0, from.getTroopCount(faction) - attackForceSize)*faction.getTechLevel().offensiveCapabilities) < fromEnemyTroops) {
 			System.out.println((from.getTroopCount(faction) - attackForceSize)*faction.getTechLevel().offensiveCapabilities + " " + fromEnemyTroops);
-			return new TrainTroopsTask((int)(fromEnemyTroops/faction.getTechLevel().offensiveCapabilities) , this);
+			return new TrainTroopsTask(from, (int)(fromEnemyTroops/faction.getTechLevel().offensiveCapabilities) , this);
 		}
 		else if((from.getTroopCount(faction) - attackForceSize)*faction.getTechLevel().offensiveCapabilities >= fromEnemyTroops && from.getTroopCount(faction) >= attackForceSize)
 			return new TransportTroopsTask(from, to, attackForceSize, this);
 		else if(from.getTroopCount(faction)*faction.getTechLevel().offensiveCapabilities < fromEnemyTroops)
-			return new TrainTroopsTask((int)(fromEnemyTroops/faction.getTechLevel().offensiveCapabilities), this);
+			return new TrainTroopsTask(from, (int)(fromEnemyTroops/faction.getTechLevel().offensiveCapabilities), this);
 //		else if(from.getTroopCount(faction)*faction.getTechLevel().offensiveCapabilities >= fromEnemyTroops && !(faction.getAttackStrength(to) > target.getDefenseStrength(to)))
 //			return new AssaultTask(to, target, this);
 //		else if(faction.getAttackStrength(to) > target.getDefenseStrength(to))
@@ -62,8 +62,8 @@ public class AttackTask extends Task {
 	}
 
 	public boolean canPerform(Faction faction) {
-		if(!new TrainTroopsTask(attackForceSize, this).isCompleted(faction) && !(to.getTroopCount(faction) > to.getTroopCount(target)))
-			return new TrainTroopsTask(attackForceSize, this).canPerform(faction);
+		if(!new TrainTroopsTask(from, attackForceSize, this).isCompleted(faction) && !(to.getTroopCount(faction) > to.getTroopCount(target)))
+			return new TrainTroopsTask(from, attackForceSize, this).canPerform(faction);
 		if(!(to.getTroopCount(faction) > to.getTroopCount(target)))
 			return new TransportTroopsTask(from, to, faction.getNumArmies(), this).canPerform(faction);
 		/*if(new AssaultTask(to, target, this).getFlavorMatch(faction) > new ConquerTask(to, this).getFlavorMatch(faction))

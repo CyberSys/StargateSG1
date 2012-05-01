@@ -2,6 +2,8 @@ package planning;
 
 import java.util.Random;
 
+import settings.Globals;
+
 import faction.Faction;
 
 public class StealShipTask extends Task {
@@ -44,8 +46,7 @@ public class StealShipTask extends Task {
 	@Override
 	public double getFlavorMatch(Faction faction) 
 	{
-		// TODO: Perhaps make this dependant on the number of ships the target has. 
-		return (faction.getAggression() * 3 + faction.getDiplomacy()) / 4.0;
+		return (((Globals.MAX_REPUTATION - faction.getReputationNumber(target)) / Globals.MAX_REPUTATION) * (faction.getAggression() * 3 + faction.getDiplomacy()) / 4.0);
 	}
 
 }
