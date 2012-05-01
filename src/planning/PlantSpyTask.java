@@ -17,34 +17,30 @@ public class PlantSpyTask extends Task {
 
 	protected List<Task> getTaskList(Faction faction) {
 		List<Task> taskList = new ArrayList<Task>();
-		taskList.add(new PlantSpyFromPlanetTask(world, limit, this));
-		taskList.add(new BuyShipTask(limit, this));
-		taskList.add(new )
+		taskList.add(new PlantSpyFromPlanetTask(world, this));
+		taskList.add(new PlantSpyByGateTask(faction.getHomeWorld(), world, this));
+		taskList.add(new PlantSpyByShipTask(faction.getHomeWorld(), world, this));
 		return taskList;
 	}
 	
 	@Override
 	public int stepsToCompletion(Faction faction) {
-		// TODO Auto-generated method stub
-		return 0;
+		return getFlavorMatchTask(faction).stepsToCompletion(faction);
 	}
 
 	@Override
 	public Task getNextStep(Faction faction) {
-		// TODO Auto-generated method stub
-		return null;
+		return getFlavorMatchTask(faction);
 	}
 
 	@Override
 	public boolean isCompleted(Faction faction) {
-		// TODO Auto-generated method stub
-		return false;
+		return didFinish;
 	}
 
 	@Override
 	public boolean canPerform(Faction faction) {
-		// TODO Auto-generated method stub
-		return false;
+		return getFlavorMatchTask(faction).canPerform(faction);
 	}
 
 	@Override

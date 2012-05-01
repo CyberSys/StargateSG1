@@ -27,6 +27,7 @@ public class PlantSpyByGateTask extends Task {
 		System.out.println("Doing " + name);
 		world.plantSpy(faction);
 		from.removeTroops(faction,  1);
+		parent.reportFinished(this);
 	}
 	
 	@Override
