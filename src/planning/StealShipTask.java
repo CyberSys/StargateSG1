@@ -28,19 +28,21 @@ public class StealShipTask extends Task {
 
 	@Override
 	public boolean isCompleted(Faction faction) {
-		return true;
+		return parent.isCompleted(faction);
 	}
 
 	@Override
 	public boolean canPerform(Faction faction) {
-		return true;
+		return faction.getHomeWorld().getShipCount(target) > 0;
 	}
 	
 	public void perform(Faction faction) {
 		System.out.println("Doing " + name);
-		if(new Random().nextBoolean()) 
+		if(new Random().nextBoolean())
+		{
 			faction.increaseShips(1, faction.getHomeWorld());
 			target.decreaseShips(1, faction.getHomeWorld());
+		}
 		return;
 	}
 
