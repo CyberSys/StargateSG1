@@ -390,7 +390,6 @@ public abstract class Faction
 		{
 			totalFlavor += task.getFlavorMatch(this);
 		}
-		
 		double flavorPick = new Random().nextDouble() * totalFlavor;
 		for(Task task : taskList)
 		{

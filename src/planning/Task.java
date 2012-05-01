@@ -57,7 +57,8 @@ public abstract class Task {
 			
 			totalFlavor += task.getFlavorMatch(faction);
 		}
-		
+//		if(totalFlavor <= 0)
+//			return new WaitTask(null);
 		double flavorPick = random.nextDouble() * totalFlavor;
 		
 		for(Task task : taskList)
