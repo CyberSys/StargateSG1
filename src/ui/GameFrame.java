@@ -329,6 +329,8 @@ public class GameFrame extends JFrame
 			
 			Task perfTask = mCurrentActions[action];
 			// TODO: Parameterize the action.		
+			// TODO: Perform the parameterized task.
+			Universe.playerFaction.setNextAction(null);
 			
 			switchLog();
 			

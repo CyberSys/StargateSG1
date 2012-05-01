@@ -6,7 +6,7 @@ import settings.Globals;
 
 import faction.Faction;
 
-
+// TODO: Fix the probabilities you bum.
 public class ResearchTask extends Task {
 
 	
@@ -51,6 +51,7 @@ public class ResearchTask extends Task {
 	@Override
 	public double getFlavorMatch(Faction faction) 
 	{
+		// TODO: Scale by distance from max tech level.
 		return faction.getScience();
 	}
 
