@@ -47,7 +47,7 @@ public class SabotageTroopsTask extends Task {
 	@Override
 	public double getFlavorMatch(Faction faction) 
 	{
-		return ((world.getTroopCount(target) / Globals.WORLD_TROOP_POPULATION_CAP) * ((faction.getAggression() + faction.getDiplomacy()) / 2.0));
+		return ((world.getTroopCount(target) / (double)Globals.WORLD_TROOP_POPULATION_CAP) * ((faction.getAggression() + faction.getDiplomacy()) / 2.0));
 	}
 
 }

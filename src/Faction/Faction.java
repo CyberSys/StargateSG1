@@ -227,7 +227,7 @@ public abstract class Faction
 		}
 	}
 	
-	public int getReputationNumber(Faction f)
+	public double getReputationNumber(Faction f)
 	{		
 		initReputation(f);
 		
