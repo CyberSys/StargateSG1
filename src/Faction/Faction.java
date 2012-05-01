@@ -364,16 +364,37 @@ public abstract class Faction
 	}
 	
 	// TODO: IMPLEMENT FOR PLAYER CONTROLLED
+	//Should only be called by playerControlled factions
 	public Task[] getAvailableActions()
 	{
-		if(isPlayerControlled)
-		{
-			return new Task[0];
-		}
-		else
-		{
-			return new Task[0];
-		}
+		/*
+		 * Tasks able to perform:
+		 * 
+		 * Build Ship: World
+		 * Buy Ship: World, #
+		 * DestroyTech: World
+		 * DirectedDestroyTech:World, tech
+		 * DirectedResearch: direction
+		 * FlyTroopsWithShips: from, to, #
+		 * GatherResources:
+		 * PlantSpyByGate:from, to
+		 * PlantSpyByShip: from, to
+		 * PlantSpyFromPlanet: world
+		 * RaiseMorale:
+		 * SabotageFleet: world
+		 * SabotageTroops: world
+		 * SearchForTechnology
+		 * SpreadDissent: world
+		 * Steal Resources: world
+		 * Steal Ship: target
+		 * Steal Tech: world
+		 * Train Troops: world
+		 * TransferShips : from, to
+		 * TransportTroopsByGate: from, to, #
+		 * Wait
+		 * 
+		 */
+		return new Task[0];
 	}
 	
 	//
