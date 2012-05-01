@@ -15,6 +15,7 @@ public class TransportTroopsTask extends Task {
 		this.limit = limit;
 	}
 
+	// TODO: Competition
 	@Override
 	public int stepsToCompletion(Faction faction) {
 		limit = Math.min(Globals.WORLD_TROOP_POPULATION_CAP - to.getTroopCount(faction), limit);

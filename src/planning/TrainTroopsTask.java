@@ -1,5 +1,6 @@
 package planning;
 
+import settings.Globals;
 import universe.World;
 import faction.Faction;
 
@@ -38,10 +39,11 @@ public class TrainTroopsTask extends Task {
 		faction.gainTroopsActive(world);
 		if(parent != null) parent.reportFinished(this);
 	}
+	
 	@Override
 	public double getFlavorMatch(Faction faction) 
 	{
-		return (faction.getAggression() + faction.getDiplomacy() + faction.getScience()) / 3.0;
+		return ((Globals.WORLD_TROOP_POPULATION_CAP - faction.getNumArmies(world)) / (double)Globals.WORLD_TROOP_POPULATION_CAP) * (faction.getAggression() + faction.getDiplomacy() + faction.getScience()) / 3.0;
 	}
 
 }
