@@ -48,12 +48,22 @@ public abstract class Task {
 	protected Task getFlavorMatchTask(Faction faction) {
 		List<Task> taskList = getTaskList(faction);
 		Task bestMatch = null;
-		for(Task task : taskList) {
-			//System.out.println(task.canPerform(faction));
-			if((bestMatch == null ||task.getFlavorMatch(faction) > bestMatch.getFlavorMatch(faction)) && task.canPerform(faction))
-				bestMatch = task;
+		double totalFlavor = 0;
+		
+		for(Task task : taskList) 
+			totalFlavor += task.getFlavorMatch(faction);
+		
+		double flavorPick = random.nextDouble() * totalFlavor;
+		
+		for(Task task : taskList)
+		{
+			flavorPick -= task.getFlavorMatch(faction);
+			
+			if(flavorPick <= 0)
+				return task;
 		}
-		return bestMatch;
+		
+		return null;
 	}
 	
 	public String toString() {
