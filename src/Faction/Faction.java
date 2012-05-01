@@ -370,30 +370,23 @@ public abstract class Faction
 		/*
 		 * Tasks able to perform:
 		 * 
-		 * Build Ship: World
-		 * Buy Ship: World, #
-		 * DestroyTech: World
-		 * DirectedDestroyTech:World, tech
-		 * DirectedResearch: direction
-		 * FlyTroopsWithShips: from, to, #
-		 * GatherResources:
-		 * PlantSpyByGate:from, to
-		 * PlantSpyByShip: from, to
-		 * PlantSpyFromPlanet: world
-		 * RaiseMorale:
-		 * SabotageFleet: world
-		 * SabotageTroops: world
-		 * SearchForTechnology
-		 * SpreadDissent: world
-		 * Steal Resources: world
-		 * Steal Ship: target
-		 * Steal Tech: world
-		 * Train Troops: world
-		 * TransferShips : from, to
-		 * TransportTroopsByGate: from, to, #
+		 * GENERAL TASKS:
+		 * Raise Morale
+		 * Research (Search and Directed
+		 * Gather Resources
 		 * Wait
 		 * 
-		 */
+		 * ELSE CHOOSE PLANET:
+		 * Build Ship
+		 * Buy Ships
+		 * PlantSpy(by gate, ship, from planet)
+		 * FlyTroopsTo
+		 * Sabotage Tasks
+		 * Train Troops
+		 * Steal Ship
+		 * Transfer Ships To
+		 * Transport Troops By Gate
+		 * */
 		return new Task[0];
 	}
 	
