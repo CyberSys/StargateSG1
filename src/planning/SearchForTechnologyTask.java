@@ -34,7 +34,7 @@ public class SearchForTechnologyTask extends Task {
 
 	@Override
 	public boolean canPerform(Faction faction) {
-		return true;
+		return !faction.getTechLevel().isMaximum();
 	}
 
 	@Override

@@ -422,6 +422,7 @@ public abstract class Faction
 			//Task sabotage = new SabotageTask(getEnemies().get(0), getEnemies().get(0).getHomeWorld(), null);
 //			plan.add(sabotage);
 		}
+		System.out.println(plan);
 		while(plan.peek().isBaseTask() != true) {
 			//System.out.println(plan + "2");
 			if(plan.peek().isCompleted(this)){ 

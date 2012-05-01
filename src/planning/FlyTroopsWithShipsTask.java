@@ -31,7 +31,7 @@ public class FlyTroopsWithShipsTask extends Task {
 	}
 
 	public void perform(Faction faction) {
-		System.out.println("Doing " + name + " with # " + limit);
+		System.out.println("Doing " + name);
 		int shipsToMove = Math.min((int)Math.ceil(limit/5.), Globals.WORLD_SHIP_POPULATION_CAP - to.getShipCount(faction));
 		from.removeTroops(faction, limit);
 		to.addTroops(faction, limit);

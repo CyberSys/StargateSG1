@@ -12,20 +12,19 @@ public class Play {
 		Universe.initialize();
 		GameFrame.getGameFrame().setVisible(true);
 		
-		Faction f = null, f2 = null;
+		Faction f,f2,f3 = f2 = f = null;
 		for(Faction faction : Universe.factions) {
 			if(faction instanceof GoauldFaction)
 				f = faction;
 			else if(faction instanceof HumanityFaction)
 				f2 = faction;
+			else if(faction instanceof TokraFaction)
+				f3 = faction;
 		}
 		f.learnWorldLocation(f2.getHomeWorld());
 
 //		f.decreaseReputation(f2, 50);
 		f2.decreaseReputation(f, 50);
-		System.out.println(f.isEnemy(f2) + " " + f2.isEnemy(f));
-		
-		f.replan();
 	
 		MainLoop:
 		while(true) {
@@ -37,6 +36,7 @@ public class Play {
 			
 			System.out.println(f.getHomeWorld());
 			System.out.println(f2.getHomeWorld());
+			System.out.println(f3.getHomeWorld());
 		}
 		System.out.println(f.didWin() ? "The Goa'uld have conquered all!" : "The humans are victorious!");
 	}

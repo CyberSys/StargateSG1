@@ -6,6 +6,8 @@ import settings.Globals;
 
 public class Reputation 
 {
+	
+	//TODO: set this up so that reputations are mutual
 	//
 	// DATA
 	//	

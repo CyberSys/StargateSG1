@@ -39,7 +39,7 @@ public class DefendTask extends Task {
 	}
 
 	public boolean canPerform(Faction faction) {
-		return true;
+		return getFlavorMatchTask(faction) != null && getFlavorMatchTask(faction).canPerform(faction);
 	}
 
 	@Override

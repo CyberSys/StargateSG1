@@ -45,7 +45,7 @@ public class ResearchTask extends Task {
 
 	@Override
 	public boolean canPerform(Faction faction) {
-		return true;
+		return getFlavorMatchTask(faction) != null && getFlavorMatchTask(faction).canPerform(faction);
 	}
 
 	@Override
