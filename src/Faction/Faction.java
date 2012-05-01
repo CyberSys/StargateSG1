@@ -205,6 +205,14 @@ public abstract class Faction
 		return enemies;
 	}
 	
+	public int getReputationNumber(Faction f)
+	{
+		if(!factionReputations.containsKey(f))
+			factionReputations.put(f, new Reputation());
+		
+		return factionReputations.get(f).currentRep;
+	}
+	
 	public ReputationLevel getReputation(Faction f)
 	{
 		if(!factionReputations.containsKey(f))

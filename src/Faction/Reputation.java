@@ -2,14 +2,13 @@ package faction;
 
 import java.util.Arrays;
 
+import settings.Globals;
+
 public class Reputation 
 {
 	//
 	// DATA
-	//
-	private static final int MAX_REP = 100;
-	private static final int MIN_REP = 0;
-	
+	//	
 	int currentRep;
 	ReputationLevel reputationLevel; 
 	
@@ -41,7 +40,7 @@ public class Reputation
 	
 	private void setReputation(int amount)
 	{
-		currentRep = Math.min(Math.max(MIN_REP, amount), MAX_REP);
+		currentRep = Math.min(Math.max(Globals.MIN_REPUTATION, amount), Globals.MAX_REPUTATION);
 		reputationLevel = ReputationLevel.getRepLevel(currentRep);
 	}
 	
