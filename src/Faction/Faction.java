@@ -8,9 +8,8 @@ import faction.Reputation.ReputationLevel;
 import planning.*;
 import universe.*;
 
-//Todo: The following:
-//Think of stats for factions to have
-//Think of way to keep track of current task so replanning not a bitch
+//TODO: The following: isDefeated, handling to make sure defeated factions do not take turns
+//TODO: conquer sets homeworld if no homeworld
 public abstract class Faction 
 {
 	//
@@ -59,7 +58,6 @@ public abstract class Faction
 	//
 	// TROOP AND SHIP MANAGEMENT
 	//
-	
 	public void increaseMorale() {
 		morale += morale >= .5 ? .05 : 0;
 	}
@@ -311,12 +309,29 @@ public abstract class Faction
 			controlledWorlds.add(w);
 			learnGateAddress(w);
 			learnWorldLocation(w);
+			
+			if(homeWorld == null)
+				homeWorld = w;
 		}
 	}
 	
 	public void loseWorldControl(World w)
-	{
+	{		
 		controlledWorlds.remove(w);
+		
+		if(homeWorld.equals(w))
+		{
+			homeWorld = null;
+			
+			if(controlledWorlds.size() > 0)
+			{
+				for(World wor : controlledWorlds)
+				{
+					if(homeWorld == null || getDefenseStrength(wor) > getDefenseStrength(homeWorld))
+						homeWorld = wor;
+				}
+			}
+		}
 	}
 	
 	//
@@ -344,6 +359,7 @@ public abstract class Faction
 		}
 	}
 	
+	// TODO: IMPLEMENT FOR PLAYER CONTROLLED
 	public Task[] getAvailableActions()
 	{
 		if(isPlayerControlled)
@@ -359,7 +375,6 @@ public abstract class Faction
 	//
 	// PLANNING STUFFS
 	//
-	
 	public Task getSuperTask() {
 		//Task attack = new AttackTask(getHomeWorld(), getEnemies().get(0).getHomeWorld(), getEnemies().get(0), 50, null);
 		//Task wait = new WaitTask(null);
@@ -434,6 +449,13 @@ public abstract class Faction
 		}
 	}
 	
+	public boolean isDefeated()
+	{
+		return (homeWorld == null);
+	}
+	
+	// TODO: Specified by factions.
+	// TODO: Abstractifineferin
 	public boolean didWin() {
 		return this.controlledWorlds.size() == 2;
 	}
@@ -495,6 +517,11 @@ public abstract class Faction
 		
 		public boolean isMaximum() {
 			return (resourceEfficiency + hyperdriveEfficiency + defensiveCapabilities + offensiveCapabilities) == 16;
+		}
+		
+		public double getTotalTechLevel()
+		{
+			return resourceEfficiency + hyperdriveEfficiency + defensiveCapabilities + offensiveCapabilities;
 		}
 
 		public boolean isMaximum(int direction) {

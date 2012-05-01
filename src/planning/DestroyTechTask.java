@@ -1,8 +1,10 @@
 package planning;
 
 import faction.Faction;
+import settings.Globals;
 import universe.World;
 
+// TODO: Directed sabotage tech.
 public class DestroyTechTask extends Task {
 
 	private Faction target;
@@ -46,7 +48,7 @@ public class DestroyTechTask extends Task {
 	@Override
 	public double getFlavorMatch(Faction faction) 
 	{
-		return (faction.getDiplomacy() + faction.getAggression()) / 2.0;
+		return ((target.getTechLevel().getTotalTechLevel() / Globals.MAX_TECH_LEVEL) * (faction.getDiplomacy() + faction.getAggression()) / 2.0);
 	}
 
 }
