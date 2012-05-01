@@ -47,7 +47,7 @@ public class SabotageFleetTask extends Task {
 	@Override
 	public double getFlavorMatch(Faction faction) 
 	{
-		return ((world.getShipCount(target) / Globals.WORLD_SHIP_POPULATION_CAP) * ((faction.getAggression() + faction.getDiplomacy()) / 2.0));
+		return ((world.getShipCount(target) / (double)Globals.WORLD_SHIP_POPULATION_CAP) * ((faction.getAggression() + faction.getDiplomacy()) / 2.0));
 	}
 
 }

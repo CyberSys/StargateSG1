@@ -9,7 +9,7 @@ public class Reputation
 	//
 	// DATA
 	//	
-	int currentRep;
+	double currentRep;
 	ReputationLevel reputationLevel; 
 	
 	//
@@ -38,9 +38,9 @@ public class Reputation
 		return this.reputationLevel.compareRep(rl);
 	}
 	
-	private void setReputation(int amount)
+	private void setReputation(double d)
 	{
-		currentRep = Math.min(Math.max(Globals.MIN_REPUTATION, amount), Globals.MAX_REPUTATION);
+		currentRep = Math.min(Math.max(Globals.MIN_REPUTATION, d), Globals.MAX_REPUTATION);
 		reputationLevel = ReputationLevel.getRepLevel(currentRep);
 	}
 	
@@ -71,7 +71,7 @@ public class Reputation
 			return name;
 		}
 		
-		private static ReputationLevel getRepLevel(int rep)
+		private static ReputationLevel getRepLevel(double rep)
 		{
 			ReputationLevel ret = null;
 			
