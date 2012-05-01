@@ -71,6 +71,7 @@ public class AttackTask extends Task {
 	
 	public double getFlavorMatch(Faction faction) 
 	{
+		//TODO: flavor based on target
 		return faction.getAggression();
 	}
 

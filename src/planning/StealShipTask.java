@@ -44,7 +44,7 @@ public class StealShipTask extends Task {
 	@Override
 	public double getFlavorMatch(Faction faction) 
 	{
-		// TODO: Perhaps make this dependant on the number of ships the target has. 
+		// TODO: flavor based on target
 		return (faction.getAggression() * 3 + faction.getDiplomacy()) / 4.0;
 	}
 
