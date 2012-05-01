@@ -50,8 +50,7 @@ public class GatherShipTask extends Task {
 	@Override
 	public double getFlavorMatch(Faction faction) 
 	{
-		// TODO: Scale to ship population cap.
-		return (faction.getAggression() + faction.getScience() + faction.getDiplomacy()) / 3.0;
+		return ((Globals.WORLD_SHIP_POPULATION_CAP - faction.getNumShips(world)) / (double)Globals.WORLD_SHIP_POPULATION_CAP) * ((faction.getAggression() + faction.getScience() + faction.getDiplomacy()) / 3.0);
 	}
 
 }
