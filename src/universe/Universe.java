@@ -59,7 +59,7 @@ public class Universe
 		
 		factions.add(goauld);
 //		factions.add(asgard);
-//		factions.add(tokra);
+		factions.add(tokra);
 	}
 	
 	public static World generateWorld()

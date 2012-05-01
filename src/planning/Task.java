@@ -47,7 +47,7 @@ public abstract class Task {
 
 	protected Task getFlavorMatchTask(Faction faction) {
 		List<Task> taskList = getTaskList(faction);
-		Task bestMatch = null;
+		//Task bestMatch = null;
 		double totalFlavor = 0;		
 		
 		for(Task task : taskList)

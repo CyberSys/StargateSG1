@@ -42,7 +42,7 @@ public class PlantSpyByShipTask extends Task {
 
 	@Override
 	public boolean canPerform(Faction faction) {
-		return from.getTroopCount(faction) > 0 && from.getShipCount(faction) > 0 && faction.knowsLocation(world);
+		return faction.knowsLocation(world);
 	}
 
 	@Override

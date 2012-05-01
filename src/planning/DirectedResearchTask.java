@@ -33,7 +33,7 @@ public class DirectedResearchTask extends Task {
 
 	@Override
 	public boolean canPerform(Faction faction) {
-		return true;
+		return faction.getTechLevel().isMaximum(direction);
 	}
 
 	@Override

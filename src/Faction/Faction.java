@@ -367,11 +367,25 @@ public abstract class Faction
 		//if(this instanceof HumanityFaction) return (troopUp);
 		//else return attack;
 		ArrayList<Task> taskList = new ArrayList<Task>();
-		taskList.add(new AttackTask(getHomeWorld(), getEnemies().get(0).getHomeWorld(), getEnemies().get(0), 
-				getEnemies().get(0).getHomeWorld().getTroopCount(getEnemies().get(0)) - 25, null));
-		taskList.add(new WaitTask(null));
-		taskList.add(new DefendTask(getHomeWorld(), null));
-		taskList.add(new SabotageTask(getEnemies().get(0).getHomeWorld(), null));
+		for(Faction enemy : getEnemies()) {
+			Task attack = new AttackTask(getHomeWorld(), enemy.getHomeWorld(), enemy, 
+					new Random().nextInt(100) + 50, null);
+			if(attack.canPerform(this))
+				taskList.add(attack);
+			Task sabotage = new SabotageTask(enemy.getHomeWorld(), null);
+			if(sabotage.canPerform(this))
+				taskList.add(sabotage);
+		}
+		
+		Task wait = new WaitTask(null);
+		Task defend = new DefendTask(getHomeWorld(), null);
+		
+		Task research = new ResearchTask(null);
+		if(defend.canPerform(this))
+			taskList.add(defend);
+		
+		if(research.canPerform(this))
+			taskList.add(research);
 		
 		//Task bestMatch = null;
 		double totalFlavor = 0;		
@@ -382,7 +396,6 @@ public abstract class Faction
 		}
 		
 		double flavorPick = new Random().nextDouble() * totalFlavor;
-		
 		for(Task task : taskList)
 		{
 			flavorPick -= task.getFlavorMatch(this);
@@ -391,7 +404,7 @@ public abstract class Faction
 				return task;
 		}
 		
-		return null;
+		return wait;
 		
 	};
 	
@@ -399,6 +412,7 @@ public abstract class Faction
 		//Do things
 		//probably check all of the highest level tasks, find the one that matches flavor the most
 		//or one that gives an end result of victory condition
+		//System.out.println(plan + "1");
 		if(timeToReplan <= 0 || plan.isEmpty()) { 
 			plan.clear(); 
 			timeToReplan = 1;
@@ -409,11 +423,13 @@ public abstract class Faction
 //			plan.add(sabotage);
 		}
 		while(plan.peek().isBaseTask() != true) {
+			//System.out.println(plan + "2");
 			if(plan.peek().isCompleted(this)){ 
 				plan.pop();
 				if(plan.isEmpty()) replan();
 			}
 			else plan.add(plan.peek().getNextStep(this));
+			//System.out.println(plan + "3");
 		}
 	}
 	
@@ -430,7 +446,7 @@ public abstract class Faction
 		if(needToReplan())
 			replan();
 		timeToReplan--;
-		System.out.println(plan);
+		System.out.println(this + " " + plan);
 		return plan.pop();
 	}
 	
@@ -478,6 +494,21 @@ public abstract class Faction
 		
 		public boolean isMaximum() {
 			return (resourceEfficiency + hyperdriveEfficiency + defensiveCapabilities + offensiveCapabilities) == 16;
+		}
+
+		public boolean isMaximum(int direction) {
+			switch(direction){
+			case Globals.RESOURCE_RESEARCH:
+				return tech.resourceEfficiency == Globals.MAX_RESOURCE_EFFICIENCY;
+			case Globals.HYPERDRIVE_RESEARCH:
+				return tech.hyperdriveEfficiency == Globals.MAX_HYPERDRIVE_EFFICIENCY;
+			case Globals.DEFENSE_RESEARCH:
+				return tech.defensiveCapabilities == Globals.MAX_DEFENSIVE_CAPABILITIES;
+			case Globals.OFFENSE_RESEARCH:
+				return tech.offensiveCapabilities == Globals.MAX_OFFENSIVE_CAPABILITIES;
+			default:
+				return false;
+			}
 		}
 	}
 	

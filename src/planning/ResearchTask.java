@@ -2,6 +2,8 @@ package planning;
 
 import java.util.*;
 
+import settings.Globals;
+
 import faction.Faction;
 
 
@@ -15,13 +17,16 @@ public class ResearchTask extends Task {
 	protected List<Task> getTaskList(Faction faction) {
 		List<Task> taskList = new ArrayList<Task>();
 		taskList.add(new SearchForTechnologyTask(this));
-		taskList.add(new DirectedResearchTask(determineDirection(), this));
+		taskList.add(new DirectedResearchTask(Globals.RESOURCE_RESEARCH, this));
+		taskList.add(new DirectedResearchTask(Globals.HYPERDRIVE_RESEARCH, this));
+		taskList.add(new DirectedResearchTask(Globals.DEFENSE_RESEARCH, this));
+		taskList.add(new DirectedResearchTask(Globals.OFFENSE_RESEARCH, this));
 		return taskList;
 	}
 	
-	private int determineDirection() {
-		return new Random().nextInt(4);
-	}
+//	private int determineDirection() {
+//		return new Random().nextInt(4);
+//	}
 
 	@Override
 	public int stepsToCompletion(Faction faction) {
