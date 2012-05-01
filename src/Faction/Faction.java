@@ -451,6 +451,7 @@ public abstract class Faction
 		return tech;
 	}
 
+	//TODO add in caps
 	public void improveTechLevel() {
 		switch(new Random().nextInt(4)) {
 		case 0:
@@ -469,6 +470,7 @@ public abstract class Faction
 		}
 	}
 	
+	//TODO add in caps
 	public void improveTechLevel(int direction) {
 		switch(direction) {
 		case 0:
@@ -487,6 +489,7 @@ public abstract class Faction
 		}
 	}
 	
+	//TODO name caps
 	public void reduceTechLevel() {
 		switch(new Random().nextInt(4)) {
 		case 0:

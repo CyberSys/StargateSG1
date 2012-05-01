@@ -2,17 +2,17 @@ package planning;
 
 import java.util.*;
 
+import settings.Globals;
 import universe.World;
 import faction.Faction;
 
 public class GatherShipTask extends Task {
 
-	// TODO: Population caps for ships.
 	private int limit;
 	private World world;
 	public GatherShipTask(World world, int limit, Task parent) {
 		super(false, "Gather Ships Task", parent);
-		this.limit = limit;
+		this.limit = Math.min(limit, Globals.WORLD_SHIP_POPULATION_CAP);
 		this.world = world;
 	}
 

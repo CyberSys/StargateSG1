@@ -207,8 +207,8 @@ public class World {
 				if(f == f2)
 					continue;
 				else if(f.isEnemy(f2) && (getTroopCount(f) > 0 || getShipCount(f) > 0) && (getTroopCount(f2) > 0 || getShipCount(f2) > 0)) {
-					removeShips(f, cm.get(f2));
-					removeShips(f2, cm.get(f));
+					removeShips(f, cm.get(f2)/2);
+					removeShips(f2, cm.get(f)/2);
 					removeTroops(f, cm.get(f2));
 					removeTroops(f2, cm.get(f));
 				}

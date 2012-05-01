@@ -1,6 +1,7 @@
 package planning;
 
 import faction.Faction;
+import settings.Globals;
 import universe.World;
 
 public class FlyTroopsWithShipsTask extends Task {
@@ -26,16 +27,16 @@ public class FlyTroopsWithShipsTask extends Task {
 
 	@Override
 	public boolean isCompleted(Faction faction) {
-		//set up world stuff to handle this
-		return to.getTroopCount(faction) >= limit;
+		return parent.didFinish;
 	}
 
 	public void perform(Faction faction) {
 		System.out.println("Doing " + name);
+		int shipsToMove = Math.min((int)Math.ceil(limit/5.), Globals.WORLD_SHIP_POPULATION_CAP - to.getShipCount(faction));
 		from.removeTroops(faction, limit);
 		to.addTroops(faction, limit);
-		from.removeShips(faction,  (int)Math.ceil(limit/5.));
-		to.addShips(faction, (int)Math.ceil(limit/5.));
+		from.removeShips(faction,  shipsToMove);
+		to.addShips(faction, shipsToMove);
 		parent.reportFinished(this);
 		
 	}
