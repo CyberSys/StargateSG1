@@ -28,7 +28,7 @@ public class Reputation
 	//
 	// METHODS
 	//	
-	public void adjustReputation(int amount)
+	public void adjustReputation(double amount)
 	{
 		setReputation(currentRep + amount);
 	}

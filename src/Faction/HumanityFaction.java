@@ -27,7 +27,8 @@ public class HumanityFaction extends Faction
 		tech.resourceEfficiency = .2;
 	}
 	
-	public boolean didWin() {
+	public boolean didWin() 
+	{
 		for(Faction faction : Universe.factions)
 			if(faction instanceof GoauldFaction)
 				return faction.isDefeated();

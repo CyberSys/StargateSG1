@@ -241,18 +241,18 @@ public abstract class Faction
 		return factionReputations.get(f).reputationLevel;
 	}
 	
-	public void increaseReputation(Faction f, int amount)
+	public void increaseReputation(Faction f, double amount)
 	{
 		initReputation(f);
 		
 		factionReputations.get(f).adjustReputation(amount);
 	}
 	
-	public void decreaseReputation(Faction f, int amount)
+	public void decreaseReputation(Faction f, double repChange)
 	{
 		initReputation(f);
 		
-		factionReputations.get(f).adjustReputation(-1 * amount);
+		factionReputations.get(f).adjustReputation(-1 * repChange);
 	}
 	
 	//

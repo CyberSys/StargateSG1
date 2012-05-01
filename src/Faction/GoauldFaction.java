@@ -3,6 +3,8 @@ package faction;
 import java.util.ArrayList;
 import java.util.Random;
 
+import faction.Reputation.ReputationLevel;
+
 import planning.AttackTask;
 import planning.DefendTask;
 import planning.ResearchTask;
@@ -32,6 +34,36 @@ public class GoauldFaction extends Faction
 		tech.defensiveCapabilities = 1;
 		tech.resourceEfficiency = .1;
 		//tech.hyperdriveEfficiency = .5;
+	}
+	
+	public void doTurn()
+	{
+		boolean allDefeated = true;
+		for(Faction f : getEnemies())
+		{
+			if(!f.isDefeated())
+				allDefeated = false;
+		}
+		
+		// Pick another fight.
+		if(allDefeated)
+		{
+			Faction newEnemy = null;
+			
+			for(Faction f : Universe.factions)
+			{
+				if(!isEnemy(f) && !f.isDefeated())
+				{
+					if(newEnemy == null || f.getDefenseStrength(f.getHomeWorld()) < newEnemy.getDefenseStrength(newEnemy.getHomeWorld()))
+						newEnemy = f;
+				}
+			}
+			
+			double repChange = getReputationNumber(newEnemy) - ReputationLevel.ENEMY.threshold;
+			decreaseReputation(newEnemy, repChange);
+		}
+		
+		super.doTurn();
 	}
 	
 	protected ArrayList<Task> getTaskList() {
@@ -71,11 +103,14 @@ public class GoauldFaction extends Faction
 		return taskList;
 	}
 	
-	public boolean didWin() {
-		for(Faction faction : this.factionReputations.keySet()) {
+	public boolean didWin() 
+	{
+		for(Faction faction : Universe.factions) 
+		{
 			if(!faction.isDefeated())
 				return false;
 		}
+		
 		return true;
 	}
 }

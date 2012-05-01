@@ -86,7 +86,10 @@ public class Universe
 		for(Faction f : factions)
 		{
 			if(f.didWin())
+			{
+				// TODO: Any other victory stuffs.
 				return;
+			}
 		}
 		
 		for(Faction f : factions)
