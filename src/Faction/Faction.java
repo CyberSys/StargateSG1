@@ -360,6 +360,41 @@ public abstract class Faction
 	// PLANNING STUFFS
 	//
 	
+	public Task getSuperTask() {
+		//Task attack = new AttackTask(getHomeWorld(), getEnemies().get(0).getHomeWorld(), getEnemies().get(0), 50, null);
+		//Task wait = new WaitTask(null);
+		//Task troopUp = new TrainTroopsTask(getHomeWorld(), 200, null);
+		//if(this instanceof HumanityFaction) return (troopUp);
+		//else return attack;
+		ArrayList<Task> taskList = new ArrayList<Task>();
+		taskList.add(new AttackTask(getHomeWorld(), getEnemies().get(0).getHomeWorld(), getEnemies().get(0), 
+				getEnemies().get(0).getHomeWorld().getTroopCount(getEnemies().get(0)) - 25, null));
+		taskList.add(new WaitTask(null));
+		taskList.add(new DefendTask(getHomeWorld(), null));
+		taskList.add(new SabotageTask(getEnemies().get(0).getHomeWorld(), null));
+		
+		//Task bestMatch = null;
+		double totalFlavor = 0;		
+		
+		for(Task task : taskList)
+		{
+			totalFlavor += task.getFlavorMatch(this);
+		}
+		
+		double flavorPick = new Random().nextDouble() * totalFlavor;
+		
+		for(Task task : taskList)
+		{
+			flavorPick -= task.getFlavorMatch(this);
+			
+			if(flavorPick <= 0)
+				return task;
+		}
+		
+		return null;
+		
+	};
+	
 	public void replan() {
 		//Do things
 		//probably check all of the highest level tasks, find the one that matches flavor the most
@@ -369,12 +404,7 @@ public abstract class Faction
 			timeToReplan = 1;
 //			System.out.println(this);
 //			System.out.println(getEnemies());
-			Task attack = new AttackTask(getHomeWorld(), getEnemies().get(0).getHomeWorld(), getEnemies().get(0), 50, null);
-			Task wait = new WaitTask(null);
-			Task troopUp = new TrainTroopsTask(getHomeWorld(), 200, null);
-			if(this instanceof HumanityFaction) plan.add(troopUp);
-			else
-			plan.add(attack);
+			plan.add(getSuperTask());
 			//Task sabotage = new SabotageTask(getEnemies().get(0), getEnemies().get(0).getHomeWorld(), null);
 //			plan.add(sabotage);
 		}
