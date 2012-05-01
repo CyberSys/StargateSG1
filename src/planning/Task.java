@@ -52,6 +52,9 @@ public abstract class Task {
 		
 		for(Task task : taskList)
 		{
+			if(!task.canPerform(faction))
+				continue;
+			
 			totalFlavor += task.getFlavorMatch(faction);
 		}
 		
@@ -59,6 +62,9 @@ public abstract class Task {
 		
 		for(Task task : taskList)
 		{
+			if(!task.canPerform(faction))
+				continue;
+			
 			flavorPick -= task.getFlavorMatch(faction);
 			
 			if(flavorPick <= 0)
