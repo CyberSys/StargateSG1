@@ -31,7 +31,7 @@ public class RaiseMoraleTask extends Task {
 		if(random.nextBoolean()) //Spy was caught
 			world.exposeSpy(faction);
 		else {
-			world.decreaseMorale();
+			world.getControllingFaction().decreaseMorale();
 			parent.reportFinished(this);
 		}
 	}

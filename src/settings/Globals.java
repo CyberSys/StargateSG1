@@ -36,7 +36,11 @@ public class Globals
 	/**
 	 * The rate at which a planet generates troops.
 	 */
-	public static final int DEFAULT_POPULATION_LEVEL = 3;
+	public static final int DEFAULT_POPULATION_LEVEL = 12;
 
 	public static final int WORLD_POPULATION_CAP = 200;
+
+	public static final int TROOP_RESOURCE_BUILD_COST = 1;
+	
+	//TODO: MaxMorale, MinMorale, Max and Min all tech levels, others?
 }

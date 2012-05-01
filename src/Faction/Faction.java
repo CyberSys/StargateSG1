@@ -59,6 +59,15 @@ public abstract class Faction
 	//
 	// TROOP AND SHIP MANAGEMENT
 	//
+	
+	public void increaseMorale() {
+		morale += morale >= .5 ? .05 : 0;
+	}
+	
+	public void decreaseMorale() {
+		morale -= morale <= 0 ? .05 : 0;
+	}
+	
 	public void increaseTroops(int amount)
 	{
 		increaseTroops(amount, homeWorld);
@@ -69,7 +78,7 @@ public abstract class Faction
 		w.addTroops(this, amount);
 	}
 	
-	private void gainTroopsPassive()
+	public void gainTroopsPassive()
 	{
 		for(World w : controlledWorlds)
 		{
@@ -77,9 +86,16 @@ public abstract class Faction
 		}
 	}
 	
-	private void gainTroopsPassive(World w)
+	public void gainTroopsPassive(World w)
 	{
-		increaseTroops((int)(w.getPassiveTroops() * morale), w);
+		increaseTroops((int)(w.getPassiveTroops()), w);
+	}
+	
+	public void gainTroopsActive(World w)
+	{
+		int numTroops = Math.min((int)(w.getPassiveTroops() * morale) * Globals.TROOP_RESOURCE_BUILD_COST, numResources);
+		increaseTroops(numTroops, w);
+		removeResources(numTroops);
 	}
 	
 	public void decreaseTroops(int amount)
@@ -347,8 +363,8 @@ public abstract class Faction
 //			System.out.println(getEnemies());
 			Task attack = new AttackTask(getHomeWorld(), getEnemies().get(0).getHomeWorld(), getEnemies().get(0), 50, null);
 			Task wait = new WaitTask(null);
-			Task troopUp = new TrainTroopsTask(200, null);
-			if(this instanceof HumanityFaction) plan.add(wait);
+			Task troopUp = new TrainTroopsTask(getHomeWorld(), 200, null);
+			if(this instanceof HumanityFaction) plan.add(troopUp);
 			else
 			plan.add(attack);
 			//Task sabotage = new SabotageTask(getEnemies().get(0), getEnemies().get(0).getHomeWorld(), null);

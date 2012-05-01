@@ -21,7 +21,7 @@ public class PlantSpyByShipTask extends Task {
 	@Override
 	public Task getNextStep(Faction faction) {
 		if(from.getTroopCount(faction) == 0)
-			return new TrainTroopsTask(1, this);
+			return new TrainTroopsTask(from, 1, this);
 		if(from.getShipCount(faction) == 0)
 			return new GatherShipTask(from, 1, this);
 		return this;

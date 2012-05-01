@@ -1,18 +1,21 @@
 package planning;
 
+import universe.World;
 import faction.Faction;
 
 public class TrainTroopsTask extends Task {
 
 	public int limit;
-	public TrainTroopsTask(int limit, Task parent) {
+	private World world;
+	public TrainTroopsTask(World world, int limit, Task parent) {
 		super(true, "Train Troops Task", parent);
 		this.limit = limit;
+		this.world = world;
 	}
 
 	@Override
 	public int stepsToCompletion(Faction faction) {
-		return limit - faction.getNumArmies();
+		return limit - faction.getNumArmies(world);
 	}
 
 	@Override
@@ -22,18 +25,17 @@ public class TrainTroopsTask extends Task {
 
 	@Override
 	public boolean isCompleted(Faction faction) {
-		return faction.getNumArmies() >= limit;
+		return faction.getNumArmies(world) >= limit;
 	}
 
 	@Override
 	public boolean canPerform(Faction faction) {
-		return faction.getNumArmies() < limit;
+		return faction.getNumArmies(world) < limit;
 	}
 
 	public void perform(Faction faction) {
-		System.out.println("Doing " + name + " for " + limit + " troops.");
-		System.out.println(isCompleted(faction));
-		faction.increaseTroops(faction.getHomeWorld().getPassiveTroops(), faction.getHomeWorld());
+		System.out.println("Doing " + name);
+		faction.gainTroopsActive(world);
 		if(parent != null) parent.reportFinished(this);
 	}
 	@Override

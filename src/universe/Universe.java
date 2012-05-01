@@ -82,7 +82,7 @@ public class Universe
 		GameFrame.getGameFrame().addToLog("Begin Round " + roundNumber, "");
 		
 		for(World w : addressBook.values()) {
-			w.addTroops(w.getControllingFaction(), w.getPassiveTroops());
+			//w.addTroops(w.getControllingFaction(), w.getPassiveTroops());
 			w.doCombat();
 		}
 		
