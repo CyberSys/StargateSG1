@@ -67,8 +67,9 @@ public class SabotageTask extends Task {
 	}
 
 	@Override
-	public double getFlavorMatch(Faction faction) {
-		return faction.getDiplomacy();
+	public double getFlavorMatch(Faction faction) 
+	{
+		return (faction.getDiplomacy() + faction.getAggression()) / 2.0;
 	}
 
 }

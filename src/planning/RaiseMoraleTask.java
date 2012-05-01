@@ -1,6 +1,7 @@
 package planning;
 
 import faction.Faction;
+import settings.Globals;
 import universe.World;
 
 public class RaiseMoraleTask extends Task {
@@ -42,9 +43,9 @@ public class RaiseMoraleTask extends Task {
 	}
 
 	@Override
-	public double getFlavorMatch(Faction faction) {
-		// TODO Auto-generated method stub
-		return 0;
+	public double getFlavorMatch(Faction faction) 
+	{
+		return (((Globals.MAX_MORALE - faction.morale) / Globals.MAX_MORALE) * ((faction.getAggression() * 3 + faction.getScience() * 2 + faction.getDiplomacy() * 2) / 7.0));
 	}
 
 }

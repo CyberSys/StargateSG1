@@ -7,6 +7,7 @@ import faction.Faction;
 
 public class GatherShipTask extends Task {
 
+	// TODO: Population caps for ships.
 	private int limit;
 	private World world;
 	public GatherShipTask(World world, int limit, Task parent) {
@@ -66,9 +67,9 @@ public class GatherShipTask extends Task {
 	}
 
 	@Override
-	public double getFlavorMatch(Faction faction) {
-		// TODO Auto-generated method stub
-		return 0;
+	public double getFlavorMatch(Faction faction) 
+	{
+		return (faction.getAggression() + faction.getScience() + faction.getDiplomacy()) / 3.0;
 	}
 
 }

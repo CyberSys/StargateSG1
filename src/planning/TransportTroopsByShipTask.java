@@ -36,14 +36,15 @@ public class TransportTroopsByShipTask extends Task {
 	}
 	
 	@Override
-	public boolean canPerform(Faction faction) {
+	public boolean canPerform(Faction faction) 
+	{
 		return faction.getNumShips() >= (int)Math.ceil(faction.getNumArmies()/5) && faction.knowsLocation(to);
 	}
 
 	@Override
-	public double getFlavorMatch(Faction faction) {
-		// TODO Auto-generated method stub
-		return 0;
+	public double getFlavorMatch(Faction faction) 
+	{
+		return (faction.getAggression() + faction.getDiplomacy() + faction.getScience()) / 3.0;
 	}
 
 }

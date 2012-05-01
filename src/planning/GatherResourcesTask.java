@@ -38,9 +38,9 @@ public class GatherResourcesTask extends Task {
 	}
 
 	@Override
-	public double getFlavorMatch(Faction faction) {
-		// TODO Auto-generated method stub
-		return 0;
+	public double getFlavorMatch(Faction faction) 
+	{
+		return (faction.getAggression() + faction.getScience() + faction.getDiplomacy()) / 3.0;
 	}
 
 }

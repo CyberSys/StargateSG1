@@ -42,9 +42,10 @@ public class SpreadDissentTask extends Task {
 	}
 
 	@Override
-	public double getFlavorMatch(Faction faction) {
-		// TODO Auto-generated method stub
-		return 0;
+	public double getFlavorMatch(Faction faction) 
+	{
+		// TODO: Less likely to spread dissent when target's morale is low.
+		return (faction.getDiplomacy() * 3 + faction.getAggression() * 2) / 5.0;
 	}
 
 }

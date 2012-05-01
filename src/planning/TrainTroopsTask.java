@@ -37,8 +37,9 @@ public class TrainTroopsTask extends Task {
 		if(parent != null) parent.reportFinished(this);
 	}
 	@Override
-	public double getFlavorMatch(Faction faction) {
-		return 0;
+	public double getFlavorMatch(Faction faction) 
+	{
+		return (faction.getAggression() + faction.getDiplomacy() + faction.getScience()) / 3.0;
 	}
 
 }

@@ -158,7 +158,7 @@ public class World {
 	//
 	public int getPassiveTroops()
 	{
-		return controllingFaction.getNumArmies(this) >= Globals.WORLD_POPULATION_CAP ? 0 : Math.min(Globals.WORLD_POPULATION_CAP - controllingFaction.getNumArmies(this), basePopulation); 
+		return controllingFaction.getNumArmies(this) >= Globals.WORLD_TROOP_POPULATION_CAP ? 0 : Math.min(Globals.WORLD_TROOP_POPULATION_CAP - controllingFaction.getNumArmies(this), basePopulation); 
 	}
 	
 	public void increaseMorale() {

@@ -43,7 +43,7 @@ public class BuyShipTask extends Task {
 
 	@Override
 	public double getFlavorMatch(Faction faction) {
-		return faction.getDiplomacy()*5;
+		return ((faction.getDiplomacy() * 2) + faction.getAggression() + faction.getScience()) / 4.0;
 	}
 
 }

@@ -44,8 +44,9 @@ public class DestroyTechTask extends Task {
 	}
 
 	@Override
-	public double getFlavorMatch(Faction faction) {
-		return faction.getDiplomacy() + faction.getAggression()*.5 + faction.getScience();
+	public double getFlavorMatch(Faction faction) 
+	{
+		return (faction.getDiplomacy() + faction.getAggression()) / 2.0;
 	}
 
 }

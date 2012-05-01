@@ -3,6 +3,7 @@ package planning;
 import faction.Faction;
 import universe.*;
 
+// TODO: THIS WHOLE CLASS!!!!!
 public class DefendTask extends Task {
 	
 	private World world;
@@ -21,7 +22,8 @@ public class DefendTask extends Task {
 	}
 
 	//TODO: Think about how to determine if you should proceed with the attack - how many troops to move and whatnot
-	public Task getNextStep(Faction faction) {
+	public Task getNextStep(Faction faction) 
+	{
 		if(!new TrainTroopsTask(world.getTroopCount(target), this).isCompleted(faction))
 			return new TrainTroopsTask(world.getTroopCount(target), this);
 		return new AssaultTask(world, target, this);
@@ -37,7 +39,8 @@ public class DefendTask extends Task {
 		return new AssaultTask(world, target, this).canPerform(faction);
 		}
 		
-	public double getFlavorMatch(Faction faction) {
-		return faction.getAggression();
+	public double getFlavorMatch(Faction faction) 
+	{
+		return (faction.getAggression() + faction.getDiplomacy() + faction.getScience()) / 3.0;
 	}
 }
