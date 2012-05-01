@@ -14,6 +14,8 @@ public class ResearchTask extends Task {
 		super(false, "Research Task", parent);
 	}
 
+	//TODO remove hyperdrive EVERYWHARE!
+	
 	protected List<Task> getTaskList(Faction faction) {
 		List<Task> taskList = new ArrayList<Task>();
 		taskList.add(new SearchForTechnologyTask(this));

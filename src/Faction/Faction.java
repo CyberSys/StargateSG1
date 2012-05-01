@@ -376,38 +376,8 @@ public abstract class Faction
 	// PLANNING STUFFS
 	//
 	public Task getSuperTask() {
-		//Task attack = new AttackTask(getHomeWorld(), getEnemies().get(0).getHomeWorld(), getEnemies().get(0), 50, null);
-		//Task wait = new WaitTask(null);
-		//Task troopUp = new TrainTroopsTask(getHomeWorld(), 200, null);
-		//if(this instanceof HumanityFaction) return (troopUp);
-		//else return attack;
-		ArrayList<Task> taskList = new ArrayList<Task>();
-		for(Faction enemy : getEnemies()) {
-			Task attack = new AttackTask(getHomeWorld(), enemy.getHomeWorld(), enemy, 
-					new Random().nextInt(100) + 50, null);
-			if(attack.canPerform(this))
-				taskList.add(attack);
-		}
 		
-		for(Faction faction : Universe.factions) {
-			if(faction != this) {
-				Task sabotage = new SabotageTask(faction.getHomeWorld(), null);
-				if(sabotage.canPerform(this))
-					taskList.add(sabotage);
-			}
-		}
-		
-		Task wait = new WaitTask(null);
-		Task defend = new DefendTask(getHomeWorld(), null);
-		
-		Task research = new ResearchTask(null);
-		if(defend.canPerform(this))
-			taskList.add(defend);
-		
-		if(research.canPerform(this))
-			taskList.add(research);
-		
-		//Task bestMatch = null;
+		ArrayList<Task> taskList = getTaskList();
 		double totalFlavor = 0;		
 		
 		for(Task task : taskList)
@@ -424,10 +394,44 @@ public abstract class Faction
 				return task;
 		}
 		
-		return wait;
+		return new WaitTask(null);
 		
 	};
 	
+	protected ArrayList<Task> getTaskList() {
+		ArrayList<Task> taskList = new ArrayList<Task>();
+		for(Faction enemy : getEnemies()) {
+			for(World to : enemy.getControlledWorlds()) {
+				for(World from : getControlledWorlds()) {
+					Task attack = new AttackTask(from, to, enemy, 
+							new Random().nextInt(100) + 50, null);
+					if(attack.canPerform(this))
+						taskList.add(attack);
+				}
+			}
+		}
+		
+		for(Faction faction : Universe.factions) {
+			if(faction != this) {
+				for(World world : faction.getControlledWorlds()) {
+					Task sabotage = new SabotageTask(world, null);
+					if(sabotage.canPerform(this))
+						taskList.add(sabotage);
+				}
+			}
+		}
+		Task defend = new DefendTask(getHomeWorld(), null);
+		
+		Task research = new ResearchTask(null);
+		if(defend.canPerform(this))
+			taskList.add(defend);
+		
+		if(research.canPerform(this))
+			taskList.add(research);
+		
+		return taskList;
+	}
+
 	public void replan() {
 		//Do things
 		//probably check all of the highest level tasks, find the one that matches flavor the most
@@ -461,9 +465,7 @@ public abstract class Faction
 	
 	// TODO: Specified by factions.
 	// TODO: Abstractifineferin
-	public boolean didWin() {
-		return this.controlledWorlds.size() == 2;
-	}
+	public abstract boolean didWin();
 	
 	public boolean needToReplan() {
 		//Replan if your plan is empty, you need to replan, or you don't have a base task to perform

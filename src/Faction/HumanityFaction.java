@@ -28,6 +28,9 @@ public class HumanityFaction extends Faction
 	}
 	
 	public boolean didWin() {
-		return this.controlledWorlds.size() == 2;
+		for(Faction faction : Universe.factions)
+			if(faction instanceof GoauldFaction)
+				return faction.isDefeated();
+		return false;
 	}
 }

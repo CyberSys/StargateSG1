@@ -37,7 +37,12 @@ public class Play {
 			System.out.println(f.getHomeWorld());
 			System.out.println(f2.getHomeWorld());
 			System.out.println(f3.getHomeWorld());
+			
+			System.out.println(f3.getReputation(f));
+			System.out.println(f.getReputation(f3));
 		}
-		System.out.println(f.didWin() ? "The Goa'uld have conquered all!" : "The humans are victorious!");
+		for(Faction fact : new Faction[] {f, f2, f3})
+			System.out.println(fact + " " + fact.getControlledWorlds());
+		System.out.println(f.didWin() ? "The Goa'uld have conquered all!" : "The Goa'uld are defeated!");
 	}
 }

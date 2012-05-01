@@ -1,5 +1,13 @@
 package faction;
 
+import java.util.ArrayList;
+import java.util.Random;
+
+import planning.AttackTask;
+import planning.DefendTask;
+import planning.ResearchTask;
+import planning.SabotageTask;
+import planning.Task;
 import universe.*;
 
 public class GoauldFaction extends Faction 
@@ -26,7 +34,48 @@ public class GoauldFaction extends Faction
 		tech.hyperdriveEfficiency = .5;
 	}
 	
+	protected ArrayList<Task> getTaskList() {
+		ArrayList<Task> taskList = new ArrayList<Task>();
+		if(getEnemies().isEmpty() && !didWin()) {
+			//TODO: if there are no enemies, pick someone and make them an enemy
+		}
+		for(Faction enemy : getEnemies()) {
+			for(World to : enemy.getControlledWorlds()) {
+				for(World from : getControlledWorlds()) {
+					Task attack = new AttackTask(from, to, enemy, 
+							new Random().nextInt(100) + 50, null);
+					if(attack.canPerform(this))
+						taskList.add(attack);
+				}
+			}
+		}
+		
+		for(Faction faction : Universe.factions) {
+			if(faction != this) {
+				for(World world : faction.getControlledWorlds()) {
+					Task sabotage = new SabotageTask(world, null);
+					if(sabotage.canPerform(this))
+						taskList.add(sabotage);
+				}
+			}
+		}
+		Task defend = new DefendTask(getHomeWorld(), null);
+		
+		Task research = new ResearchTask(null);
+		if(defend.canPerform(this))
+			taskList.add(defend);
+		
+		if(research.canPerform(this))
+			taskList.add(research);
+		
+		return taskList;
+	}
+	
 	public boolean didWin() {
-		return this.controlledWorlds.size() == 2;
+		for(Faction faction : this.factionReputations.keySet()) {
+			if(!faction.isDefeated())
+				return false;
+		}
+		return true;
 	}
 }
