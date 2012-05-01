@@ -158,7 +158,15 @@ public class World {
 	//
 	public int getPassiveTroops()
 	{
-		return basePopulation; 
+		return controllingFaction.getNumArmies(this) >= Globals.WORLD_POPULATION_CAP ? 0 : Math.min(Globals.WORLD_POPULATION_CAP - controllingFaction.getNumArmies(this), basePopulation); 
+	}
+	
+	public void increaseMorale() {
+		basePopulation += basePopulation == 10 ? 1 : 0;
+	}
+	
+	public void decreaseMorale() {
+		basePopulation -= basePopulation == 1 ? 1 : 0;
 	}
 	
 	//
@@ -177,6 +185,7 @@ public class World {
 	public String toString() {
 		String string = "";
 		for(Faction  f : factionStats.keySet()) {
+			string += f + " ";
 			string += factionStats.get(f).toString();
 			string += "\n";
 		}
@@ -199,7 +208,7 @@ public class World {
 	public void doCombat() {
 		Map<Faction, Integer> cm = new HashMap<Faction, Integer>();
 		for(Faction f : factionStats.keySet()) {
-			cm.put(f, getControllingFaction() == f ? (int)((f.getDefenseStrength(this)*Globals.DEFENSE_STRENGTH_BONUS)/100 + 1) : (int)(f.getAttackStrength(this)/100 + 1));
+			cm.put(f, getControllingFaction() == f ? (int)(Math.ceil(f.getDefenseStrength(this)*Globals.DEFENSE_STRENGTH_BONUS/100)) + 1 : (int)Math.ceil(f.getAttackStrength(this)/100) + 1);
 		}
 		for(Faction f : factionStats.keySet()) {
 			for(Faction f2 : factionStats.keySet()) {

@@ -346,18 +346,25 @@ public abstract class Faction
 //			System.out.println(this);
 //			System.out.println(getEnemies());
 			Task attack = new AttackTask(getHomeWorld(), getEnemies().get(0).getHomeWorld(), getEnemies().get(0), 50, null);
+			Task wait = new WaitTask(null);
+			Task troopUp = new TrainTroopsTask(200, null);
+			if(this instanceof HumanityFaction) plan.add(wait);
+			else
 			plan.add(attack);
-//			Task sabotage = new SabotageTask(getEnemies().get(0), getEnemies().get(0).getHomeWorld(), null);
+			//Task sabotage = new SabotageTask(getEnemies().get(0), getEnemies().get(0).getHomeWorld(), null);
 //			plan.add(sabotage);
 		}
 		while(plan.peek().isBaseTask() != true) {
-			//System.out.println(plan.peek());
 			if(plan.peek().isCompleted(this)){ 
 				plan.pop();
 				if(plan.isEmpty()) replan();
 			}
 			else plan.add(plan.peek().getNextStep(this));
 		}
+	}
+	
+	public boolean didWin() {
+		return this.controlledWorlds.size() == 2;
 	}
 	
 	public boolean needToReplan() {

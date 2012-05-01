@@ -28,7 +28,7 @@ public class TransportTroopsByShipTask extends Task {
 
 	@Override
 	public boolean isCompleted(Faction faction) {
-		return to.getTroopCount(faction) >= limit && to.getShipCount(faction) >= (int)Math.ceil(limit/5.);
+		return parent.didFinish;
 	}
 
 	public void reportFinished() {

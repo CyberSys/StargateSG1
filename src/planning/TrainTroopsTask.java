@@ -32,8 +32,9 @@ public class TrainTroopsTask extends Task {
 
 	public void perform(Faction faction) {
 		System.out.println("Doing " + name + " for " + limit + " troops.");
-		faction.increaseTroops(5);
-		parent.reportFinished(this);
+		System.out.println(isCompleted(faction));
+		faction.increaseTroops(faction.getHomeWorld().getPassiveTroops(), faction.getHomeWorld());
+		if(parent != null) parent.reportFinished(this);
 	}
 	@Override
 	public double getFlavorMatch(Faction faction) {

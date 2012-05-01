@@ -23,7 +23,7 @@ public class SabotageTask extends Task {
 		taskList.add(new StealResourcesTask(world, this));
 		taskList.add(new StealTechTask(world, this));
 		taskList.add(new DestroyTechTask(world, this));
-		//taskList.add(new SpreadDissentTask(target, world, this));
+		taskList.add(new SpreadDissentTask(world, this));
 		return taskList;
 	}
 	

@@ -26,7 +26,7 @@ public class Globals
 	/**
 	 * Home field advantage during combat.
 	 */
-	public static final double DEFENSE_STRENGTH_BONUS = 3;
+	public static final double DEFENSE_STRENGTH_BONUS = 2;
 	
 	/**
 	 * The mean resource amount of a planet.
@@ -36,5 +36,7 @@ public class Globals
 	/**
 	 * The rate at which a planet generates troops.
 	 */
-	public static final int DEFAULT_POPULATION_LEVEL = 10;
+	public static final int DEFAULT_POPULATION_LEVEL = 3;
+
+	public static final int WORLD_POPULATION_CAP = 200;
 }

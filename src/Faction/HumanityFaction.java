@@ -26,4 +26,8 @@ public class HumanityFaction extends Faction
 		tech.defensiveCapabilities = .75;
 		tech.resourceEfficiency = .2;
 	}
+	
+	public boolean didWin() {
+		return this.controlledWorlds.size() == 2;
+	}
 }

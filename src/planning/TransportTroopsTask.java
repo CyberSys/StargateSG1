@@ -1,6 +1,7 @@
 package planning;
 
 import faction.Faction;
+import settings.Globals;
 import universe.World;
 
 public class TransportTroopsTask extends Task {
@@ -11,11 +12,12 @@ public class TransportTroopsTask extends Task {
 		super(false, "Transport Troops Task", parent);
 		this.from = from;
 		this.to = to;
-		this.limit = Math.min(limit, 100);
+		this.limit = limit;
 	}
 
 	@Override
 	public int stepsToCompletion(Faction faction) {
+		limit = Math.min(Globals.WORLD_POPULATION_CAP - to.getTroopCount(faction), limit);
 		boolean canByGate = false, canByShip = false;
 		if(from.hasGate && to.hasGate && faction.knowsGateAddress(to)) {
 			canByGate = true;
@@ -34,6 +36,7 @@ public class TransportTroopsTask extends Task {
 
 	@Override
 	public Task getNextStep(Faction faction) {
+		limit = Math.min(Globals.WORLD_POPULATION_CAP - to.getTroopCount(faction), limit);
 		boolean canByGate = false, canByShip = false;
 		if(from.hasGate && to.hasGate && faction.knowsGateAddress(to)) {
 			canByGate = true;

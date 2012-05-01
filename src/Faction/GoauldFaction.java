@@ -25,4 +25,8 @@ public class GoauldFaction extends Faction
 		tech.resourceEfficiency = .1;
 		tech.hyperdriveEfficiency = .5;
 	}
+	
+	public boolean didWin() {
+		return this.controlledWorlds.size() == 2;
+	}
 }

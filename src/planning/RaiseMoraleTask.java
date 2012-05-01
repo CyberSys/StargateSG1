@@ -3,11 +3,11 @@ package planning;
 import faction.Faction;
 import universe.World;
 
-public class SpreadDissentTask extends Task {
+public class RaiseMoraleTask extends Task {
 
 	private World world;
-	public SpreadDissentTask(World world, Task parent) {
-		super(true, "Spread Dissent Task", parent);
+	public RaiseMoraleTask(World world, Task parent) {
+		super(true, "Raise Morale Task", parent);
 		this.world = world;
 	}
 

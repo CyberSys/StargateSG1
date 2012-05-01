@@ -21,32 +21,23 @@ public class Play {
 		}
 		f.learnWorldLocation(f2.getHomeWorld());
 
-		f.decreaseReputation(f2, 50);
-		f2.decreaseReputation(f, 100);
+//		f.decreaseReputation(f2, 50);
+		f2.decreaseReputation(f, 50);
 		System.out.println(f.isEnemy(f2) + " " + f2.isEnemy(f));
 		
 		f.replan();
 	
+		MainLoop:
 		while(true) {
+			Universe.elapseTime();
+			for(Faction faction : Universe.factions) {
+				if(faction.didWin())
+					break MainLoop;
+			}
+			
 			System.out.println(f.getHomeWorld());
 			System.out.println(f2.getHomeWorld());
-			System.out.println(f);
-			System.out.println(f2);
-//			f.doTurn();
-//			f2.doTurn();
-			Universe.elapseTime();
-			if(f2.getHomeWorld().getControllingFaction() == f && f.getHomeWorld().getControllingFaction() == f)
-				break;
-			if(f2.getHomeWorld().getControllingFaction() == f2 && f.getHomeWorld().getControllingFaction() == f2)
-				break;
-			if(f2.getTechLevel().isMinimum() && f2.getNumArmies(f2.getHomeWorld()) == 0 && f2.getNumShips(f2.getHomeWorld()) == 0)
-				break;
-			if(f.getTechLevel().isMinimum() && f.getNumArmies(f.getHomeWorld()) == 0 && f.getNumShips(f.getHomeWorld()) == 0)
-				break;
 		}
-//		System.out.println(f2.getHomeWorld().getControllingFaction() == f);
-//		System.out.println(f.getHomeWorld().getControllingFaction() == f2);
-		System.out.println(f2.getTechLevel().isMinimum() && f2.getNumArmies(f2.getHomeWorld()) == 0 && f2.getNumShips(f2.getHomeWorld()) == 0);
-		System.out.println(f.getTechLevel().isMinimum() && f.getNumArmies(f.getHomeWorld()) == 0 && f.getNumShips(f.getHomeWorld()) == 0);
+		System.out.println(f.didWin() ? "The Goa'uld have conquered all!" : "The humans are victorious!");
 	}
 }
