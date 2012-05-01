@@ -91,7 +91,8 @@ public class Universe
 		
 		for(Faction f : factions)
 		{
-			f.doTurn();
+			if(!f.isDefeated())
+				f.doTurn();
 		}
 
 		roundNumber++;

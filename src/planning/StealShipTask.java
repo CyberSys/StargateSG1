@@ -7,9 +7,7 @@ import settings.Globals;
 import faction.Faction;
 
 public class StealShipTask extends Task {
-
-	// TODO: Implement this class more fully.  Currently not really up to date.
-	// TODO: this class seems up to date...what do you want from it?
+	
 	private Faction target;
 	public StealShipTask(Faction target, Task parent) {
 		super(true, "Steal Ship Task", parent);

@@ -6,7 +6,6 @@ import settings.Globals;
 
 import faction.Faction;
 
-// TODO: Fix the probabilities you bum.
 public class ResearchTask extends Task {
 
 	
@@ -25,10 +24,6 @@ public class ResearchTask extends Task {
 		taskList.add(new DirectedResearchTask(Globals.OFFENSE_RESEARCH, this));
 		return taskList;
 	}
-	
-//	private int determineDirection() {
-//		return new Random().nextInt(4);
-//	}
 
 	@Override
 	public int stepsToCompletion(Faction faction) {

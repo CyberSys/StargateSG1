@@ -8,8 +8,6 @@ import faction.Reputation.ReputationLevel;
 import planning.*;
 import universe.*;
 
-//TODO: The following: isDefeated, handling to make sure defeated factions do not take turns
-//TODO: conquer sets homeworld if no homeworld
 public abstract class Faction 
 {
 	//
@@ -388,11 +386,17 @@ public abstract class Faction
 		
 		for(Task task : taskList)
 		{
+			if(!task.canPerform(this))
+				continue;
 			totalFlavor += task.getFlavorMatch(this);
 		}
+		if(totalFlavor <= 0)
+			return new WaitTask(null);
 		double flavorPick = new Random().nextDouble() * totalFlavor;
 		for(Task task : taskList)
 		{
+			if(!task.canPerform(this))
+				continue;
 			flavorPick -= task.getFlavorMatch(this);
 			
 			if(flavorPick <= 0)
@@ -468,8 +472,6 @@ public abstract class Faction
 		return (homeWorld == null);
 	}
 	
-	// TODO: Specified by factions.
-	// TODO: Abstractifineferin
 	public abstract boolean didWin();
 	
 	public boolean needToReplan() {

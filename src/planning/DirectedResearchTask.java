@@ -28,8 +28,10 @@ public class DirectedResearchTask extends Task {
 	
 	public void perform(Faction faction) {
 		System.out.println("Doing " + name);
-		parent.reportFinished(this);
-		faction.improveTechLevel(direction);		
+		if(random.nextBoolean()) {
+			parent.reportFinished(this);
+			faction.improveTechLevel(direction);		
+		}
 	}
 
 	@Override
