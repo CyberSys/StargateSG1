@@ -1,5 +1,6 @@
 package planning;
 
+import settings.Globals;
 import faction.Faction;
 
 public class DirectedResearchTask extends Task {
@@ -39,8 +40,25 @@ public class DirectedResearchTask extends Task {
 	@Override
 	public double getFlavorMatch(Faction faction) 
 	{
-		//TODO based on which direction it is going? (resource, hyperdrive, offense, defense)
-		return faction.getScience();
+		double directionFlavor = 0;
+		double maxLevel = 0;
+		if(direction == Globals.OFFENSE_RESEARCH)
+		{
+			directionFlavor = ((faction.getAggression() * 3 + faction.getScience() * 2) / 5.0);
+			maxLevel = Globals.MAX_OFFENSIVE_CAPABILITIES;
+		}
+		else if(direction == Globals.DEFENSE_RESEARCH)
+		{
+			directionFlavor = ((faction.getDiplomacy() * 3 + faction.getScience() * 2) / 5.0);
+			maxLevel = Globals.MAX_DEFENSIVE_CAPABILITIES;
+		}
+		else if(direction == Globals.RESOURCE_RESEARCH)
+		{
+			directionFlavor = ((faction.getScience() * 3 + faction.getAggression() + faction.getDiplomacy()) / 5.0);
+			maxLevel = Globals.MAX_RESOURCE_EFFICIENCY;
+		}
+		
+		return (((maxLevel - faction.getTechLevel().getCurrentLevel(direction)) / maxLevel) * directionFlavor);
 	}
 
 }

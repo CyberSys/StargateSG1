@@ -1,6 +1,7 @@
 package planning;
 
 import faction.Faction;
+import settings.Globals;
 import universe.World;
 
 public class SpreadDissentTask extends Task {
@@ -44,8 +45,7 @@ public class SpreadDissentTask extends Task {
 	@Override
 	public double getFlavorMatch(Faction faction) 
 	{
-		// TODO: Less likely to spread dissent when target's morale is low.
-		return (faction.getDiplomacy() * 3 + faction.getAggression() * 2) / 5.0;
+		return (world.getControllingFaction().morale / Globals.MAX_MORALE) * ((faction.getDiplomacy() * 3 + faction.getAggression() * 2) / 5.0);
 	}
 
 }

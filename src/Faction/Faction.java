@@ -219,34 +219,40 @@ public abstract class Faction
 		return enemies;
 	}
 	
+	private void initReputation(Faction f)
+	{
+		if(!factionReputations.containsKey(f))
+		{
+			Reputation r = new Reputation();			
+			factionReputations.put(f, r);
+			f.factionReputations.put(this, r);
+		}
+	}
+	
 	public int getReputationNumber(Faction f)
 	{		
-		if(!factionReputations.containsKey(f))
-			factionReputations.put(f, new Reputation());
+		initReputation(f);
 		
 		return factionReputations.get(f).currentRep;
 	}
 	
 	public ReputationLevel getReputation(Faction f)
 	{
-		if(!factionReputations.containsKey(f))
-			factionReputations.put(f, new Reputation());
+		initReputation(f);
 		
 		return factionReputations.get(f).reputationLevel;
 	}
 	
 	public void increaseReputation(Faction f, int amount)
 	{
-		if(!factionReputations.containsKey(f))
-			factionReputations.put(f, new Reputation());
+		initReputation(f);
 		
 		factionReputations.get(f).adjustReputation(amount);
 	}
 	
 	public void decreaseReputation(Faction f, int amount)
 	{
-		if(!factionReputations.containsKey(f))
-			factionReputations.put(f, new Reputation());
+		initReputation(f);
 		
 		factionReputations.get(f).adjustReputation(-1 * amount);
 	}
@@ -529,6 +535,22 @@ public abstract class Faction
 		public double getTotalTechLevel()
 		{
 			return resourceEfficiency + hyperdriveEfficiency + defensiveCapabilities + offensiveCapabilities;
+		}
+		
+		public double getCurrentLevel(int direction)
+		{
+			switch(direction){
+			case Globals.RESOURCE_RESEARCH:
+				return tech.resourceEfficiency;
+			case Globals.HYPERDRIVE_RESEARCH:
+				return tech.hyperdriveEfficiency;
+			case Globals.DEFENSE_RESEARCH:
+				return tech.defensiveCapabilities;
+			case Globals.OFFENSE_RESEARCH:
+				return tech.offensiveCapabilities;
+			default:
+				return 0;
+			}
 		}
 
 		public boolean isMaximum(int direction) {
