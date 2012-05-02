@@ -581,9 +581,126 @@ public abstract class Faction
 		});
 		
 		// Sabotage
-		final PromptTreeWorldParameter sabotage = new PromptTreeWorldParameter("Troop Movement", "Where would you like to sabotage:", this, WorldFilter.UNCONTROLLED_WORLD);
+		final PromptTreeWorldParameter sabotage = new PromptTreeWorldParameter("Sabotage", "Where would you like to sabotage:", this, WorldFilter.UNCONTROLLED_WORLD);
 		PromptTree sabotageSub = new PromptTree("", "What would you like to do:");
-		
+		sabotageSub.addChildPrompt(new PromptTreeLeaf("Plant Spy From Target Planet", "", new TaskParameterizer()
+		{
+			@Override
+			public Task generateTask() 
+			{
+				return new PlantSpyFromPlanetTask((World)sabotage.getValue(), null);
+			}
+		}), this);
+		final PromptTreeWorldParameter sabotageFrom = new PromptTreeWorldParameter("Plant Spy From Other Planet", "Where would you like to take the spy from:", this, WorldFilter.WORLD_WITH_UNITS);
+		PromptTree sabotageFromSub = new PromptTree("", "How would you like to transport the troops:");
+		sabotageFromSub.addChildPrompt(new PromptTreeLeaf("Plant Spy By Gate", "", new TaskParameterizer()
+		{
+			@Override
+			public Task generateTask() 
+			{
+				return new PlantSpyByGateTask((World)sabotageFrom.getValue(), (World)sabotage.getValue(), null);
+			}
+		}), this);
+		sabotageFromSub.addChildPrompt(new PromptTreeLeaf("Plant Spy By Ship", "", new TaskParameterizer()
+		{
+			@Override
+			public Task generateTask() 
+			{
+				return new PlantSpyByShipTask((World)sabotageFrom.getValue(), (World)sabotage.getValue(), null);
+			}
+		}), this);
+		sabotageFrom.addChildPrompt(sabotageFromSub);
+		sabotageSub.addChildPrompt(sabotageFrom, new PromptFilter()
+		{
+			@Override
+			public boolean allowPrompt(PromptTree pt) 
+			{
+				for(World w : player.getKnownWorlds())
+				{
+					if(!w.getControllingFaction().equals(player))
+					{
+						if(!w.hasSpy(player))
+						{							
+							if(player.getKnownGateAddresses().contains(w))
+								for(World w2 : player.getKnownWorlds())
+									if(w2.hasGate && player.getNumArmies(w2) > 0)
+										return true;
+								
+							if(player.getKnownWorldLocations().contains(w))
+								for(World w2 : player.getKnownWorlds())
+									if(player.getNumShips(w2) > 0 && player.getNumArmies(w2) > 0)
+										return true;
+						}
+					}
+				}
+				
+				return false;
+			}
+		});
+		sabotageSub.addChildPrompt(new PromptTreeLeaf("Sabotage Fleet", "", new TaskParameterizer()
+		{
+			@Override
+			public Task generateTask() 
+			{
+				return new SabotageFleetTask((World)sabotage.getValue(), null);
+			}
+		}), this);
+		sabotageSub.addChildPrompt(new PromptTreeLeaf("Sabotage Troops", "", new TaskParameterizer()
+		{
+			@Override
+			public Task generateTask() 
+			{
+				return new SabotageTroopsTask((World)sabotage.getValue(), null);
+			}
+		}), this);
+		sabotageSub.addChildPrompt(new PromptTreeLeaf("Steal Resources", "", new TaskParameterizer()
+		{
+			@Override
+			public Task generateTask() 
+			{
+				return new StealResourcesTask((World)sabotage.getValue(), null);
+			}
+		}), this);
+		sabotageSub.addChildPrompt(new PromptTreeLeaf("Spread Dissent", "", new TaskParameterizer()
+		{
+			@Override
+			public Task generateTask() 
+			{
+				return new SpreadDissentTask((World)sabotage.getValue(), null);
+			}
+		}), this);
+		sabotageSub.addChildPrompt(new PromptTreeLeaf("Destroy Technology", "", new TaskParameterizer()
+		{
+			@Override
+			public Task generateTask() 
+			{
+				return new DestroyTechTask((World)sabotage.getValue(), null);
+			}
+		}), this);
+		sabotageSub.addChildPrompt(new PromptTreeLeaf("Destroy Resource Technology", "", new TaskParameterizer()
+		{
+			@Override
+			public Task generateTask() 
+			{
+				return new DirectedDestroyTechTask((World)sabotage.getValue(), Globals.RESOURCE_RESEARCH, null);
+			}
+		}), this);
+		sabotageSub.addChildPrompt(new PromptTreeLeaf("Destroy Offensive Technology", "", new TaskParameterizer()
+		{
+			@Override
+			public Task generateTask() 
+			{
+				return new DirectedDestroyTechTask((World)sabotage.getValue(), Globals.OFFENSE_RESEARCH, null);
+			}
+		}), this);
+		sabotageSub.addChildPrompt(new PromptTreeLeaf("Destroy Defensive Technology", "", new TaskParameterizer()
+		{
+			@Override
+			public Task generateTask() 
+			{
+				return new DirectedDestroyTechTask((World)sabotage.getValue(), Globals.DEFENSE_RESEARCH, null);
+			}
+		}), this);
 		sabotage.addChildPrompt(sabotageSub);
 		ret.addChildPrompt(sabotage, new PromptFilter()
 		{
@@ -596,6 +713,9 @@ public abstract class Faction
 					{
 						if(!w.hasSpy(player))
 						{
+							if(w.getTroopCount(player) > 0)
+								return true;
+							
 							if(player.getKnownGateAddresses().contains(w))
 								for(World w2 : player.getKnownWorlds())
 									if(w2.hasGate && player.getNumArmies(w2) > 0)
