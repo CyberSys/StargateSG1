@@ -376,7 +376,9 @@ public abstract class Faction
 	
 	//Does THIS have intel on FACTION
 	public boolean hasIntel(Faction faction) {
-		 return (faction.getHomeWorld().hasSpy(this));
+		if(faction.getHomeWorld() == null)
+			return false;
+		return (faction.getHomeWorld().hasSpy(this));
 	}
 	
 	//
@@ -987,7 +989,7 @@ public abstract class Faction
 	}
 	
 	public void reduceTechLevel() {
-		reduceTechLevel(new Random().nextInt(4));
+		reduceTechLevel(new Random().nextInt(3));
 	}
 
 	public void reduceTechLevel(int direction) {

@@ -130,7 +130,7 @@ public class GameFrame extends JFrame
 		mDiplomaticAdviceButton.setEnabled(true);
 		mScientificAdviceButton.setEnabled(true);
 		
-		mStatsPanel.updateDisplay();
+		mPlayerInput.requestFocusInWindow();
 	}
 	
 	private void updateTextPane(JTextPane pane, List<TitledLine> data)
@@ -365,7 +365,7 @@ public class GameFrame extends JFrame
 		mCurrentPrompt.writePrompt(mPrompt);
 		
 		if(!Universe.gameOver) enableInput();
-		mPlayerInput.requestFocusInWindow();
+		mStatsPanel.updateDisplay();
 	}
 	
 	private void switchLog()

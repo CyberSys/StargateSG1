@@ -168,7 +168,7 @@ public class World {
 	
 	public void exposeSpy(Faction faction) {
 		spies.remove(faction);
-		getControllingFaction().decreaseReputation(faction, 1);
+		getControllingFaction().decreaseReputation(faction, 5);
 		
 		if(faction == Universe.playerFaction || getTroopCount(Universe.playerFaction) > 0 || getShipCount(Universe.playerFaction) > 0)
 			GameFrame.addToLog(faction.factionName + " had a spy exposed on planet " + name + ". ");

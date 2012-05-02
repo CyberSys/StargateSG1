@@ -49,8 +49,8 @@ public class Universe
 		Faction asgard = new AsgardFaction();
 		Faction tokra = new TokraFaction();
 		
-		playerFaction.decreaseReputation(goauld, 25);
-		playerFaction.increaseReputation(asgard, 10);
+		playerFaction.decreaseReputation(goauld, 50);
+		playerFaction.increaseReputation(asgard, 0);
 		playerFaction.increaseReputation(tokra, 0);
 		
 		playerFaction.learnGateAddress(goauld.getHomeWorld());
