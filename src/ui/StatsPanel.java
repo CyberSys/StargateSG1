@@ -177,12 +177,7 @@ public class StatsPanel extends JPanel
 			
 			for(World w : mFaction.getControlledWorlds())
 			{				
-				doc.insertString(doc.getLength(), TAB + getWorldString(w) + ": " + NL, bold);
-				
-				doc.insertString(doc.getLength(), TAB + TAB + "Troops: ", bold);
-				doc.insertString(doc.getLength(), mFaction.getNumArmies(w) + NL, null);
-				doc.insertString(doc.getLength(), TAB + TAB + "Ships: ", bold);
-				doc.insertString(doc.getLength(), mFaction.getNumShips(w) + NL + NL, null);
+				writeWorldStats(doc, w);
 			}
 			
 			doc.insertString(doc.getLength(), "Other World Statistics: " + NL, bold);
@@ -192,17 +187,34 @@ public class StatsPanel extends JPanel
 				if(w.getControllingFaction().equals(mFaction))
 					continue;
 				
-				doc.insertString(doc.getLength(), TAB + getWorldString(w) + ": " + NL, bold);
-				
-				doc.insertString(doc.getLength(), TAB + TAB + "Troops: ", bold);
-				doc.insertString(doc.getLength(), mFaction.getNumArmies(w) + NL, null);
-				doc.insertString(doc.getLength(), TAB + TAB + "Ship: ", bold);
-				doc.insertString(doc.getLength(), mFaction.getNumShips(w) + NL + NL, null);
+				writeWorldStats(doc, w);
 			}
 		} 
 		catch (BadLocationException e) 
 		{
 			e.printStackTrace();
+		}
+	}
+	
+	private void writeWorldStats(Document doc, World w) throws BadLocationException
+	{
+		doc.insertString(doc.getLength(), TAB + getWorldString(w) + ": " + NL, bold);
+		
+		if(w.hasIntel(mFaction))
+		{
+			for(Faction f : w.getOccupyingFactions())
+			{
+				doc.insertString(doc.getLength(), TAB + TAB + f.factionName + ": " + NL, bold);
+				
+				doc.insertString(doc.getLength(), TAB + TAB + TAB + "Troops: ", bold);
+				doc.insertString(doc.getLength(), f.getNumArmies(w) + NL, null);
+				doc.insertString(doc.getLength(), TAB + TAB + TAB + "Ship: ", bold);
+				doc.insertString(doc.getLength(), f.getNumShips(w) + NL + NL, null);
+			}
+		}
+		else
+		{
+			doc.insertString(doc.getLength(), TAB + TAB + "No Intel Available" + NL + NL, null);
 		}
 	}
 	
