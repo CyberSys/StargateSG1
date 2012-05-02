@@ -5,8 +5,6 @@ import universe.World;
 
 public class StealResourcesTask extends Task {
 
-	private Faction target;
-	private World world;
 	public StealResourcesTask(World world, Task parent) {
 		super(true, "Steal Resources Task", parent);
 		this.target = world.getControllingFaction();;
