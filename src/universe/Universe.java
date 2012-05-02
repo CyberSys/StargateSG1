@@ -85,11 +85,6 @@ public class Universe
 	{
 		GameFrame.getGameFrame().addToLogI("Begin Round " + roundNumber, "");
 		
-		for(World w : addressBook.values()) {
-			//w.addTroops(w.getControllingFaction(), w.getPassiveTroops());
-			w.doCombat();
-		}
-		
 		for(Faction f : factions)
 		{
 			if(f.didWin())
@@ -103,6 +98,11 @@ public class Universe
 		{
 			if(!f.isDefeated())
 				f.doTurn();
+		}
+		
+		for(World w : addressBook.values()) {
+			//w.addTroops(w.getControllingFaction(), w.getPassiveTroops());
+			w.doCombat();
 		}
 		roundNumber++;
 	}

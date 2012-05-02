@@ -36,6 +36,7 @@ public class TokraFaction extends Faction
 	protected ArrayList<Task> getTaskList() {
 		ArrayList<Task> taskList = new ArrayList<Task>();
 		for(Faction enemy : getEnemies()) {
+			if(enemy.getReputation(this).equals(Reputation.ReputationLevel.DIRE_ENEMY)) {
 			for(World to : enemy.getControlledWorlds()) {
 				for(World from : getControlledWorlds()) {
 					Task attack = new AttackTask(from, to, enemy, 
@@ -43,6 +44,7 @@ public class TokraFaction extends Faction
 					if(attack.canPerform(this))
 						taskList.add(attack);
 				}
+			}
 			}
 		}
 		
