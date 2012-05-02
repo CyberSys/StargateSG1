@@ -42,7 +42,7 @@ public class FlyTroopsWithShipsTask extends Task {
 	}
 	@Override
 	public boolean canPerform(Faction faction) {
-		return faction.getNumShips(from) >= (int)Math.ceil(limit/5.);
+		return faction.getNumShips(from) >= (int)Math.ceil(limit/5.) && faction.getNumArmies(from) >= limit && faction.knowsLocation(to);
 	}
 
 	@Override

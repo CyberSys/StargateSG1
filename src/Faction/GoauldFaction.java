@@ -58,7 +58,6 @@ public class GoauldFaction extends Faction
 			double repChange = getReputationNumber(newEnemy) - ReputationLevel.ENEMY.threshold;
 			decreaseReputation(newEnemy, repChange);
 		}
-		System.out.println(homeWorld.getTroopCount(this));
 		super.doTurn();
 	}
 	
