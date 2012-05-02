@@ -3,6 +3,7 @@ package planning;
 import faction.Faction;
 import settings.Globals;
 
+// TODO: Works on arbitrary worlds.
 public class BuyShipTask extends Task {
 
 	private int limit;
