@@ -490,7 +490,7 @@ public abstract class Faction
 			@Override
 			public Task generateTask() 
 			{
-				return new BuyShipTask((World)training.getValue(), player.getNumShips((World)training.getValue()) + (int)shipCount.getValue(), null);
+				return new BuyShipTask((World)training.getValue(), player.getNumShips((World)training.getValue()) + (Integer)shipCount.getValue(), null);
 			}
 		}), this);
 		trainingSub.addChildPrompt(shipCount, new PromptFilter()
@@ -532,7 +532,7 @@ public abstract class Faction
 			@Override
 			public Task generateTask() 
 			{
-				return new TransportTroopsByGateTask((World)movement.getValue(), (World)moveTo.getValue(), (int)moveNum.getValue(), null);
+				return new TransportTroopsByGateTask((World)movement.getValue(), (World)moveTo.getValue(), (Integer)moveNum.getValue(), null);
 			}
 		}), this);
 		movementSub.addChildPrompt(new PromptTreeLeaf("Move Troops By Ship", "", new TaskParameterizer()
@@ -540,7 +540,7 @@ public abstract class Faction
 			@Override
 			public Task generateTask() 
 			{
-				return new FlyTroopsWithShipsTask((World)movement.getValue(), (World)moveTo.getValue(), (int)moveNum.getValue(), null);
+				return new FlyTroopsWithShipsTask((World)movement.getValue(), (World)moveTo.getValue(), (Integer)moveNum.getValue(), null);
 			}
 		}), this);
 		movementSub.addChildPrompt(new PromptTreeLeaf("Move Ships", "", new TaskParameterizer()
@@ -548,7 +548,7 @@ public abstract class Faction
 			@Override
 			public Task generateTask() 
 			{
-				return new TransferShips((World)movement.getValue(), (World)moveTo.getValue(), (int)moveNum.getValue(), null);
+				return new TransferShips((World)movement.getValue(), (World)moveTo.getValue(), (Integer)moveNum.getValue(), null);
 			}
 		}), this);
 		moveNum.addChildPrompt(movementSub);
