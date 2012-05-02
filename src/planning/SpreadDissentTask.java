@@ -39,7 +39,7 @@ public class SpreadDissentTask extends Task {
 	
 	@Override
 	public boolean canPerform(Faction faction) {
-		return world.hasSpy(faction);
+		return world.hasSpy(faction) && world.getControllingFaction().morale > Globals.MIN_MORALE;
 	}
 
 	@Override

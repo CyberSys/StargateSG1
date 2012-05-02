@@ -43,7 +43,7 @@ public class DirectedDestroyTechTask extends Task {
 	
 	@Override
 	public boolean canPerform(Faction faction) {
-		return world.hasSpy(faction) && !target.getTechLevel().isMinimum();
+		return world.hasSpy(faction) && !target.getTechLevel().isMinimum(direction);
 	}
 
 	@Override

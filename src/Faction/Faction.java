@@ -525,46 +525,101 @@ public abstract class Faction
 		// Movement
 		final PromptTreeWorldParameter movement = new PromptTreeWorldParameter("Troop Movement", "Where would you like to move troops from:", this, WorldFilter.WORLD_WITH_UNITS);
 		final PromptTreeWorldParameter moveTo = new PromptTreeWorldParameter("", "Where would you like to move troops to:", this, WorldFilter.ANY_KNOWN_WORLD_WITH_SPACE);
+		final PromptTreeNumericParameter moveNum = new PromptTreeNumericParameter("", "How many troops would you like to move:", this);
 		PromptTree movementSub = new PromptTree("", "What would you like to do:");
-		movementSub.addChildPrompt(new PromptTreeLeaf("Fly Troops With Ships", "", new TaskParameterizer()
+		movementSub.addChildPrompt(new PromptTreeLeaf("Move Troops By Gate", "", new TaskParameterizer()
 		{
 			@Override
 			public Task generateTask() 
 			{
-				return null; // TODO: THIS
+				return new TransportTroopsByGateTask((World)movement.getValue(), (World)moveTo.getValue(), (int)moveNum.getValue(), null);
 			}
 		}), this);
-		moveTo.addChildPrompt(movementSub);
+		movementSub.addChildPrompt(new PromptTreeLeaf("Move Troops By Ship", "", new TaskParameterizer()
+		{
+			@Override
+			public Task generateTask() 
+			{
+				return new FlyTroopsWithShipsTask((World)movement.getValue(), (World)moveTo.getValue(), (int)moveNum.getValue(), null);
+			}
+		}), this);
+		movementSub.addChildPrompt(new PromptTreeLeaf("Move Ships", "", new TaskParameterizer()
+		{
+			@Override
+			public Task generateTask() 
+			{
+				return new TransferShips((World)movement.getValue(), (World)moveTo.getValue(), (int)moveNum.getValue(), null);
+			}
+		}), this);
+		moveNum.addChildPrompt(movementSub);
+		moveTo.addChildPrompt(moveNum);
 		movement.addChildPrompt(moveTo);
 		ret.addChildPrompt(movement, new PromptFilter()
 		{
 			@Override
 			public boolean allowPrompt(PromptTree pt) 
-			{
-				World toPlanet = null, fromPlanet = null;
-				int toPlanetCount = 0, fromPlanetCount = 0;				
+			{				
 				for(World w : player.getKnownWorlds())
 				{
-					if(w.getShipCount(player) < Globals.WORLD_SHIP_POPULATION_CAP || w.getTroopCount(player) < Globals.WORLD_TROOP_POPULATION_CAP)
+					if(w.hasGate && player.getNumArmies(w) > 0)
 					{
-						if(fromPlanet != null && fromPlanet != w)
-							return true;
-						
-						toPlanet = w;
-						toPlanetCount++;
+						for(World w2 : player.getKnownGateAddresses())
+							if(!w.equals(w2))
+								return true;
 					}
 					
-					if(w.getShipCount(player) > 0 || w.getTroopCount(player) > 0)
+					if(w.getShipCount(player) > 0)
 					{
-						if(toPlanet != null && w != toPlanet)
-							return true;
-						
-						fromPlanet = w;
-						fromPlanetCount++;
+						for(World w2 : player.getKnownWorldLocations())
+							if(!w.equals(w2))
+								return true;
 					}
-					
-					if((toPlanetCount > 0 && fromPlanetCount > 0) && (toPlanetCount > 1 || fromPlanetCount > 1))
-						return true;
+				}
+				
+				return false;
+			}
+		});
+		
+		// Sabotage
+		final PromptTreeWorldParameter sabotage = new PromptTreeWorldParameter("Troop Movement", "Where would you like to sabotage:", this, WorldFilter.UNCONTROLLED_WORLD);
+		
+		ret.addChildPrompt(sabotage, new PromptFilter()
+		{
+			@Override
+			public boolean allowPrompt(PromptTree pt) 
+			{				
+				for(World w : player.getKnownWorlds())
+				{
+					if(!w.getControllingFaction().equals(player))
+					{
+						if(!w.hasSpy(player))
+						{
+							if(player.getKnownGateAddresses().contains(w))
+								for(World w2 : player.getKnownWorlds())
+									if(w2.hasGate && player.getNumArmies(w2) > 0)
+										return true;
+								
+							if(player.getKnownWorldLocations().contains(w))
+								for(World w2 : player.getKnownWorlds())
+									if(player.getNumShips(w2) > 0 && player.getNumArmies(w2) > 0)
+										return true;
+						}
+						else
+						{
+							if(	new SabotageFleetTask(w, null).canPerform(player) ||
+								new SabotageTroopsTask(w, null).canPerform(player) ||
+								new StealResourcesTask(w, null).canPerform(player) ||
+								new StealTechTask(w, null).canPerform(player) ||
+								new DestroyTechTask(w, null).canPerform(player) ||
+								new SpreadDissentTask(w, null).canPerform(player) ||
+								new DirectedDestroyTechTask(w, Globals.RESOURCE_RESEARCH, null).canPerform(player) ||
+								new DirectedDestroyTechTask(w, Globals.OFFENSE_RESEARCH, null).canPerform(player) ||
+								new DirectedDestroyTechTask(w, Globals.DEFENSE_RESEARCH, null).canPerform(player))
+							{
+								
+							}
+						}
+					}
 				}
 				
 				return false;
@@ -754,6 +809,21 @@ public abstract class Faction
 				return tech.defensiveCapabilities == Globals.MAX_DEFENSIVE_CAPABILITIES;
 			case Globals.OFFENSE_RESEARCH:
 				return tech.offensiveCapabilities == Globals.MAX_OFFENSIVE_CAPABILITIES;
+			default:
+				return false;
+			}
+		}
+		
+		public boolean isMinimum(int direction) {
+			switch(direction){
+			case Globals.RESOURCE_RESEARCH:
+				return tech.resourceEfficiency == Globals.MIN_RESOURCE_EFFICIENCY;
+//			case Globals.HYPERDRIVE_RESEARCH:
+//				return tech.hyperdriveEfficiency == Globals.MIN_HYPERDRIVE_EFFICIENCY;
+			case Globals.DEFENSE_RESEARCH:
+				return tech.defensiveCapabilities == Globals.MIN_DEFENSIVE_CAPABILITIES;
+			case Globals.OFFENSE_RESEARCH:
+				return tech.offensiveCapabilities == Globals.MIN_OFFENSIVE_CAPABILITIES;
 			default:
 				return false;
 			}
