@@ -4,6 +4,7 @@ import java.util.*;
 
 import planning.ConquerTask;
 import settings.Globals;
+import ui.GameFrame;
 
 import faction.Faction;
 
@@ -65,6 +66,7 @@ public class World {
 			factionStats.put(faction, new FactionWorldStats());
 		}
 		controllingFaction.gainWorldControl(this);
+		GameFrame.addToLog("World Conquered", this.name + " was taken over by " + controllingFaction.factionName);
 	}
 
 	//
@@ -77,6 +79,9 @@ public class World {
 		
 		FactionWorldStats s = factionStats.get(f);
 		s.troopCount += amount;
+		
+		if(f == Universe.playerFaction || getTroopCount(Universe.playerFaction) > 0 || getShipCount(Universe.playerFaction) > 0)
+			GameFrame.addToLog(f.factionName + " now has " + getTroopCount(f) + " troops on the planet " + name);
 	}
 	
 	public void removeTroops(Faction f, int amount)
@@ -88,6 +93,9 @@ public class World {
 		s.troopCount -= amount;
 		if(s.troopCount < 0)
 			s.troopCount = 0;
+		
+		if(f == Universe.playerFaction || getTroopCount(Universe.playerFaction) > 0 || getShipCount(Universe.playerFaction) > 0)
+			GameFrame.addToLog(f.factionName + " now has " + getTroopCount(f) + " troops on the planet " + name);
 	}
 	
 	public int getTroopCount(Faction f)
@@ -105,6 +113,9 @@ public class World {
 		
 		FactionWorldStats s = factionStats.get(f);
 		s.shipCount += amount;
+		
+		if(f == Universe.playerFaction || getTroopCount(Universe.playerFaction) > 0 || getShipCount(Universe.playerFaction) > 0)
+			GameFrame.addToLog(f.factionName + " now has " + getTroopCount(f) + " ships on the planet " + name);
 	}
 	
 	public void removeShips(Faction f, int amount)
@@ -116,6 +127,9 @@ public class World {
 		s.shipCount -= amount;
 		if(s.shipCount < 0)
 			s.shipCount = 0;
+		
+		if(f == Universe.playerFaction || getTroopCount(Universe.playerFaction) > 0 || getShipCount(Universe.playerFaction) > 0)
+			GameFrame.addToLog(f.factionName + " now has " + getTroopCount(f) + " ships on the planet " + name);
 	}
 	
 	public int getShipCount(Faction f)
@@ -138,6 +152,9 @@ public class World {
 	public void exposeSpy(Faction faction) {
 		spies.remove(faction);
 		getControllingFaction().decreaseReputation(faction, 5);
+		
+		if(faction == Universe.playerFaction || getTroopCount(Universe.playerFaction) > 0 || getShipCount(Universe.playerFaction) > 0)
+			GameFrame.addToLog(faction.factionName + " had a spy exposed on planet " + name + ". ");
 	}
 	
 	//
