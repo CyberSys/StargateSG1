@@ -144,8 +144,11 @@ public class World {
 	}
 	
 	public void plantSpy(Faction faction) {
-		if(!hasSpy(faction))
+		if(!hasSpy(faction)) {
 			spies.add(faction);
+			if(faction == Universe.playerFaction)
+				GameFrame.addToLog("You have planted a spy on " + name + ".");
+		}
 	}
 	
 	public void exposeSpy(Faction faction) {
@@ -237,9 +240,7 @@ public class World {
 		}
 		for(Faction f : factionStats.keySet()) {
 			if(getTroopCount(Universe.playerFaction) > 0 || getShipCount(Universe.playerFaction) > 0)
-				GameFrame.addToLog(f.factionName + " now has " + getTroopCount(f) + " troops on the planet " + name);
-			if(getTroopCount(Universe.playerFaction) > 0 || getShipCount(Universe.playerFaction) > 0)
-				GameFrame.addToLog(f.factionName + " now has " + getShipCount(f) + " ships on the planet " + name);
+				GameFrame.addToLog(f.factionName + " now has " + getTroopCount(f) + " troops and " + getShipCount(f) + " ships on the planet " + name);
 		}
 	}
 }
