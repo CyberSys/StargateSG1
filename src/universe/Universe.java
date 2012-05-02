@@ -83,7 +83,7 @@ public class Universe
 	
 	public static void elapseTime()
 	{
-		GameFrame.getGameFrame().addToLogI("Begin Round " + roundNumber, "");
+		GameFrame.addToLog("Begin Round " + roundNumber, "");
 		
 		for(Faction f : factions)
 		{

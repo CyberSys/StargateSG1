@@ -299,6 +299,9 @@ public class GameFrame extends JFrame
 		
 		mStatsPanel.updateDisplay();
 		
+		mCurrentPrompt = Universe.playerFaction.getAvailableActions();
+		mCurrentPrompt.writePrompt(mPrompt);
+		
 		mPlayerInput.requestFocusInWindow();
 	}
 	
