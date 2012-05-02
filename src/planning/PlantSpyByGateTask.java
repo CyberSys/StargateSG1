@@ -37,7 +37,7 @@ public class PlantSpyByGateTask extends Task {
 
 	@Override
 	public boolean canPerform(Faction faction) {
-		return from.hasGate && faction.knowsGateAddress(world);
+		return from.hasGate && faction.getNumArmies(from) > 0 && faction.knowsGateAddress(world) && !world.hasSpy(faction);
 	}
 
 	@Override
