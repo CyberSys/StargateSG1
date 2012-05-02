@@ -23,7 +23,7 @@ public class GatherShipTask extends Task {
 			if(faction.getNumArmies(faction.getHomeWorld()) > 0 && enemy.getNumShips(faction.getHomeWorld()) > 0)
 				taskList.add(new StealShipTask(enemy, this));
 		}
-		taskList.add(new BuyShipTask(limit, this));
+		taskList.add(new BuyShipTask(world, limit, this));
 		return taskList;
 	}
 	

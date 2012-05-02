@@ -2,14 +2,16 @@ package planning;
 
 import faction.Faction;
 import settings.Globals;
+import universe.World;
 
-// TODO: Works on arbitrary worlds.
 public class BuyShipTask extends Task {
 
 	private int limit;
-	public BuyShipTask(int limit, Task parent) {
+	private World world;
+	public BuyShipTask(World world, int limit, Task parent) {
 		super(true, "Buy Ship Task", parent);
-		this.limit = Math.min(limit, 100);
+		this.limit = limit;
+		this.world = world;
 	}
 
 	@Override
@@ -19,15 +21,15 @@ public class BuyShipTask extends Task {
 
 	@Override
 	public Task getNextStep(Faction faction) {
-		if(faction.getNumResources() >= (limit - faction.getNumShips()) * Globals.SHIP_RESOURCE_BUY_COST)
+		if(faction.getNumResources() >= (limit - faction.getNumShips(world)) * Globals.SHIP_RESOURCE_BUY_COST)
 			return this;
 		else
-			return new GatherResourcesTask(limit - faction.getNumShips() * Globals.SHIP_RESOURCE_BUY_COST, this);
+			return new GatherResourcesTask((limit - faction.getNumShips(world)) * Globals.SHIP_RESOURCE_BUY_COST, this);
 	}
 
 	@Override
 	public boolean isCompleted(Faction faction) {
-		return faction.getNumShips() >= limit;
+		return faction.getNumShips(world) >= limit;
 	}
 
 	// TODO: Meaningful canPerform here.
@@ -39,7 +41,7 @@ public class BuyShipTask extends Task {
 	public void perform(Faction faction) {
 		System.out.println("Doing " + name);
 		int numShipsBought = Math.min(faction.getNumResources() / Globals.SHIP_RESOURCE_BUY_COST, limit - faction.getNumShips());
-		faction.increaseShips(numShipsBought);
+		faction.increaseShips(numShipsBought, world);
 		faction.removeResources(Globals.SHIP_RESOURCE_BUY_COST*numShipsBought);
 	}
 
