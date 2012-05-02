@@ -187,10 +187,34 @@ public class GameFrame extends JFrame
         mAdvisorPanel.setBorder(BorderFactory.createEtchedBorder());
 
         mMilitaryAdviceButton.setText("Ask Military Advisor");
+        mMilitaryAdviceButton.addActionListener(new ActionListener()
+        {
+			@Override
+			public void actionPerformed(ActionEvent arg0) 
+			{
+				doAction();
+			}
+        });
 
         mScientificAdviceButton.setText("Ask Scientific Advisor");
+        mScientificAdviceButton.addActionListener(new ActionListener()
+        {
+			@Override
+			public void actionPerformed(ActionEvent arg0) 
+			{
+				doAction();
+			}
+        });
 
         mDiplomaticAdviceButton.setText("Ask Diplomatic Advisor");
+        mDiplomaticAdviceButton.addActionListener(new ActionListener()
+        {
+			@Override
+			public void actionPerformed(ActionEvent arg0) 
+			{
+				doAction();
+			}
+        });
 
         GroupLayout mAdvisorPanelLayout = new GroupLayout(mAdvisorPanel);
         mAdvisorPanel.setLayout(mAdvisorPanelLayout);
