@@ -37,7 +37,7 @@ public class DirectedDestroyTechTask extends Task {
 			world.exposeSpy(faction);
 		else {
 			target.reduceTechLevel(direction);
-			parent.reportFinished(this);
+			if(parent != null) parent.reportFinished(this);
 		}
 	}
 	

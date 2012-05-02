@@ -35,7 +35,7 @@ public class StealTechTask extends Task {
 			world.exposeSpy(faction);
 		else {
 			faction.improveTechLevel();
-			parent.reportFinished(this);
+			if(parent != null) parent.reportFinished(this);
 		}
 	}
 	

@@ -33,7 +33,7 @@ public class SpreadDissentTask extends Task {
 			world.exposeSpy(faction);
 		else {
 			world.getControllingFaction().decreaseMorale();
-			parent.reportFinished(this);
+			if(parent != null) parent.reportFinished(this);
 		}
 	}
 	

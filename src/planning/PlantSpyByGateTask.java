@@ -27,7 +27,7 @@ public class PlantSpyByGateTask extends Task {
 		System.out.println("Doing " + name);
 		world.plantSpy(faction);
 		from.removeTroops(faction,  1);
-		parent.reportFinished(this);
+		if(parent != null) parent.reportFinished(this);
 	}
 	
 	@Override
@@ -37,7 +37,7 @@ public class PlantSpyByGateTask extends Task {
 
 	@Override
 	public boolean canPerform(Faction faction) {
-		return from.getTroopCount(faction) > 0 && from.hasGate && faction.knowsGateAddress(world);
+		return from.hasGate && faction.knowsGateAddress(world);
 	}
 
 	@Override

@@ -29,7 +29,7 @@ public class DirectedResearchTask extends Task {
 	public void perform(Faction faction) {
 		System.out.println("Doing " + name);
 		if(random.nextBoolean()) {
-			parent.reportFinished(this);
+			if(parent != null) parent.reportFinished(this);
 			faction.improveTechLevel(direction);		
 		}
 	}

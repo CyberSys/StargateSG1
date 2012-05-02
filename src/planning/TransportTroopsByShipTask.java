@@ -32,13 +32,13 @@ public class TransportTroopsByShipTask extends Task {
 	}
 
 	public void reportFinished() {
-		parent.reportFinished(this);
+		if(parent != null) parent.reportFinished(this);
 	}
 	
 	@Override
 	public boolean canPerform(Faction faction) 
 	{
-		return faction.getNumShips() >= (int)Math.ceil(faction.getNumArmies()/5) && faction.knowsLocation(to);
+		return /*faction.getNumShips() >= (int)Math.ceil(faction.getNumArmies()/5) &&*/ faction.knowsLocation(to);
 	}
 
 	@Override

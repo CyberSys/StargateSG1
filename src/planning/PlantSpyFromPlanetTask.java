@@ -26,7 +26,7 @@ public class PlantSpyFromPlanetTask extends Task {
 		System.out.println("Doing " + name);
 		world.plantSpy(faction);
 		world.removeTroops(faction,  1);
-		parent.reportFinished(this);
+		if(parent != null) parent.reportFinished(this);
 	}
 	
 	@Override

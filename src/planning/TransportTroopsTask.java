@@ -1,5 +1,8 @@
 package planning;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import faction.Faction;
 import settings.Globals;
 import universe.World;
@@ -15,43 +18,23 @@ public class TransportTroopsTask extends Task {
 		this.limit = limit;
 	}
 
-	// TODO: Competition
+	protected List<Task> getTaskList(Faction faction) {
+		limit = Math.min(Globals.WORLD_TROOP_POPULATION_CAP - to.getTroopCount(faction), limit);
+		List<Task> taskList = new ArrayList<Task>();
+		taskList.add(new TransportTroopsByGateTask(from, to, limit, this));
+		taskList.add(new TransportTroopsByShipTask(from, to, limit, this));
+		return taskList;
+	}
+	
 	@Override
 	public int stepsToCompletion(Faction faction) {
-		limit = Math.min(Globals.WORLD_TROOP_POPULATION_CAP - to.getTroopCount(faction), limit);
-		boolean canByGate = false, canByShip = false;
-		if(from.hasGate && to.hasGate && faction.knowsGateAddress(to)) {
-			canByGate = true;
-		}
-		if(faction.knowsLocation(to)) {
-			canByShip = true;
-		}
-		if(canByGate && !canByShip) return new TransportTroopsByGateTask(from, to, limit, this).stepsToCompletion(faction);
-		if(canByShip && !canByGate) return new TransportTroopsByShipTask(from, to, limit, this).stepsToCompletion(faction);
-		if(canByShip && canByGate) {
-			if(new TransportTroopsByGateTask(from, to, limit, this).getFlavorMatch(faction) >= new TransportTroopsByShipTask(from, to, limit, this).getFlavorMatch(faction)) return new TransportTroopsByGateTask(from, to, limit, this).stepsToCompletion(faction);
-			else return new TransportTroopsByShipTask(from, to, limit, this).stepsToCompletion(faction);
-		}
-		return -1;
+		return getFlavorMatchTask(faction) != null ? 1 : -1;
 	}
 
 	@Override
 	public Task getNextStep(Faction faction) {
 		limit = Math.min(Globals.WORLD_TROOP_POPULATION_CAP - to.getTroopCount(faction), limit);
-		boolean canByGate = false, canByShip = false;
-		if(from.hasGate && to.hasGate && faction.knowsGateAddress(to)) {
-			canByGate = true;
-		}		
-		if(faction.knowsLocation(to)) {
-			canByShip = true;
-		}
-		if(canByGate && !canByShip) return new TransportTroopsByGateTask(from, to, limit, this);
-		if(canByShip && !canByGate) return new TransportTroopsByShipTask(from, to, limit, this);
-		if(canByShip && canByGate) {
-			if(new TransportTroopsByGateTask(from, to, limit, this).getFlavorMatch(faction) >= new TransportTroopsByShipTask(from, to, limit, this).getFlavorMatch(faction)) return new TransportTroopsByGateTask(from, to, limit, this);
-			else return new TransportTroopsByShipTask(from, to, limit, this);
-		}
-		return null;
+		return getFlavorMatchTask(faction);
 	}
 
 	public void perform(Faction faction) {

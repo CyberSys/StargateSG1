@@ -31,16 +31,14 @@ public class TransportTroopsByGateTask extends Task {
 
 	@Override
 	public boolean canPerform(Faction faction) {
-		return faction.knowsGateAddress(to) && from.getTroopCount(faction) >= limit;
-		
-		//figure this out
+		return from.hasGate && to.hasGate && faction.knowsGateAddress(to) && from.getTroopCount(faction) >= limit;
 	}
 
 	public void perform(Faction faction) {
 		System.out.println("Doing " + name);
 		from.removeTroops(faction, limit);
 		to.addTroops(faction, limit);
-		parent.reportFinished(this);
+		if(parent != null) parent.reportFinished(this);
 	}
 	
 	

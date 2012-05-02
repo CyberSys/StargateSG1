@@ -36,7 +36,7 @@ public class StealResourcesTask extends Task {
 			int resourcesToTake = Math.min(target.getNumResources(), 100);
 			target.removeResources(resourcesToTake);
 			faction.addResources(resourcesToTake/2);
-			parent.reportFinished(this);
+			if(parent != null) parent.reportFinished(this);
 		}
 	}
 	
