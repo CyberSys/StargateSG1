@@ -1,4 +1,6 @@
-package ui;
+package ui.prompt;
+
+import javax.swing.JTextPane;
 
 import faction.Faction;
 
@@ -109,6 +111,11 @@ public class PromptTreeParameter extends PromptTree
 			default:
 				return new Object[0];
 			}
+		}
+		
+		public void writePrompt(JTextPane pane)
+		{
+			
 		}
 	}
 }

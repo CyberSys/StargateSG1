@@ -18,6 +18,7 @@ import javax.swing.text.StyledDocument;
 
 import planning.Task;
 
+import ui.prompt.PromptTree;
 import universe.Universe;
 
 public class GameFrame extends JFrame 

@@ -1,4 +1,4 @@
-package ui;
+package ui.prompt;
 
 import java.util.ArrayList;
 import java.util.List;
