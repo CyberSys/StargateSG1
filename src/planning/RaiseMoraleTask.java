@@ -2,14 +2,11 @@ package planning;
 
 import faction.Faction;
 import settings.Globals;
-import universe.World;
 
 public class RaiseMoraleTask extends Task {
 
-	private World world;
-	public RaiseMoraleTask(World world, Task parent) {
+	public RaiseMoraleTask(Task parent) {
 		super(true, "Raise Morale Task", parent);
-		this.world = world;
 	}
 
 	@Override
@@ -24,22 +21,17 @@ public class RaiseMoraleTask extends Task {
 
 	@Override
 	public boolean isCompleted(Faction faction) {
-		return parent.didFinish;
+		return true;
 	}
 
 	public void perform(Faction faction) {
 		System.out.println("Doing " + name);
-		if(random.nextBoolean()) //Spy was caught
-			world.exposeSpy(faction);
-		else {
-			world.getControllingFaction().decreaseMorale();
-			parent.reportFinished(this);
-		}
+		faction.decreaseMorale();
 	}
 	
 	@Override
 	public boolean canPerform(Faction faction) {
-		return world.hasSpy(faction);
+		return faction.morale < Globals.MAX_MORALE;
 	}
 
 	@Override

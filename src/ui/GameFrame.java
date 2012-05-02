@@ -49,7 +49,7 @@ public class GameFrame extends JFrame
     private List<TitledLine> mCurrentLog;
     private Stack<List<TitledLine>> mLogHistory;
     
-    private Task[] mCurrentActions;
+    private PromptTree mCurrentPrompt;
     
 	//
 	// CTOR
@@ -61,10 +61,10 @@ public class GameFrame extends JFrame
 		mCurrentLog = new ArrayList<TitledLine>();
 		mLogHistory = new Stack<List<TitledLine>>();
 		
-		mCurrentActions = Universe.playerFaction.getAvailableActions();
-		setCurrentPrompt("Please select an action", mCurrentActions);
+		mCurrentPrompt = Universe.playerFaction.getAvailableActions();
+		mCurrentPrompt.writePrompt(mPrompt);
 		
-		addToLog("Game Start");
+		addToLogI("Game Start");
 	}
 	
 	public static GameFrame getGameFrame()
@@ -94,12 +94,22 @@ public class GameFrame extends JFrame
 		return mSingleton;
 	}
 	
-	public void addToLog(String body)
+	public static void addToLog(String body)
 	{
-		addToLog(null, body);
+		mSingleton.addToLogI(body);
 	}
 	
-	public void addToLog(String title, String body)
+	public static void addToLog(String title, String body)
+	{
+		mSingleton.addToLogI(title, body);
+	}
+	
+	public void addToLogI(String body)
+	{
+		addToLogI(null, body);
+	}
+	
+	public void addToLogI(String title, String body)
 	{
 		final String lineSep = System.getProperty("line.separator");
 		
@@ -108,24 +118,9 @@ public class GameFrame extends JFrame
 		updateTextPane(mLog, mCurrentLog);
 	}
 	
-	public void setCurrentPrompt(String prompt, Task[] actions)
-	{
-		mCurrentActions = actions;
-		
-		List<TitledLine> lines = new ArrayList<TitledLine>();
-		
-		lines.add(new TitledLine(null, prompt + ":"));
-		
-		for(int i = 0; i < actions.length; i++)
-		{
-			lines.add(new TitledLine("" + i, actions[i].toString()));
-		}
-		
-		updateTextPane(mPrompt, lines);
-	}
-	
 	public void enableInput()
 	{
+		mPlayerInput.setText("");
 		mPlayerInput.setEnabled(true);
 		mAcceptButton.setEnabled(true);
 		
@@ -305,50 +300,36 @@ public class GameFrame extends JFrame
 	{
 		super.setVisible(v);
 		
-		mAcceptButton.requestFocusInWindow();
+		mPlayerInput.requestFocusInWindow();
 	}
 	
 	private void doAction()
 	{
-		String actionString = mPlayerInput.getText();
-		int action;
+		String actionString = mPlayerInput.getText();		
 		
 		mPlayerInput.setEnabled(false);
 		mAcceptButton.setEnabled(false);
 		mPrompt.setEnabled(false);
 		
-		try
+		PromptTree next = mCurrentPrompt.getNextPrompt(actionString);
+		
+		if(next.isLeaf())
 		{
-			action = Integer.parseInt(actionString);
-			
-			if(action < 0 || action >= mCurrentActions.length)
-			{
-				addToLog("Invalid input, please enter one of the available options (0 - " + mCurrentActions.length + ").");
-				return;
-			}
-			
-			Task perfTask = mCurrentActions[action];
-			// TODO: Parameterize the action.		
-			// TODO: Perform the parameterized task.
-			Universe.playerFaction.setNextAction(null);
-			
 			switchLog();
 			
+			Universe.playerFaction.setNextAction(next.getTask());
 			Universe.elapseTime();
-			
-			mCurrentActions = Universe.playerFaction.getAvailableActions();
-			setCurrentPrompt("Please select an action", mCurrentActions);
+			mCurrentPrompt = Universe.playerFaction.getAvailableActions();
 		}
-		catch(NumberFormatException nfe)
+		else
 		{
-			addToLog("Invalid input, please enter one of the available options (0 - " + mCurrentActions.length + ").");
-			return;
+			mCurrentPrompt = next;
 		}
-		finally
-		{
-			enableInput();
-			mAcceptButton.requestFocusInWindow();
-		}
+		
+		mCurrentPrompt.writePrompt(mPrompt);
+		
+		enableInput();
+		mPlayerInput.requestFocusInWindow();
 	}
 	
 	private void switchLog()

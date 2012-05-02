@@ -57,6 +57,8 @@ public class Universe
 		factions.add(goauld);
 //		factions.add(asgard);
 		factions.add(tokra);
+		
+		GameFrame.getGameFrame().addToLogI("Begin Round " + roundNumber++, "");
 	}
 	
 	public static World generateWorld()
@@ -76,7 +78,7 @@ public class Universe
 	
 	public static void elapseTime()
 	{
-		GameFrame.getGameFrame().addToLog("Begin Round " + roundNumber, "");
+		GameFrame.getGameFrame().addToLogI("Begin Round " + roundNumber, "");
 		
 		for(World w : addressBook.values()) {
 			//w.addTroops(w.getControllingFaction(), w.getPassiveTroops());

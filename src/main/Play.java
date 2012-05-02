@@ -12,7 +12,7 @@ public class Play {
 		Universe.initialize();
 		GameFrame.getGameFrame().setVisible(true);
 		
-		Faction f,f2,f3 = f2 = f = null;
+		/*Faction f,f2,f3 = f2 = f = null;
 		for(Faction faction : Universe.factions) {
 			if(faction instanceof GoauldFaction)
 				f = faction;
@@ -43,6 +43,6 @@ public class Play {
 		}
 		for(Faction fact : new Faction[] {f, f2, f3})
 			System.out.println(fact + " " + fact.getControlledWorlds());
-		System.out.println(f.didWin() ? "The Goa'uld have conquered all!" : "The Goa'uld are defeated!");
+		System.out.println(f.didWin() ? "The Goa'uld have conquered all!" : "The Goa'uld are defeated!");*/
 	}
 }

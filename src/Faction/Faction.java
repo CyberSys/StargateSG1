@@ -6,6 +6,9 @@ import settings.Globals;
 import faction.Reputation.ReputationLevel;
 
 import planning.*;
+import ui.PromptTree;
+import ui.PromptTreeLeaf;
+import ui.PromptTreeParameter;
 import universe.*;
 
 public abstract class Faction 
@@ -18,12 +21,20 @@ public abstract class Faction
 	
 	protected World homeWorld;
 	protected Set<World> controlledWorlds = new HashSet<World>();
-	protected Set<World> knownWorlds = new HashSet<World>();
+	public Set<World> knownWorlds = new HashSet<World>();
 	
 	protected int numResources;
 	public double morale = 0.25;
 	
 	protected Set<World> knownGateAddresses = new HashSet<World>();
+	public Set<World> getKnownGateAddresses() {
+		return knownGateAddresses;
+	}
+
+	public Set<World> getKnownWorldLocations() {
+		return knownWorldLocations;
+	}
+
 	protected Set<World> knownWorldLocations = new HashSet<World>();
 	
 	protected Map<Faction, Reputation> factionReputations = new HashMap<Faction, Reputation>();
@@ -365,14 +376,14 @@ public abstract class Faction
 	
 	// TODO: IMPLEMENT FOR PLAYER CONTROLLED
 	//Should only be called by playerControlled factions
-	public Task[] getAvailableActions()
+	public PromptTree getAvailableActions()
 	{
 		/*
 		 * Tasks able to perform:
 		 * 
 		 * GENERAL TASKS:
 		 * Raise Morale
-		 * Research (Search and Directed
+		 * Research (Search and Directed)
 		 * Gather Resources
 		 * Wait
 		 * 
@@ -387,7 +398,28 @@ public abstract class Faction
 		 * Transfer Ships To
 		 * Transport Troops By Gate
 		 * */
-		return new Task[0];
+		PromptTree ret = new PromptTree("Player Action", "Please select your action:");
+		
+		// Basic Tasks
+		ret.addChildPrompt(new PromptTreeLeaf(new RaiseMoraleTask(null)));
+		ret.addChildPrompt(new PromptTreeLeaf(new GatherResourcesTask(1, null)));
+		
+		// Research
+		PromptTree research = new PromptTree("Research", "Please select the type of research:");
+		research.addChildPrompt(new PromptTreeLeaf(new SearchForTechnologyTask(null), "Undirected Research", ""));
+		research.addChildPrompt(new PromptTreeLeaf(new DirectedResearchTask(Globals.RESOURCE_RESEARCH, null), "Resource Efficiency Research", ""));
+		research.addChildPrompt(new PromptTreeLeaf(new DirectedResearchTask(Globals.OFFENSE_RESEARCH, null), "Offensive Technology Research", ""));
+		research.addChildPrompt(new PromptTreeLeaf(new DirectedResearchTask(Globals.DEFENSE_RESEARCH, null), "Defensive Technology Research", ""));
+		ret.addChildPrompt(research);
+		
+		// World Specific Tasks
+		PromptTreeParameter worldSpecific = null;
+		
+		ret.addChildPrompt(worldSpecific);
+		
+		ret.addChildPrompt(new PromptTreeLeaf(new WaitTask(null)));
+		
+		return ret;
 	}
 	
 	//
