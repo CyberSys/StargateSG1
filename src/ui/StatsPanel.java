@@ -187,7 +187,7 @@ public class StatsPanel extends JPanel
 			
 			doc.insertString(doc.getLength(), "Other World Statistics: " + NL, bold);
 			
-			for(World w : Universe.addressBook.values())
+			for(World w : mFaction.getKnownWorlds())
 			{		
 				if(w.getControllingFaction().equals(mFaction))
 					continue;

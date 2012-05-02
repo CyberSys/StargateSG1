@@ -581,7 +581,7 @@ public abstract class Faction
 		});
 		
 		// Sabotage
-		final PromptTreeWorldParameter sabotage = new PromptTreeWorldParameter("Troop Movement", "Where would you like to sabotage:", this, WorldFilter.UNCONTROLLED_WORLD);
+		final PromptTreeWorldParameter sabotage = new PromptTreeWorldParameter("Sabotage", "Where would you like to sabotage:", this, WorldFilter.UNCONTROLLED_WORLD);
 		PromptTree sabotageSub = new PromptTree("", "What would you like to do:");
 		sabotageSub.addChildPrompt(new PromptTreeLeaf("Plant Spy From Target Planet", "", new TaskParameterizer()
 		{
