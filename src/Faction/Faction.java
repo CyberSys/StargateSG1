@@ -957,7 +957,7 @@ public abstract class Faction
 	}
 
 	public void improveTechLevel() {
-		improveTechLevel(new Random().nextInt(4));
+		improveTechLevel(new Random().nextInt(3));
 	}
 	
 	public void improveTechLevel(int direction) {
