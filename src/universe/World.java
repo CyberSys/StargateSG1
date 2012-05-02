@@ -66,7 +66,7 @@ public class World {
 			factionStats.put(faction, new FactionWorldStats());
 		}
 		controllingFaction.gainWorldControl(this);
-		GameFrame.addToLog("World Conquered", this.name + " was taken over by " + controllingFaction.factionName);
+		//GameFrame.addToLog(faction.factionName + " now has control of " + name);
 	}
 
 	//

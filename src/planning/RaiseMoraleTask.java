@@ -26,7 +26,7 @@ public class RaiseMoraleTask extends Task {
 
 	public void perform(Faction faction) {
 		System.out.println("Doing " + name);
-		faction.decreaseMorale();
+		faction.increaseMorale();
 	}
 	
 	@Override
