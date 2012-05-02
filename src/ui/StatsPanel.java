@@ -220,6 +220,7 @@ public class StatsPanel extends JPanel
 	
 	private String getWorldString(World w)
 	{
+		if(w == null) return "None";
 		String wStr = w.name;
 		
 		if(mFaction.knowsGateAddress(w))

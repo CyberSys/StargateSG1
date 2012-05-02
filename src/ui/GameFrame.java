@@ -356,8 +356,8 @@ public class GameFrame extends JFrame
 		}
 		
 		mCurrentPrompt.writePrompt(mPrompt);
-		
-		enableInput();
+		//TODO tweak enableInput
+		if(!Universe.gameOver) enableInput();
 		mPlayerInput.requestFocusInWindow();
 	}
 	

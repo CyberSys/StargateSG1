@@ -31,6 +31,7 @@ public class Universe
 	private static final Random rand = new Random();
 	private static boolean isInitialized = false;
 	private static int roundNumber = 0;
+	public static boolean gameOver = false;
 	
 	//
 	// METHODS
@@ -52,16 +53,25 @@ public class Universe
 		playerFaction.increaseReputation(asgard, 10);
 		playerFaction.increaseReputation(tokra, 0);
 		
-		playerFaction.learnGateAddress(goauld.getHomeWorld());	
-		playerFaction.decreaseReputation(goauld, 25);
+		playerFaction.learnGateAddress(goauld.getHomeWorld());
+		playerFaction.learnWorldLocation(goauld.getHomeWorld());
+		playerFaction.learnGateAddress(tokra.getHomeWorld());
+		playerFaction.learnGateAddress(asgard.getHomeWorld());
 		
 		asgard.learnGateAddress(goauld.getHomeWorld());
 		asgard.learnWorldLocation(goauld.getHomeWorld());
+		asgard.learnGateAddress(playerFaction.getHomeWorld());
+		asgard.learnWorldLocation(playerFaction.getHomeWorld());
 		
 		tokra.learnGateAddress(goauld.getHomeWorld());
 		tokra.learnWorldLocation(goauld.getHomeWorld());
+		tokra.learnGateAddress(playerFaction.getHomeWorld());
+		tokra.learnWorldLocation(playerFaction.getHomeWorld());
 		
 		goauld.learnGateAddress(playerFaction.getHomeWorld());
+		goauld.learnWorldLocation(playerFaction.getHomeWorld());
+		goauld.learnGateAddress(tokra.getHomeWorld());
+		goauld.learnGateAddress(asgard.getHomeWorld());
 		
 		factions.add(goauld);
 		factions.add(asgard);
@@ -87,28 +97,45 @@ public class Universe
 	{
 		GameFrame.addToLog("Begin Round " + roundNumber, "");
 		
-		for(Faction f : factions)
-		{
-			if(f.didWin())
-			{
-				// TODO: Any other victory stuffs.
-				return;
-			}
-		}
+		
 		
 		for(Faction f : factions)
 		{
 			if(!f.isDefeated())
 				f.doTurn();
+			else if(f.isDefeated() && f == playerFaction)
+			{
+				GameFrame.addToLog("You have failed! Earth has been taken over. We trusted you!");
+				gameOver = true;
+			}
 		}
 		
 		for(World w : addressBook.values()) {
-			//w.addTroops(w.getControllingFaction(), w.getPassiveTroops());
 			w.doCombat();
 		}
+		
+		for(Faction f : factions)
+		{
+			if(f.didWin())
+			{
+				if(f == playerFaction)
+				{
+					GameFrame.addToLog("You are victorious! The Goa'uld have been defeated, and all is well in the galaxy!  Huzzah!");
+					gameOver = true;
+				}
+				else if(f instanceof GoauldFaction)
+				{
+					GameFrame.addToLog("The Goa'uld have taken over the galaxy.  All is lost!");
+					gameOver = true;
+				}
+				return;
+			}
+		}
+		
+		
 		roundNumber++;
 	}
-	
+
 	public static int getDistance(World w1, World w2)
 	{
 		return getDistance(w1.address, w2.address);
