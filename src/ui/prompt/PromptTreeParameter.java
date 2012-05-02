@@ -13,17 +13,7 @@ public abstract class PromptTreeParameter extends PromptTree
 {
 	//
 	// DATA
-	//
-	/**
-	 * The type of parameter this node represents.
-	 */
-	private ParameterType mType;
-	
-	/**
-	 * The faction used for determining the values of the parameters.
-	 */
-	private Faction mFaction;
-	
+	//	
 	/**
 	 * The value of the parameter entered.
 	 */
@@ -33,12 +23,9 @@ public abstract class PromptTreeParameter extends PromptTree
 	//
 	// CTOR
 	//
-	public PromptTreeParameter(ParameterType pt, Faction f, String title, String message)
+	public PromptTreeParameter(String title, String message)
 	{
 		super(title, message);
-		
-		mFaction = f;
-		mType = pt;
 	}
 	
 	
@@ -67,7 +54,7 @@ public abstract class PromptTreeParameter extends PromptTree
 	{
 		try
 		{
-			mValue = mType.parseParameter(input, mFaction);
+			//mValue = mType.parseParameter(input, mFaction);
 			
 			return mChildren.get(0);
 		}
@@ -87,7 +74,7 @@ public abstract class PromptTreeParameter extends PromptTree
 		try 
 		{
 			doc.insertString(doc.getLength(), mMessage + NL, null);
-			mType.writePrompt(doc, mFaction);
+			//mType.writePrompt(doc, mFaction);
 		} 
 		catch (BadLocationException e) {}
 		
