@@ -35,7 +35,7 @@ public class BuildShipTask extends Task {
 	@Override
 	public boolean canPerform(Faction faction) {
 		if(parent == null) 
-			return faction.getNumResources() > (limit - faction.getNumShips(world))*Globals.SHIP_RESOURCE_BUILD_COST;
+			return faction.getNumResources() > Globals.SHIP_RESOURCE_BUILD_COST;
 		else
 			return true;
 	}
