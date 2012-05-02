@@ -463,7 +463,7 @@ public abstract class Faction
 		});
 		
 		// Training / Construction
-		final PromptTreeWorldParameter training = new PromptTreeWorldParameter("Training / Shipbuilding", "Where would you like to increase numbers:", this, WorldFilter.CONTROLLED_WORLD);
+		final PromptTreeWorldParameter training = new PromptTreeWorldParameter("Training / Shipbuilding", "Where would you like to increase numbers:", this, WorldFilter.CONTROLLED_WORLD_WITH_SPACE);
 		PromptTree trainingSub = new PromptTree("", "What would you like to do:");
 		trainingSub.addChildPrompt(new PromptTreeLeaf("Train Troops", "", new TaskParameterizer()
 		{
@@ -487,7 +487,7 @@ public abstract class Faction
 			@Override
 			public Task generateTask() 
 			{
-				return new BuyShipTask(aggression, null);
+				return new BuyShipTask((World)training.getValue(), player.getNumShips((World)training.getValue()) + (int)shipCount.getValue(), null);
 			}
 		}), this);
 		trainingSub.addChildPrompt(shipCount, new PromptFilter()
@@ -506,15 +506,58 @@ public abstract class Faction
 			public boolean allowPrompt(PromptTree pt) 
 			{
 				boolean hasWorlds = player.getControlledWorlds().size() > 0;
-				boolean worldsWithSpace = true;
+				boolean worldsWithSpace = false;
+				for(World w : player.getControlledWorlds())
+				{
+					if(player.getNumArmies(w) < Globals.WORLD_TROOP_POPULATION_CAP || player.getNumShips(w) < Globals.WORLD_SHIP_POPULATION_CAP)
+					{
+						worldsWithSpace = true;
+					}
+				}
 				
 				return hasWorlds && worldsWithSpace;
 			}
 		});
 		
 		// Movement
-		final PromptTreeWorldParameter training = new PromptTreeWorldParameter("Troop Movement", "Where would you like to move troops from:", this, WorldFilter.CONTROLLED_WORLD);
-		PromptTree trainingSub = new PromptTree("", "What would you like to do:");
+		final PromptTreeWorldParameter movement = new PromptTreeWorldParameter("Troop Movement", "Where would you like to move troops from:", this, WorldFilter.WORLD_WITH_UNITS);
+		PromptTree movementSub = new PromptTree("", "What would you like to do:");
+		
+		movement.addChildPrompt(movementSub);
+		ret.addChildPrompt(movement, new PromptFilter()
+		{
+			@Override
+			public boolean allowPrompt(PromptTree pt) 
+			{
+				World toPlanet = null, fromPlanet = null;
+				int toPlanetCount = 0, fromPlanetCount = 0;				
+				for(World w : player.getKnownWorlds())
+				{
+					if(w.getShipCount(player) < Globals.WORLD_SHIP_POPULATION_CAP || w.getTroopCount(player) < Globals.WORLD_TROOP_POPULATION_CAP)
+					{
+						if(fromPlanet != null && fromPlanet != w)
+							return true;
+						
+						toPlanet = w;
+						toPlanetCount++;
+					}
+					
+					if(w.getShipCount(player) > 0 || w.getTroopCount(player) > 0)
+					{
+						if(toPlanet != null && w != toPlanet)
+							return true;
+						
+						fromPlanet = w;
+						fromPlanetCount++;
+					}
+					
+					if((toPlanetCount > 0 && fromPlanetCount > 0) && (toPlanetCount > 1 || fromPlanetCount > 1))
+						return true;
+				}
+				
+				return false;
+			}
+		});
 		
 		// Wait
 		ret.addChildPrompt(new PromptTreeLeaf(new WaitTask(null)), this);

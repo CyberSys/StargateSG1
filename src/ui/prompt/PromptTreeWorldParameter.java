@@ -11,6 +11,7 @@ import javax.swing.text.StyleConstants;
 
 import faction.Faction;
 
+import settings.Globals;
 import universe.World;
 
 public class PromptTreeWorldParameter extends PromptTreeParameter 
@@ -85,23 +86,29 @@ public class PromptTreeWorldParameter extends PromptTreeParameter
 
 	private World[] getWorldList()
 	{
+		ArrayList<World> ret = new ArrayList<World>();;
+		
 		switch(mFilter)
 		{
-		case CONTROLLED_WORLD:
-			return mFaction.getControlledWorlds().toArray(new World[0]);
+		case CONTROLLED_WORLD_WITH_SPACE:
+			for(World w : mFaction.getControlledWorlds())
+				if(w.getShipCount(mFaction) < Globals.WORLD_SHIP_POPULATION_CAP || w.getTroopCount(mFaction) < Globals.WORLD_TROOP_POPULATION_CAP)
+					ret.add(w);
+			return ret.toArray(new World[0]);
 		case UNCONTROLLED_WORLD:
-			ArrayList<World> ret = new ArrayList<World>();
 			ret.addAll(mFaction.getKnownWorlds());
 			ret.removeAll(mFaction.getControlledWorlds());
 			return ret.toArray(new World[0]);
 		case WORLD_WITH_UNITS:
-			ArrayList<World> r = new ArrayList<World>();
 			for(World w : mFaction.getKnownWorlds())
 				if(w.getShipCount(mFaction) > 0 || w.getTroopCount(mFaction) > 0)
-					r.add(w);
-			return r.toArray(new World[0]); // TODO: Finish this.
-		case ANY_WORLD:
-			return mFaction.getKnownWorlds().toArray(new World[0]);
+					ret.add(w);
+			return ret.toArray(new World[0]); // TODO: Finish this.
+		case ANY_KNOWN_WORLD_WITH_SPACE:
+			for(World w : mFaction.getKnownWorlds())
+				if(w.getShipCount(mFaction) < Globals.WORLD_SHIP_POPULATION_CAP || w.getTroopCount(mFaction) < Globals.WORLD_TROOP_POPULATION_CAP)
+					ret.add(w);
+			return ret.toArray(new World[0]);
 		default:
 			return new World[0];
 		}
@@ -113,9 +120,9 @@ public class PromptTreeWorldParameter extends PromptTreeParameter
 	//
 	public enum WorldFilter
 	{
-		CONTROLLED_WORLD,
+		CONTROLLED_WORLD_WITH_SPACE,
 		UNCONTROLLED_WORLD,
 		WORLD_WITH_UNITS,
-		ANY_WORLD;
+		ANY_KNOWN_WORLD_WITH_SPACE;
 	}
 }

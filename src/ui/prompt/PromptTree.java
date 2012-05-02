@@ -116,7 +116,10 @@ public class PromptTree
 					continue;
 				
 				if(action == i)
+				{
+					System.out.println(fp.mPrompt.mTitle);
 					return fp.mPrompt;
+				}
 				
 				i++;
 			}
