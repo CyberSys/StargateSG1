@@ -1,8 +1,13 @@
 package ui.prompt;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import javax.swing.JTextPane;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultStyledDocument;
+import javax.swing.text.Document;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
 
 import faction.Faction;
 
@@ -12,21 +17,20 @@ public class PromptTreeWorldParameter extends PromptTreeParameter
 {
 	//
 	// DATA
-	//
+	//	
 	/**
-	 * The faction who will be performing this action.
+	 * The filter on the worlds to pick from.
 	 */
-	private Faction mFaction;
-	
+	private WorldFilter mFilter;
 	
 	//
 	// CTOR
 	//
-	public PromptTreeWorldParameter(String title, String message, Faction f)
+	public PromptTreeWorldParameter(String title, String message, Faction f, WorldFilter filter)
 	{
-		super(title, message);
-		
-		mFaction = f;
+		super(title, message, f);
+
+		mFilter = filter;
 	}
 	
 	@Override
@@ -35,9 +39,12 @@ public class PromptTreeWorldParameter extends PromptTreeParameter
 		try
 		{
 			int num = Integer.parseInt(input);
-			mValue = num;
+			if(num == getWorldList().length)
+				return mParent;
 			
-			return mChildren.get(0);
+			mValue = getWorldList()[num];
+			
+			return mChildren.get(0).mPrompt;
 		}
 		catch(Exception e)
 		{
@@ -48,13 +55,56 @@ public class PromptTreeWorldParameter extends PromptTreeParameter
 	@Override
 	public void writePrompt(JTextPane pane) 
 	{
-		// TODO Auto-generated method stub
-
+		final String NL = System.getProperty("line.separator");
+		
+		final SimpleAttributeSet boldStyle = new SimpleAttributeSet();
+		boldStyle.addAttribute(StyleConstants.CharacterConstants.Bold, Boolean.TRUE);
+		
+		Document doc = new DefaultStyledDocument();
+		
+		try 
+		{
+			doc.insertString(doc.getLength(), mMessage + NL, null);
+			
+			World[] worlds = getWorldList();
+			
+			int i = 0;
+			for(World w : worlds)
+			{
+				doc.insertString(doc.getLength(), "" + i++ + ": ", boldStyle);
+				doc.insertString(doc.getLength(), w + NL, null);
+			}
+			
+			doc.insertString(doc.getLength(), "" + i++ + ": ", boldStyle);
+			doc.insertString(doc.getLength(), "Back" + NL, null);
+		} 
+		catch (BadLocationException e) {}
+		
+		pane.setDocument(doc);
 	}
 
-	private List<World> getWorldList()
+	private World[] getWorldList()
 	{
-		return null;
+		switch(mFilter)
+		{
+		case CONTROLLED_WORLD:
+			return mFaction.getControlledWorlds().toArray(new World[0]);
+		case UNCONTROLLED_WORLD:
+			ArrayList<World> ret = new ArrayList<World>();
+			ret.addAll(mFaction.getKnownWorlds());
+			ret.removeAll(mFaction.getControlledWorlds());
+			return ret.toArray(new World[0]);
+		case WORLD_WITH_UNITS:
+			ArrayList<World> r = new ArrayList<World>();
+			for(World w : mFaction.getKnownWorlds())
+				if(w.getShipCount(mFaction) > 0 || w.getTroopCount(mFaction) > 0)
+					r.add(w);
+			return r.toArray(new World[0]); // TODO: Finish this.
+		case ANY_WORLD:
+			return mFaction.getKnownWorlds().toArray(new World[0]);
+		default:
+			return new World[0];
+		}
 	}
 	
 	
@@ -65,7 +115,7 @@ public class PromptTreeWorldParameter extends PromptTreeParameter
 	{
 		CONTROLLED_WORLD,
 		UNCONTROLLED_WORLD,
-		WORLD_WITH_TROOPS,
+		WORLD_WITH_UNITS,
 		ANY_WORLD;
 	}
 }

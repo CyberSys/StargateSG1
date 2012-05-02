@@ -13,11 +13,6 @@ public class PromptTreeLeaf extends PromptTree
 	private Task mTask;
 	
 	/**
-	 * The parameter nodes that are to be used for creating the task.
-	 */
-	private PromptTreeParameter[] mParams;
-	
-	/**
 	 * The paramaterizer for this leaf.
 	 */
 	private TaskParameterizer mTaskMaker;
@@ -48,22 +43,17 @@ public class PromptTreeLeaf extends PromptTree
 	
 	//
 	// METHODS
-	//
-	public void setParams(PromptTreeParameter[] params)
-	{
-		mParams = params;
-	}
-	
+	//	
 	@Override
 	public Task getTask()
 	{
-		if(mParams == null || mTaskMaker == null)
+		if(mTaskMaker == null)
 		{
 			return mTask;
 		}
 		else
 		{
-			return mTaskMaker.generateTask(mParams);
+			return mTaskMaker.generateTask();
 		}
 	}
 }

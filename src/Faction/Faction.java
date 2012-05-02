@@ -7,10 +7,8 @@ import faction.Reputation.ReputationLevel;
 
 import planning.*;
 import ui.GameFrame;
-import ui.prompt.PromptTree;
-import ui.prompt.PromptTreeLeaf;
-import ui.prompt.PromptTreeParameter;
-import ui.prompt.PromptTreeParameter.ParameterType;
+import ui.prompt.*;
+import ui.prompt.PromptTreeWorldParameter.WorldFilter;
 import universe.*;
 
 public abstract class Faction 
@@ -422,9 +420,9 @@ public abstract class Faction
 		 * Buy Ships - controlled world, number 
 		 * 
 		 * Movement:
-		 * FlyTroopsTo - world with troops, world
-		 * TransferShipsTo - world with troops, world
-		 * TransportTroopsByGate - world with troops, world
+		 * FlyTroopsTo - world with troops, world known loc
+		 * TransferShipsTo - world with troops, world known loc
+		 * TransportTroopsByGate - world with troops, world known gate
 		 * 
 		 * Sabotage:
 		 * PlantSpy(by gate, ship, from planet) - non-controlled
@@ -437,26 +435,83 @@ public abstract class Faction
 		 * Directed Defense
 		 * 
 		 * */
-		PromptTree ret = new PromptTree("Player Action", "Please select your action:");
+		final Faction player = this;
+		PromptTree ret = new PromptTree("Player Action", "What would you like to do:");
 		
 		// Basic Tasks
-		ret.addChildPrompt(new PromptTreeLeaf(new RaiseMoraleTask(null)));
-		ret.addChildPrompt(new PromptTreeLeaf(new GatherResourcesTask(1, null)));
+		ret.addChildPrompt(new PromptTreeLeaf(new RaiseMoraleTask(null)), this);
+		ret.addChildPrompt(new PromptTreeLeaf(new GatherResourcesTask(1, null)), this);
 		
 		// Research
 		PromptTree research = new PromptTree("Research", "Please select the type of research:");
-		research.addChildPrompt(new PromptTreeLeaf(new SearchForTechnologyTask(null), "Undirected Research", ""));
-		research.addChildPrompt(new PromptTreeLeaf(new DirectedResearchTask(Globals.RESOURCE_RESEARCH, null), "Resource Efficiency Research", ""));
-		research.addChildPrompt(new PromptTreeLeaf(new DirectedResearchTask(Globals.OFFENSE_RESEARCH, null), "Offensive Technology Research", ""));
-		research.addChildPrompt(new PromptTreeLeaf(new DirectedResearchTask(Globals.DEFENSE_RESEARCH, null), "Defensive Technology Research", ""));
-		ret.addChildPrompt(research);
+		research.addChildPrompt(new PromptTreeLeaf(new SearchForTechnologyTask(null), "Undirected Research", ""), this);
+		research.addChildPrompt(new PromptTreeLeaf(new DirectedResearchTask(Globals.RESOURCE_RESEARCH, null), "Resource Efficiency Research", ""), this);
+		research.addChildPrompt(new PromptTreeLeaf(new DirectedResearchTask(Globals.OFFENSE_RESEARCH, null), "Offensive Technology Research", ""), this);
+		research.addChildPrompt(new PromptTreeLeaf(new DirectedResearchTask(Globals.DEFENSE_RESEARCH, null), "Defensive Technology Research", ""), this);
+		ret.addChildPrompt(research, new PromptFilter()
+		{
+			@Override
+			public boolean allowPrompt(PromptTree pt) 
+			{
+				return pt.hasAllowableChildren();
+			}
+		});
 		
-		// Troop Management Tasks
-		//PromptTreeParameter worldSpecific = new PromptTreeParameter(null, this, "World Specific Actions", "Please select a world:");
+		// Training / Construction
+		final PromptTreeWorldParameter training = new PromptTreeWorldParameter("Training / Shipbuilding", "Where would you like to increase numbers:", this, WorldFilter.CONTROLLED_WORLD);
+		PromptTree trainingSub = new PromptTree("", "What would you like to do:");
+		trainingSub.addChildPrompt(new PromptTreeLeaf("Train Troops", "", new TaskParameterizer()
+		{
+			@Override
+			public Task generateTask() 
+			{
+				return new TrainTroopsTask((World)training.getValue(), Globals.WORLD_TROOP_POPULATION_CAP, null);
+			}
+		}), this);
+		trainingSub.addChildPrompt(new PromptTreeLeaf("Build Ships", "", new TaskParameterizer()
+		{
+			@Override
+			public Task generateTask() 
+			{
+				return new BuildShipTask((World)training.getValue(), Globals.WORLD_SHIP_POPULATION_CAP, null);
+			}
+		}), this);
+		final PromptTreeNumericParameter shipCount = new PromptTreeNumericParameter("Buy Ships", "How many ships would you like to buy:", player);
+		shipCount.addChildPrompt(new PromptTreeLeaf("", "", new TaskParameterizer()
+		{
+			@Override
+			public Task generateTask() 
+			{
+				return new BuyShipTask(aggression, null);
+			}
+		}), this);
+		trainingSub.addChildPrompt(shipCount, new PromptFilter()
+		{
+			@Override
+			public boolean allowPrompt(PromptTree pt) 
+			{
+				World w = (World)training.getValue();
+				return (w.getShipCount(player) >= Globals.WORLD_SHIP_POPULATION_CAP);
+			}
+		});
+		training.addChildPrompt(trainingSub);
+		ret.addChildPrompt(training, new PromptFilter()
+		{
+			@Override
+			public boolean allowPrompt(PromptTree pt) 
+			{
+				boolean hasWorlds = player.getControlledWorlds().size() > 0;
+				boolean worldsWithSpace = true;
+				
+				return hasWorlds && worldsWithSpace;
+			}
+		});
 		
-		//ret.addChildPrompt(worldSpecific);
+		// Movement
 		
-		ret.addChildPrompt(new PromptTreeLeaf(new WaitTask(null)));
+		
+		// Wait
+		ret.addChildPrompt(new PromptTreeLeaf(new WaitTask(null)), this);
 		
 		return ret;
 	}

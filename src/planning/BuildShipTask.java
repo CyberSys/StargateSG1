@@ -32,6 +32,7 @@ public class BuildShipTask extends Task {
 		return faction.getNumShips() >= limit;
 	}
 
+	// TODO: Meaningful canPerform.
 	@Override
 	public boolean canPerform(Faction faction) {
 		return true;

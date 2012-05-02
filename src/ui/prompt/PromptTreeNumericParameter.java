@@ -5,14 +5,16 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.Document;
 
+import faction.Faction;
+
 public class PromptTreeNumericParameter extends PromptTreeParameter 
 {
 	//
 	// CTOR
 	// 
-	public PromptTreeNumericParameter(String title, String message)
+	public PromptTreeNumericParameter(String title, String message, Faction f)
 	{
-		super(title, message);
+		super(title, message, f);
 	}
 
 	
@@ -25,9 +27,12 @@ public class PromptTreeNumericParameter extends PromptTreeParameter
 		try
 		{
 			int num = Integer.parseInt(input);
+			if(num <= 0)
+				return mParent;
+			
 			mValue = num;
 			
-			return mChildren.get(0);
+			return mChildren.get(0).mPrompt;
 		}
 		catch(Exception e)
 		{
@@ -45,6 +50,7 @@ public class PromptTreeNumericParameter extends PromptTreeParameter
 		try 
 		{
 			doc.insertString(doc.getLength(), mMessage + NL, null);
+			doc.insertString(doc.getLength(), "Enter a positive integer, or a non-positive to return to previous." + NL, null);
 		} 
 		catch (BadLocationException e) {}
 		

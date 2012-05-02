@@ -114,6 +114,8 @@ public class GameFrame extends JFrame
 		mCurrentLog.add(new TitledLine(title, body + lineSep));
 		
 		updateTextPane(mLog, mCurrentLog);
+		
+		mLog.scrollRectToVisible(new Rectangle(0,mLog.getHeight() + 50,1,1));
 	}
 	
 	public void enableInput()
@@ -136,7 +138,7 @@ public class GameFrame extends JFrame
 			writeDocLine(doc, line);
 		}
 		
-		pane.setDocument(doc);		
+		pane.setDocument(doc);
 	}
 	
 	
@@ -295,6 +297,8 @@ public class GameFrame extends JFrame
 	{
 		super.setVisible(v);
 		
+		mStatsPanel.updateDisplay();
+		
 		mPlayerInput.requestFocusInWindow();
 	}
 	
@@ -310,7 +314,7 @@ public class GameFrame extends JFrame
 		
 		if(next.isLeaf())
 		{
-			switchLog();
+			//switchLog();
 			
 			Universe.playerFaction.setNextAction(next.getTask());
 			Universe.elapseTime();

@@ -4,5 +4,5 @@ import planning.Task;
 
 public interface TaskParameterizer 
 {
-	public abstract Task generateTask(PromptTreeParameter[] params);
+	public abstract Task generateTask();
 }

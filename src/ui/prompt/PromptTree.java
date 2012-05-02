@@ -1,7 +1,6 @@
 package ui.prompt;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
@@ -10,8 +9,9 @@ import javax.swing.text.Document;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
+import faction.Faction;
+
 import planning.Task;
-import universe.Universe;
 
 public class PromptTree 
 {
@@ -21,7 +21,7 @@ public class PromptTree
 	/**
 	 * The children nodes of this tree.
 	 */
-	protected ArrayList<PromptTree> mChildren;
+	protected ArrayList<FilterPrompt> mChildren;
 	
 	/**
 	 * The prompt title to display.
@@ -38,12 +38,17 @@ public class PromptTree
 	 */
 	protected boolean mIsLeaf;
 	
+	/**
+	 * The parent of this prompt tree.
+	 */
+	protected PromptTree mParent;
+	
 	//
 	// CTOR
 	//
 	public PromptTree(String title, String message)
 	{
-		mChildren = new ArrayList<PromptTree>();
+		mChildren = new ArrayList<FilterPrompt>();
 		
 		mIsLeaf = false;
 		
@@ -62,7 +67,34 @@ public class PromptTree
 	 */
 	public void addChildPrompt(PromptTree child)
 	{
-		mChildren.add(child);
+		addChildPrompt(child, new PromptFilter()
+		{
+			@Override
+			public boolean allowPrompt(PromptTree tree) 
+			{
+				return true;
+			}
+		});
+	}
+	
+	public void addChildPrompt(PromptTreeLeaf child, Faction performer)
+	{
+		final Faction faction = performer;
+		
+		addChildPrompt(child, new PromptFilter()
+		{
+			@Override
+			public boolean allowPrompt(PromptTree pt) 
+			{
+				return pt.getTask().canPerform(faction);
+			}
+		});
+	}
+	
+	public void addChildPrompt(PromptTree child, PromptFilter filter)
+	{
+		child.mParent = this;
+		mChildren.add(new FilterPrompt(child, filter));
 	}
 	
 	/**
@@ -77,7 +109,22 @@ public class PromptTree
 		{
 			int action = Integer.parseInt(input);
 			
-			return mChildren.get(action);
+			int i = 0;
+			for(FilterPrompt fp : mChildren)
+			{
+				if(!fp.mFilter.allowPrompt(fp.mPrompt))
+					continue;
+				
+				if(action == i)
+					return fp.mPrompt;
+				
+				i++;
+			}
+			
+			if(mParent != null)
+				return mParent;
+			else
+				return this;
 		}
 		catch(Exception e)
 		{
@@ -105,10 +152,19 @@ public class PromptTree
 			doc.insertString(doc.getLength(), mMessage + NL, null);
 			
 			int i = 0;
-			for(PromptTree pt : mChildren)
+			for(FilterPrompt fp : mChildren)
+			{
+				if(!fp.mFilter.allowPrompt(fp.mPrompt))
+					continue;
+				
+				doc.insertString(doc.getLength(), "" + i++ + ": ", boldStyle);
+				doc.insertString(doc.getLength(), fp.mPrompt.mTitle + NL, null);
+			}
+			
+			if(mParent != null)
 			{
 				doc.insertString(doc.getLength(), "" + i++ + ": ", boldStyle);
-				doc.insertString(doc.getLength(), pt.mTitle + NL, null);
+				doc.insertString(doc.getLength(), "Back" + NL, null);
 			}
 		}
 		catch (BadLocationException ex){}
@@ -134,5 +190,34 @@ public class PromptTree
 	public Task getTask()
 	{
 		return null;
+	}
+	
+	public boolean hasAllowableChildren()
+	{
+		boolean hasChildren = false;
+		for(FilterPrompt fp : mChildren)
+		{
+			if(fp.mFilter.allowPrompt(fp.mPrompt))
+			{
+				hasChildren = true;
+				break;
+			}
+		}
+		return hasChildren;
+	}
+	
+	//
+	// Prompt Filtering stuffs.
+	//
+	protected class FilterPrompt
+	{
+		public PromptTree mPrompt;
+		public PromptFilter mFilter;
+		
+		public FilterPrompt(PromptTree p, PromptFilter f)
+		{
+			mPrompt = p;
+			mFilter = f;
+		}
 	}
 }
