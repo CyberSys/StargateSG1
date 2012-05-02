@@ -270,7 +270,7 @@ public abstract class Faction
 		
 		factionReputations.get(f).adjustReputation(amount);
 		if(this == Universe.playerFaction || homeWorld.hasSpy(Universe.playerFaction))
-			GameFrame.addToLog(factionName + " is feeling better about " + f.factionName + ".  Reputation has gone up.");
+			GameFrame.addToLog(factionName + " is feeling better about the " + f.factionName + ".  Reputation has gone up.");
 	}
 	
 	public void decreaseReputation(Faction f, double repChange)
@@ -279,7 +279,7 @@ public abstract class Faction
 		
 		factionReputations.get(f).adjustReputation(-1 * repChange);
 		if(this == Universe.playerFaction || homeWorld.hasSpy(Universe.playerFaction))
-			GameFrame.addToLog(factionName + " is feeling worse about " + f.factionName + ".  Reputation has gone up.");
+			GameFrame.addToLog(factionName + " is feeling worse about the " + f.factionName + ".  Reputation has gone down.");
 	}
 	
 	//
@@ -371,6 +371,11 @@ public abstract class Faction
 		
 		if(this == Universe.playerFaction || w.hasSpy(Universe.playerFaction))
 			GameFrame.addToLog(factionName + " has lost control of " + w.name);
+	}
+	
+	//Does THIS have intel on FACTION
+	public boolean hasIntel(Faction faction) {
+		 return (faction.getHomeWorld().hasSpy(this));
 	}
 	
 	//
@@ -584,7 +589,7 @@ public abstract class Faction
 	public void replan() {
 		if(timeToReplan <= 0 || plan.isEmpty()) { 
 			plan.clear(); 
-			timeToReplan = 1;
+			timeToReplan = 20;
 			plan.add(getSuperTask());	
 		}
 		while(plan.peek().isBaseTask() != true) {

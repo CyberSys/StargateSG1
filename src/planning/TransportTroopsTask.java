@@ -49,7 +49,7 @@ public class TransportTroopsTask extends Task {
 
 	@Override
 	public boolean canPerform(Faction faction) {
-		return from != null && to != null && stepsToCompletion(faction) >= 0;
+		return getFlavorMatchTask(faction) != null && getFlavorMatchTask(faction).canPerform(faction);
 	}
 
 	@Override
