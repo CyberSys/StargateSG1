@@ -1,4 +1,4 @@
-package ui;
+package ui.prompt;
 
 import planning.Task;
 
@@ -16,6 +16,11 @@ public class PromptTreeLeaf extends PromptTree
 	 * The parameter nodes that are to be used for creating the task.
 	 */
 	private PromptTreeParameter[] mParams;
+	
+	/**
+	 * The paramaterizer for this leaf.
+	 */
+	
 	
 	//
 	// CTOR

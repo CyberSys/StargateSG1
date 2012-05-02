@@ -7,9 +7,9 @@ import faction.Reputation.ReputationLevel;
 
 import planning.*;
 import ui.GameFrame;
-import ui.PromptTree;
-import ui.PromptTreeLeaf;
-import ui.PromptTreeParameter;
+import ui.prompt.PromptTree;
+import ui.prompt.PromptTreeLeaf;
+import ui.prompt.PromptTreeParameter;
 import universe.*;
 
 public abstract class Faction 
