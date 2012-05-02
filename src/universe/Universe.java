@@ -100,8 +100,6 @@ public class Universe
 		{
 			if(!f.isDefeated())
 				f.doTurn();
-			else
-				f.plan.clear();
 		}
 		
 		for(World w : addressBook.values()) {
