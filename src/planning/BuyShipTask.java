@@ -35,7 +35,7 @@ public class BuyShipTask extends Task {
 	// TODO: Meaningful canPerform here.
 	@Override
 	public boolean canPerform(Faction faction) {
-		return true;
+		return faction.getNumResources() >= (limit - faction.getNumShips(world)) * Globals.SHIP_RESOURCE_BUY_COST;
 	}
 	
 	public void perform(Faction faction) {
