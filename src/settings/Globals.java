@@ -67,8 +67,8 @@ public class Globals
 	
 
 	public static final int RESOURCE_RESEARCH = 0;
-	//public static final int HYPERDRIVE_RESEARCH = 1;
-	public static final int DEFENSE_RESEARCH = 2;
-	public static final int OFFENSE_RESEARCH = 3;
+	//public static final int HYPERDRIVE_RESEARCH = 3;
+	public static final int DEFENSE_RESEARCH = 1;
+	public static final int OFFENSE_RESEARCH = 2;
 	
 }

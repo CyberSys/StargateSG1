@@ -1,6 +1,7 @@
 package ui;
 
 import java.awt.*;
+import java.text.DecimalFormat;
 
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
@@ -12,6 +13,7 @@ import javax.swing.text.StyleConstants;
 import faction.Faction;
 import faction.Reputation;
 
+import settings.Globals;
 import universe.*;
 
 public class StatsPanel extends JPanel 
@@ -49,6 +51,7 @@ public class StatsPanel extends JPanel
 		
 		writeFactionStats(doc);
 		writeFactionReps(doc);
+		writeFactionIntel(doc);
 		writeWorldStats(doc);
 		
 		mStats.setDocument(doc);
@@ -99,6 +102,8 @@ public class StatsPanel extends JPanel
 	{
 		try 
 		{
+			DecimalFormat df = new DecimalFormat( "0.00" );	
+			
 			doc.insertString(doc.getLength(), "Faction: ", bold);
 			doc.insertString(doc.getLength(), mFaction.factionName + NL, null);
 			
@@ -108,16 +113,59 @@ public class StatsPanel extends JPanel
 			doc.insertString(doc.getLength(), "Resources: ", bold);
 			doc.insertString(doc.getLength(), mFaction.getNumResources() + NL + NL, null);
 			
+			doc.insertString(doc.getLength(), "Morale: ", bold);
+			doc.insertString(doc.getLength(), df.format(mFaction.morale) + NL + NL, null);
+			
 			doc.insertString(doc.getLength(), "Military Stats:" + NL, bold);
 			doc.insertString(doc.getLength(), TAB + "Troop Count: ", bold);
 			doc.insertString(doc.getLength(), mFaction.getNumArmies() + NL, null);
 			doc.insertString(doc.getLength(), TAB + "Ship Count: ", bold);
 			doc.insertString(doc.getLength(), mFaction.getNumShips() + NL + NL, null);
+					
+			doc.insertString(doc.getLength(), "Technology Stats:" + NL, bold);
+			doc.insertString(doc.getLength(), TAB + "Resource Efficiency: ", bold);
+			doc.insertString(doc.getLength(), df.format(mFaction.getTechLevel().resourceEfficiency) + (mFaction.getTechLevel().isMaximum(Globals.RESOURCE_RESEARCH) ? " [MAX]" : "") + NL, null);
+			doc.insertString(doc.getLength(), TAB + "Offensive Tech Level: ", bold);
+			doc.insertString(doc.getLength(), df.format(mFaction.getTechLevel().offensiveCapabilities) + (mFaction.getTechLevel().isMaximum(Globals.OFFENSE_RESEARCH) ? " [MAX]" : "") + NL, null);
+			doc.insertString(doc.getLength(), TAB + "Defensive Tech Level: ", bold);
+			doc.insertString(doc.getLength(), df.format(mFaction.getTechLevel().defensiveCapabilities) + (mFaction.getTechLevel().isMaximum(Globals.DEFENSE_RESEARCH) ? " [MAX]" : "") + NL + NL, null);
 		} 
-		catch (BadLocationException e) 
+		catch (BadLocationException e){}
+	}
+	
+	private void writeFactionIntel(Document doc)
+	{
+		boolean hasIntel = false;
+		
+		try
 		{
-			e.printStackTrace();
+			doc.insertString(doc.getLength(), "Faction Intelligence: " + NL, bold);
+			
+			for(Faction f : Universe.factions)
+			{
+				if(mFaction.hasIntel(f) && !f.equals(mFaction))
+				{
+					hasIntel = true;
+					
+					DecimalFormat df = new DecimalFormat( "0.00" );
+					doc.insertString(doc.getLength(), TAB + f.factionName + ":" + NL, bold);
+					doc.insertString(doc.getLength(), TAB + TAB + "Morale: ", bold);
+					doc.insertString(doc.getLength(), df.format(f.morale) + NL, null);
+					doc.insertString(doc.getLength(), TAB + TAB + "Resource Efficiency: ", bold);
+					doc.insertString(doc.getLength(), df.format(f.getTechLevel().resourceEfficiency) + (mFaction.getTechLevel().isMaximum(Globals.RESOURCE_RESEARCH) ? " [MAX]" : "") + NL, null);
+					doc.insertString(doc.getLength(), TAB + TAB + "Offensive Tech Level: ", bold);
+					doc.insertString(doc.getLength(), df.format(f.getTechLevel().offensiveCapabilities) + (mFaction.getTechLevel().isMaximum(Globals.OFFENSE_RESEARCH) ? " [MAX]" : "") + NL, null);
+					doc.insertString(doc.getLength(), TAB + TAB + "Defensive Tech Level: ", bold);
+					doc.insertString(doc.getLength(), df.format(f.getTechLevel().defensiveCapabilities) + (mFaction.getTechLevel().isMaximum(Globals.DEFENSE_RESEARCH) ? " [MAX]" : "") + NL, null);
+				}
+			}
+			
+			if(!hasIntel)
+				doc.insertString(doc.getLength(), TAB + "No Intel Available" + NL, null);
+			
+			doc.insertString(doc.getLength(), NL, null);
 		}
+		catch (BadLocationException e){}
 	}
 	
 	private void writeFactionReps(Document doc)
@@ -162,18 +210,17 @@ public class StatsPanel extends JPanel
 				doc.insertString(doc.getLength(), TAB + f.factionName + ": ", bold);
 				doc.insertString(doc.getLength(), rLevel.toString() + NL, color);
 			}
+			
+			doc.insertString(doc.getLength(), NL, null);
 		} 
-		catch (BadLocationException e) 
-		{
-			e.printStackTrace();
-		}
+		catch (BadLocationException e){}
 	}
 	
 	private void writeWorldStats(Document doc)
 	{
 		try 
 		{
-			doc.insertString(doc.getLength(), NL + "Owned World Statistics: " + NL, bold);
+			doc.insertString(doc.getLength(), "Owned World Statistics: " + NL, bold);
 			
 			for(World w : mFaction.getControlledWorlds())
 			{				
@@ -182,18 +229,18 @@ public class StatsPanel extends JPanel
 			
 			doc.insertString(doc.getLength(), "Other World Statistics: " + NL, bold);
 			
-			for(World w : mFaction.getKnownWorlds())
-			{		
-				if(w.getControllingFaction().equals(mFaction))
-					continue;
-				
-				writeWorldStats(doc, w);
+			if(mFaction.getKnownWorlds().size() - mFaction.getControlledWorlds().size() > 0)
+			{
+				for(World w : mFaction.getKnownWorlds())
+				{		
+					if(w.getControllingFaction().equals(mFaction))
+						continue;
+					
+					writeWorldStats(doc, w);
+				}
 			}
 		} 
-		catch (BadLocationException e) 
-		{
-			e.printStackTrace();
-		}
+		catch (BadLocationException e){}
 	}
 	
 	private void writeWorldStats(Document doc, World w) throws BadLocationException
@@ -209,8 +256,10 @@ public class StatsPanel extends JPanel
 				doc.insertString(doc.getLength(), TAB + TAB + TAB + "Troops: ", bold);
 				doc.insertString(doc.getLength(), f.getNumArmies(w) + NL, null);
 				doc.insertString(doc.getLength(), TAB + TAB + TAB + "Ship: ", bold);
-				doc.insertString(doc.getLength(), f.getNumShips(w) + NL + NL, null);
+				doc.insertString(doc.getLength(), f.getNumShips(w) + NL, null);
 			}
+			
+			doc.insertString(doc.getLength(), NL, null);
 		}
 		else
 		{
