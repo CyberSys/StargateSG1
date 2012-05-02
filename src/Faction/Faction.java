@@ -513,7 +513,8 @@ public abstract class Faction
 		});
 		
 		// Movement
-		
+		final PromptTreeWorldParameter training = new PromptTreeWorldParameter("Troop Movement", "Where would you like to move troops from:", this, WorldFilter.CONTROLLED_WORLD);
+		PromptTree trainingSub = new PromptTree("", "What would you like to do:");
 		
 		// Wait
 		ret.addChildPrompt(new PromptTreeLeaf(new WaitTask(null)), this);
