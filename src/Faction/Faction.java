@@ -375,6 +375,11 @@ public abstract class Faction
 			GameFrame.addToLog(factionName + " has lost control of " + w.name);
 	}
 	
+	//Does THIS have intel on FACTION
+	public boolean hasIntel(Faction faction) {
+		 return (faction.getHomeWorld().hasSpy(this));
+	}
+	
 	//
 	// TURN SIMULATION
 	//
@@ -529,7 +534,7 @@ public abstract class Faction
 	public void replan() {
 		if(timeToReplan <= 0 || plan.isEmpty()) { 
 			plan.clear(); 
-			timeToReplan = 1;
+			timeToReplan = 20;
 			plan.add(getSuperTask());	
 		}
 		while(plan.peek().isBaseTask() != true) {

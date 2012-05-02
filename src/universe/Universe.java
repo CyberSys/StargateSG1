@@ -47,12 +47,15 @@ public class Universe
 		Faction tokra = new TokraFaction();
 		
 		playerFaction.learnGateAddress(goauld.getHomeWorld());	
+		playerFaction.decreaseReputation(goauld, 25);
 		
 		asgard.learnGateAddress(goauld.getHomeWorld());
 		asgard.learnWorldLocation(goauld.getHomeWorld());
 		
 		tokra.learnGateAddress(goauld.getHomeWorld());
 		tokra.learnWorldLocation(goauld.getHomeWorld());
+		
+		goauld.learnGateAddress(playerFaction.getHomeWorld());
 		
 		factions.add(goauld);
 //		factions.add(asgard);
@@ -99,7 +102,6 @@ public class Universe
 			if(!f.isDefeated())
 				f.doTurn();
 		}
-
 		roundNumber++;
 	}
 	

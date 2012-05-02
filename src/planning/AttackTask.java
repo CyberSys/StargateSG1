@@ -47,18 +47,19 @@ public class AttackTask extends Task {
 
 	public void reportFinished(Task child) {
 		if(child instanceof TrainTroopsTask) completedTroopTraining = true;
+		if(child instanceof TransportTroopsTask) didFinish = true;
 	}
 	
 	public boolean isCompleted(Faction faction) {
-		return to.getControllingFaction() == faction;
+		return didFinish;
 	}
 
 	public boolean canPerform(Faction faction) {
-		if(!new TrainTroopsTask(from, attackForceSize, this).isCompleted(faction) && !(to.getTroopCount(faction) > to.getTroopCount(target)))
+		if(!new TrainTroopsTask(from, attackForceSize, this).isCompleted(faction) && !didFinish)
 			return new TrainTroopsTask(from, attackForceSize, this).canPerform(faction);
-		if(!(to.getTroopCount(faction) > to.getTroopCount(target)))
+		if(!didFinish)
 			return new TransportTroopsTask(from, to, faction.getNumArmies(), this).canPerform(faction);
-		return true;
+		return false;
 	}
 	
 	public double getFlavorMatch(Faction faction) 

@@ -38,7 +38,7 @@ public class TransportTroopsByShipTask extends Task {
 	@Override
 	public boolean canPerform(Faction faction) 
 	{
-		return /*faction.getNumShips() >= (int)Math.ceil(faction.getNumArmies()/5) &&*/ faction.knowsLocation(to);
+		return faction.knowsLocation(to);
 	}
 
 	@Override

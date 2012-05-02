@@ -5,11 +5,7 @@ import java.util.Random;
 
 import faction.Reputation.ReputationLevel;
 
-import planning.AttackTask;
-import planning.DefendTask;
-import planning.ResearchTask;
-import planning.SabotageTask;
-import planning.Task;
+import planning.*;
 import universe.*;
 
 public class GoauldFaction extends Faction 
@@ -62,13 +58,14 @@ public class GoauldFaction extends Faction
 			double repChange = getReputationNumber(newEnemy) - ReputationLevel.ENEMY.threshold;
 			decreaseReputation(newEnemy, repChange);
 		}
-		
+		System.out.println(homeWorld.getTroopCount(this));
 		super.doTurn();
 	}
 	
 	protected ArrayList<Task> getTaskList() {
 		ArrayList<Task> taskList = new ArrayList<Task>();
 		for(Faction enemy : getEnemies()) {
+			System.out.println(enemy);
 			for(World to : enemy.getControlledWorlds()) {
 				for(World from : getControlledWorlds()) {
 					Task attack = new AttackTask(from, to, enemy, 
@@ -91,11 +88,17 @@ public class GoauldFaction extends Faction
 		Task defend = new DefendTask(getHomeWorld(), null);
 		
 		Task research = new ResearchTask(null);
+		
+		Task raiseMorale = new RaiseMoraleTask(null);
+		
 		if(defend.canPerform(this))
 			taskList.add(defend);
 		
 		if(research.canPerform(this))
 			taskList.add(research);
+		
+		if(raiseMorale.canPerform(this))
+			taskList.add(raiseMorale);
 		
 		return taskList;
 	}
