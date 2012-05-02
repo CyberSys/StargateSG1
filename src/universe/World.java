@@ -158,7 +158,7 @@ public class World {
 	
 	//Does FACTION have intel on THIS
 	public boolean hasIntel(Faction faction) {
-		return hasSpy(faction) || getTroopCount(faction) > 0 || getShipCount(faction) > 0;
+		return hasSpy(faction) || getTroopCount(faction) > 0 || getShipCount(faction) > 0 || controllingFaction == faction;
 	}
 	
 	//

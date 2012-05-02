@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import planning.*;
+
 import faction.*;
 
 import settings.Globals;
@@ -190,5 +192,51 @@ public class Universe
 		} while(addressBook.containsKey(addr));
 			
 		return addr;
+	}
+
+	public static void getMilitaryAdvice() {
+		ArrayList<Faction> factionList = new ArrayList<Faction>();
+		for(Faction faction : factions) {
+			if(faction != playerFaction && !faction.plan.isEmpty() && faction.plan.firstElement() instanceof AttackTask)
+				factionList.add(faction);
+		}
+		if(factionList.size() > 0) {
+			Faction choice = factionList.get(new Random().nextInt(factionList.size()));
+			GameFrame.addToLog("Teal'c says", "The " + choice.factionName + " might be preparing to attack. " + 
+			(choice.plan.firstElement().target == playerFaction ? "" : "The ") + choice.plan.firstElement().target.factionName
+			+ " should be cautious.");
+		}
+		else 
+			GameFrame.addToLog("Teal'c says", "Indeed.");
+	}
+
+	public static void getDiplomacyAdvice() {
+		ArrayList<Faction> factionList = new ArrayList<Faction>();
+		for(Faction faction : factions) {
+			if(faction != playerFaction && !faction.plan.isEmpty() && faction.plan.firstElement() instanceof SabotageTask)
+				factionList.add(faction);
+		}
+		if(factionList.size() > 0) {
+			Faction choice = factionList.get(new Random().nextInt(factionList.size()));
+			GameFrame.addToLog("Daniel says", "The " + choice.factionName + " might be up to something sneaky. " + 
+			(choice.plan.firstElement().target == playerFaction ? "" : "The ") + choice.plan.firstElement().target.factionName
+			+ " should be on the lookout.");
+		}
+		else 
+			GameFrame.addToLog("Daniel says", "Achoo!");
+	}
+
+	public static void getScienceAdvice() {
+		ArrayList<Faction> factionList = new ArrayList<Faction>();
+		for(Faction faction : factions) {
+			if(faction != playerFaction && !faction.plan.isEmpty() && faction.plan.firstElement() instanceof ResearchTask)
+				factionList.add(faction);
+		}
+		if(factionList.size() > 0) {
+			Faction choice = factionList.get(new Random().nextInt(factionList.size()));
+			GameFrame.addToLog("Carter says", "The " + choice.factionName + " seems to be focusing on their research.");
+		}
+		else 
+			GameFrame.addToLog("Carter says", "Holy Hannah!");
 	}
 }
