@@ -112,7 +112,7 @@ public abstract class Faction
 	
 	public void gainTroopsActive(World w)
 	{
-		int numTroops = Math.min((int)(w.getPassiveTroops() * morale) * Globals.TROOP_RESOURCE_BUILD_COST, numResources);
+		int numTroops = Math.min((int)(w.getPassiveTroops()) * Globals.TROOP_RESOURCE_BUILD_COST, numResources);
 		increaseTroops(numTroops, w);
 		removeResources(numTroops);
 	}
