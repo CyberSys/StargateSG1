@@ -39,7 +39,6 @@ public class DirectedResearchTask extends Task {
 				GameFrame.addToLog(faction.factionName + " has failed to improved their tech level.");
 	}
 
-	// TODO: Can't perform in for specific directions.
 	@Override
 	public boolean canPerform(Faction faction) {
 		return !faction.getTechLevel().isMaximum(direction);
