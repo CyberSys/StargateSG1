@@ -103,7 +103,7 @@ public class PromptTreeWorldParameter extends PromptTreeParameter
 			for(World w : mFaction.getKnownWorlds())
 				if(w.getShipCount(mFaction) > 0 || w.getTroopCount(mFaction) > 0)
 					ret.add(w);
-			return ret.toArray(new World[0]); // TODO: Finish this.
+			return ret.toArray(new World[0]); 
 		case ANY_KNOWN_WORLD_WITH_SPACE:
 			for(World w : mFaction.getKnownWorlds())
 				if(w.getShipCount(mFaction) < Globals.WORLD_SHIP_POPULATION_CAP || w.getTroopCount(mFaction) < Globals.WORLD_TROOP_POPULATION_CAP)

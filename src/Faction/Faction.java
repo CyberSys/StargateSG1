@@ -79,7 +79,8 @@ public abstract class Faction
 	}
 	
 	public void decreaseMorale() {
-		morale -= morale <= 0 ? .05 : 0;
+		morale -= .05;
+		if(morale < Globals.MIN_MORALE) morale = Globals.MIN_MORALE;
 		if(this == Universe.playerFaction || homeWorld.hasSpy(Universe.playerFaction))
 			if(morale == Globals.MIN_MORALE)
 				GameFrame.addToLog(factionName + " is feeling lousy!  Morale is at minimum!");
@@ -269,7 +270,7 @@ public abstract class Faction
 		initReputation(f);
 		
 		factionReputations.get(f).adjustReputation(amount);
-		if(this == Universe.playerFaction || homeWorld.hasSpy(Universe.playerFaction))
+		if(this == Universe.playerFaction || f == Universe.playerFaction || homeWorld.hasSpy(Universe.playerFaction))
 			GameFrame.addToLog(factionName + " is feeling better about the " + f.factionName + ".  Reputation has gone up.");
 	}
 	
@@ -278,7 +279,7 @@ public abstract class Faction
 		initReputation(f);
 		
 		factionReputations.get(f).adjustReputation(-1 * repChange);
-		if(this == Universe.playerFaction || homeWorld.hasSpy(Universe.playerFaction))
+		if(this == Universe.playerFaction || f == Universe.playerFaction || homeWorld.hasSpy(Universe.playerFaction))
 			GameFrame.addToLog(factionName + " is feeling worse about the " + f.factionName + ".  Reputation has gone down.");
 	}
 	
@@ -406,7 +407,6 @@ public abstract class Faction
 		}
 	}
 	
-	// TODO: IMPLEMENT FOR PLAYER CONTROLLED
 	//Should only be called by playerControlled factions
 	public PromptTree getAvailableActions()
 	{
@@ -615,22 +615,21 @@ public abstract class Faction
 			@Override
 			public boolean allowPrompt(PromptTree pt) 
 			{
-				for(World w : player.getKnownWorlds())
+				World w = (World)sabotage.getValue();
+				
+				if(!w.getControllingFaction().equals(player))
 				{
-					if(!w.getControllingFaction().equals(player))
-					{
-						if(!w.hasSpy(player))
-						{							
-							if(player.getKnownGateAddresses().contains(w))
-								for(World w2 : player.getKnownWorlds())
-									if(w2.hasGate && player.getNumArmies(w2) > 0)
-										return true;
-								
-							if(player.getKnownWorldLocations().contains(w))
-								for(World w2 : player.getKnownWorlds())
-									if(player.getNumShips(w2) > 0 && player.getNumArmies(w2) > 0)
-										return true;
-						}
+					if(!w.hasSpy(player))
+					{							
+						if(player.getKnownGateAddresses().contains(w))
+							for(World w2 : player.getKnownWorlds())
+								if(w2.hasGate && player.getNumArmies(w2) > 0)
+									return true;
+							
+						if(player.getKnownWorldLocations().contains(w))
+							for(World w2 : player.getKnownWorlds())
+								if(player.getNumShips(w2) > 0 && player.getNumArmies(w2) > 0)
+									return true;
 					}
 				}
 				
@@ -767,8 +766,8 @@ public abstract class Faction
 			if(!task.canPerform(this))
 				continue;
 			totalFlavor += task.getFlavorMatch(this);
-			System.out.println(totalFlavor);
-			System.out.println(task);
+			//System.out.println(totalFlavor);
+			//System.out.println(task);
 		}
 		if(totalFlavor <= 0)
 			return new WaitTask(null);

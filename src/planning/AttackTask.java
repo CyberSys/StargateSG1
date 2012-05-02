@@ -18,7 +18,6 @@ public class AttackTask extends Task {
 
 	public int stepsToCompletion(Faction faction) 
 	{
-		// TODO: Implement steps to completion.
 		return 0;
 	}
 	

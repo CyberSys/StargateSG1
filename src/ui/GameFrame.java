@@ -121,10 +121,14 @@ public class GameFrame extends JFrame
 	public void enableInput()
 	{
 		mPlayerInput.setText("");
+		
 		mPlayerInput.setEnabled(true);
 		mAcceptButton.setEnabled(true);
-		
 		mPrompt.setEnabled(true);
+		
+		mMilitaryAdviceButton.setEnabled(true);
+		mDiplomaticAdviceButton.setEnabled(true);
+		mScientificAdviceButton.setEnabled(true);
 		
 		mStatsPanel.updateDisplay();
 	}
@@ -339,6 +343,9 @@ public class GameFrame extends JFrame
 		mPlayerInput.setEnabled(false);
 		mAcceptButton.setEnabled(false);
 		mPrompt.setEnabled(false);
+		mMilitaryAdviceButton.setEnabled(false);
+		mDiplomaticAdviceButton.setEnabled(false);
+		mScientificAdviceButton.setEnabled(false);
 		
 		PromptTree next = mCurrentPrompt.getNextPrompt(actionString);
 		
@@ -356,7 +363,7 @@ public class GameFrame extends JFrame
 		}
 		
 		mCurrentPrompt.writePrompt(mPrompt);
-		//TODO tweak enableInput
+		
 		if(!Universe.gameOver) enableInput();
 		mPlayerInput.requestFocusInWindow();
 	}

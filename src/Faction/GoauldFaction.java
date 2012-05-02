@@ -64,7 +64,7 @@ public class GoauldFaction extends Faction
 	protected ArrayList<Task> getTaskList() {
 		ArrayList<Task> taskList = new ArrayList<Task>();
 		for(Faction enemy : getEnemies()) {
-			System.out.println(enemy);
+			//System.out.println(enemy);
 			for(World to : enemy.getControlledWorlds()) {
 				for(World from : getControlledWorlds()) {
 					Task attack = new AttackTask(from, to, enemy, 

@@ -6,7 +6,6 @@ import settings.Globals;
 
 import faction.Faction;
 
-// TODO: Change this planet stuffs.
 public class StealShipTask extends Task {
 	
 	private Faction target;

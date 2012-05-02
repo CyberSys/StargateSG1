@@ -115,11 +115,8 @@ public class PromptTree
 				if(!fp.mFilter.allowPrompt(fp.mPrompt))
 					continue;
 				
-				System.out.println(i + ": " + fp.mPrompt.mTitle);
-				
 				if(action == i)
 				{
-					System.out.println(fp.mPrompt.mTitle);
 					return fp.mPrompt;
 				}
 				
