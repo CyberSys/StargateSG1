@@ -2,19 +2,20 @@ package planning;
 
 import java.util.*;
 
+import universe.World;
+
 import faction.Faction;
 
-//Todo: Make the task check for stuff work as follows:
-//Check to see that every task looks like it has finished (this will have to be personalized to each task
-//Check to see that we do the first task in our list that looks unfinished (i.e., it doesn't look completed)
 public abstract class Task {
-	//Tasks should 
-	//protected ArrayList<Task> tasks = new ArrayList<Task>();
 	protected boolean isBaseTask;
 	protected String name;
 	protected Task parent;
 	protected boolean didFinish = false;
 	protected Random random = new Random();
+	
+	public Faction target = null;
+	public World world, from, to = from = world = null;
+	public int limit, direction = limit = 0;
 
 	public Task(boolean isBaseTask, String taskName, Task parent) {
 		this.isBaseTask = isBaseTask;

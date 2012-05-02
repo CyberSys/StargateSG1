@@ -6,8 +6,6 @@ import universe.World;
 
 public class SabotageTroopsTask extends Task {
 
-	private Faction target;
-	private World world;
 	public SabotageTroopsTask(World world, Task parent) {
 		super(true, "Sabotage Troops Task", parent);
 		this.target = world.getControllingFaction();

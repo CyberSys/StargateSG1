@@ -11,10 +11,10 @@ import universe.World;
 
 public class SabotageTask extends Task {
 
-	private World world;
 	public SabotageTask(World world, Task parent) {
 		super(false, "Sabotage Task", parent);
 		this.world = world;
+		this.target = world.getControllingFaction();
 	}
 
 	protected List<Task> getTaskList(Faction faction) {

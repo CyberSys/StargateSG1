@@ -5,8 +5,6 @@ import universe.World;
 
 public class PlantSpyByGateTask extends Task {
 
-	private World world, from;
-	
 	public PlantSpyByGateTask(World from, World world, Task parent) {
 		super(true, "Plant Spy By Gate Task", parent);
 		this.world = world;
