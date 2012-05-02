@@ -6,6 +6,7 @@ import settings.Globals;
 import faction.Reputation.ReputationLevel;
 
 import planning.*;
+import ui.GameFrame;
 import ui.PromptTree;
 import ui.PromptTreeLeaf;
 import ui.PromptTreeParameter;
@@ -69,10 +70,14 @@ public abstract class Faction
 	//
 	public void increaseMorale() {
 		morale += morale >= .5 ? .05 : 0;
+		if(this == Universe.playerFaction || homeWorld.hasSpy(Universe.playerFaction))
+			GameFrame.addToLog(factionName + " is feeling good!  Morale has gone up.");
 	}
 	
 	public void decreaseMorale() {
 		morale -= morale <= 0 ? .05 : 0;
+		if(this == Universe.playerFaction || homeWorld.hasSpy(Universe.playerFaction))
+			GameFrame.addToLog(factionName + " is feeling lousy.  Morale has gone down.");
 	}
 	
 	public void increaseTroops(int amount)
@@ -257,6 +262,8 @@ public abstract class Faction
 		initReputation(f);
 		
 		factionReputations.get(f).adjustReputation(amount);
+		if(this == Universe.playerFaction || homeWorld.hasSpy(Universe.playerFaction))
+			GameFrame.addToLog(factionName + " is feeling better about " + f.factionName + ".  Reputation has gone up.");
 	}
 	
 	public void decreaseReputation(Faction f, double repChange)
@@ -264,6 +271,8 @@ public abstract class Faction
 		initReputation(f);
 		
 		factionReputations.get(f).adjustReputation(-1 * repChange);
+		if(this == Universe.playerFaction || homeWorld.hasSpy(Universe.playerFaction))
+			GameFrame.addToLog(factionName + " is feeling worse about " + f.factionName + ".  Reputation has gone up.");
 	}
 	
 	//
@@ -280,6 +289,9 @@ public abstract class Faction
 			knownGateAddresses.add(world);
 			knownWorlds.add(world);
 		}
+		
+		if(this == Universe.playerFaction || world.hasSpy(Universe.playerFaction))
+			GameFrame.addToLog(factionName + " has learned the gate address of " + world.name);
 	}
 	
 	public boolean knowsLocation(World world) 
@@ -291,6 +303,8 @@ public abstract class Faction
 	{
 		knownWorldLocations.add(world);
 		knownWorlds.add(world);
+		if(this == Universe.playerFaction || world.hasSpy(Universe.playerFaction))
+			GameFrame.addToLog(factionName + " has learned the location of " + world.name);
 	}
 	
 	//
@@ -347,6 +361,9 @@ public abstract class Faction
 				}
 			}
 		}
+		
+		if(this == Universe.playerFaction || w.hasSpy(Universe.playerFaction))
+			GameFrame.addToLog(factionName + " has lost control of " + w.name);
 	}
 	
 	//
@@ -504,6 +521,8 @@ public abstract class Faction
 	
 	public boolean isDefeated()
 	{
+		if(this == Universe.playerFaction || homeWorld.hasSpy(Universe.playerFaction))
+			GameFrame.addToLog(factionName + " has been defeated.");
 		return (homeWorld == null);
 	}
 	
@@ -633,6 +652,9 @@ public abstract class Faction
 		default:
 			break;
 		}
+
+		if(this == Universe.playerFaction || homeWorld.hasSpy(Universe.playerFaction))
+			GameFrame.addToLog(factionName + " has improved their tech level.");
 	}
 	
 	public void reduceTechLevel() {
@@ -659,6 +681,9 @@ public abstract class Faction
 		default:
 			break;
 		}
+
+		if(this == Universe.playerFaction || homeWorld.hasSpy(Universe.playerFaction))
+			GameFrame.addToLog(factionName + " has had their tech level lowered.");
 	}
 	
 	
