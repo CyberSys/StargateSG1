@@ -582,7 +582,9 @@ public abstract class Faction
 		
 		// Sabotage
 		final PromptTreeWorldParameter sabotage = new PromptTreeWorldParameter("Troop Movement", "Where would you like to sabotage:", this, WorldFilter.UNCONTROLLED_WORLD);
+		PromptTree sabotageSub = new PromptTree("", "What would you like to do:");
 		
+		sabotage.addChildPrompt(sabotageSub);
 		ret.addChildPrompt(sabotage, new PromptFilter()
 		{
 			@Override

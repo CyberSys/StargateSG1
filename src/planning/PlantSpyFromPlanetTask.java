@@ -36,7 +36,7 @@ public class PlantSpyFromPlanetTask extends Task {
 
 	@Override
 	public boolean canPerform(Faction faction) {
-		return world.getTroopCount(faction) > 0;
+		return world.getTroopCount(faction) > 0 && !world.hasSpy(faction);
 	}
 
 	@Override
