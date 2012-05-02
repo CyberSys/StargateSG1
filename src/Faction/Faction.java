@@ -70,15 +70,23 @@ public abstract class Faction
 	// TROOP AND SHIP MANAGEMENT
 	//
 	public void increaseMorale() {
-		morale += morale >= .5 ? .05 : 0;
+		morale += .05;
+		if(morale > Globals.MAX_MORALE) morale = Globals.MAX_MORALE;
 		if(this == Universe.playerFaction || homeWorld.hasSpy(Universe.playerFaction))
-			GameFrame.addToLog(factionName + " is feeling good!  Morale has gone up.");
+			if(morale == Globals.MAX_MORALE)
+				GameFrame.addToLog(factionName + " is feeling good!  Morale is at maximum!");
+			else
+				GameFrame.addToLog(factionName + " is feeling good!  Morale has gone up.");
+		
 	}
 	
 	public void decreaseMorale() {
 		morale -= morale <= 0 ? .05 : 0;
 		if(this == Universe.playerFaction || homeWorld.hasSpy(Universe.playerFaction))
-			GameFrame.addToLog(factionName + " is feeling lousy.  Morale has gone down.");
+			if(morale == Globals.MIN_MORALE)
+				GameFrame.addToLog(factionName + " is feeling lousy!  Morale is at minimum!");
+			else
+				GameFrame.addToLog(factionName + " is feeling lousy.  Morale has gone down.");
 	}
 	
 	public void increaseTroops(int amount)
@@ -526,8 +534,6 @@ public abstract class Faction
 	
 	public boolean isDefeated()
 	{
-		if(this == Universe.playerFaction || homeWorld.hasSpy(Universe.playerFaction))
-			GameFrame.addToLog(factionName + " has been defeated.");
 		return (homeWorld == null);
 	}
 	
@@ -647,11 +653,11 @@ public abstract class Faction
 //			tech.hyperdriveEfficiency+=.5;
 //			if(tech.hyperdriveEfficiency > Globals.MAX_HYPERDRIVE_EFFICIENCY) tech.hyperdriveEfficiency = Globals.MAX_HYPERDRIVE_EFFICIENCY;
 //			break;
-		case 2:
+		case Globals.DEFENSE_RESEARCH:
 			tech.defensiveCapabilities+=.5;
 			if(tech.defensiveCapabilities > Globals.MAX_DEFENSIVE_CAPABILITIES) tech.defensiveCapabilities = Globals.MAX_DEFENSIVE_CAPABILITIES;
 			break;
-		case 3:
+		case Globals.OFFENSE_RESEARCH:
 			tech.offensiveCapabilities+=.5;
 			if(tech.offensiveCapabilities > Globals.MAX_OFFENSIVE_CAPABILITIES) tech.offensiveCapabilities = Globals.MAX_OFFENSIVE_CAPABILITIES;
 		default:

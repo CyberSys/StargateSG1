@@ -37,8 +37,8 @@ public class Universe
 	{
 		if(isInitialized)
 			return;
-		GameFrame.getGameFrame();
 		playerFaction = new HumanityFaction();
+		GameFrame.getGameFrame();
 		
 		factions.add(playerFaction);
 		

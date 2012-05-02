@@ -1,6 +1,8 @@
 package planning;
 
 import settings.Globals;
+import ui.GameFrame;
+import universe.Universe;
 import faction.Faction;
 
 public class DirectedResearchTask extends Task {
@@ -32,6 +34,9 @@ public class DirectedResearchTask extends Task {
 			if(parent != null) parent.reportFinished(this);
 			faction.improveTechLevel(direction);		
 		}
+		else
+			if(faction == Universe.playerFaction)
+				GameFrame.addToLog(faction.factionName + " has failed to improved their tech level.");
 	}
 
 	@Override
