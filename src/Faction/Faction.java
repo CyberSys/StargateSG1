@@ -404,8 +404,8 @@ public abstract class Faction
 				continue;
 			totalFlavor += task.getFlavorMatch(this);
 		}
-//		if(totalFlavor <= 0)
-//			return new WaitTask(null);
+		if(totalFlavor <= 0)
+			return new WaitTask(null);
 		double flavorPick = new Random().nextDouble() * totalFlavor;
 		for(Task task : taskList)
 		{
@@ -456,28 +456,17 @@ public abstract class Faction
 	}
 
 	public void replan() {
-		//Do things
-		//probably check all of the highest level tasks, find the one that matches flavor the most
-		//or one that gives an end result of victory condition
-		//System.out.println(plan + "1");
 		if(timeToReplan <= 0 || plan.isEmpty()) { 
 			plan.clear(); 
 			timeToReplan = 1;
-//			System.out.println(this);
-//			System.out.println(getEnemies());
-			plan.add(getSuperTask());
-			//Task sabotage = new SabotageTask(getEnemies().get(0), getEnemies().get(0).getHomeWorld(), null);
-//			plan.add(sabotage);
+			plan.add(getSuperTask());	
 		}
-		System.out.println(plan);
 		while(plan.peek().isBaseTask() != true) {
-			//System.out.println(plan + "2");
 			if(plan.peek().isCompleted(this)){ 
 				plan.pop();
 				if(plan.isEmpty()) replan();
 			}
 			else plan.add(plan.peek().getNextStep(this));
-			//System.out.println(plan + "3");
 		}
 	}
 	

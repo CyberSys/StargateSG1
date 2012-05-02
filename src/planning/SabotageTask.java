@@ -66,9 +66,8 @@ public class SabotageTask extends Task {
 			return new TransportTroopsTask(faction.getHomeWorld(), world, 1, this).canPerform(faction);
 		if(!world.hasSpy(faction) && world.getTroopCount(faction) > 0)
 			return new PlantSpyFromPlanetTask(world, this).canPerform(faction);
-		else //if(world.hasSpy(faction))
+		else
 			return task.canPerform(faction);
-		//return new TransportTroopsTask(faction.getHomeWorld(), world, 1, this).canPerform(faction);
 	}
 
 	@Override

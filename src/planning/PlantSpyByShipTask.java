@@ -32,7 +32,7 @@ public class PlantSpyByShipTask extends Task {
 		world.plantSpy(faction);
 		from.removeTroops(faction,  1);
 		from.removeShips(faction, 1);
-		parent.reportFinished(this);
+		if(parent != null) parent.reportFinished(this);
 	}
 	
 	@Override

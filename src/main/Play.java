@@ -22,9 +22,6 @@ public class Play {
 				f3 = faction;
 		}
 		f.learnWorldLocation(f2.getHomeWorld());
-
-//		f.decreaseReputation(f2, 50);
-		f2.decreaseReputation(f, 50);
 	
 		MainLoop:
 		while(true) {
@@ -33,13 +30,14 @@ public class Play {
 				if(faction.didWin())
 					break MainLoop;
 			}
-			
-			System.out.println(f.getHomeWorld());
-			System.out.println(f2.getHomeWorld());
-			System.out.println(f3.getHomeWorld());
-			
-			System.out.println(f3.getReputation(f));
-			System.out.println(f.getReputation(f3));
+			System.out.println("---------------------------------");
+			if(f.plan.firstElement() instanceof AttackTask) System.out.println("Teal'c thinks the Goa'uld are getting ready to attack somebody");
+			if(f.plan.firstElement() instanceof ResearchTask) System.out.println("Carter thinks the Goa'uld are trying to increase their technology");		
+			if(f.plan.firstElement() instanceof SabotageTask) System.out.println("Daniel thinks the Goa'uld are doing something sneaky");
+			System.out.println("---------------------------------");
+//			System.out.println(f.getHomeWorld());
+//			System.out.println(f2.getHomeWorld());
+//			System.out.println(f3.getHomeWorld());
 		}
 		for(Faction fact : new Faction[] {f, f2, f3})
 			System.out.println(fact + " " + fact.getControlledWorlds());

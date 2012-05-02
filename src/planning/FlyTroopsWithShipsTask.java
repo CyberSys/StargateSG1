@@ -37,7 +37,7 @@ public class FlyTroopsWithShipsTask extends Task {
 		to.addTroops(faction, limit);
 		from.removeShips(faction,  shipsToMove);
 		to.addShips(faction, shipsToMove);
-		parent.reportFinished(this);
+		if(parent != null) parent.reportFinished(this);
 		
 	}
 	@Override
