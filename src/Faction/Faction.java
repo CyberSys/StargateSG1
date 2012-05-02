@@ -395,7 +395,10 @@ public abstract class Faction
 		// Planning
 		if(isPlayerControlled)
 		{
-			mNextTask.perform(this);
+			if(mNextTask.canPerform(this))
+				mNextTask.perform(this);
+			else
+				GameFrame.addToLog("Failed to perform task.");
 		}
 		else
 		{
@@ -496,7 +499,7 @@ public abstract class Faction
 			public boolean allowPrompt(PromptTree pt) 
 			{
 				World w = (World)training.getValue();
-				return (w.getShipCount(player) >= Globals.WORLD_SHIP_POPULATION_CAP);
+				return (w.getShipCount(player) <= Globals.WORLD_SHIP_POPULATION_CAP && player.getNumResources() >= Globals.SHIP_RESOURCE_BUY_COST);
 			}
 		});
 		training.addChildPrompt(trainingSub);
@@ -521,9 +524,18 @@ public abstract class Faction
 		
 		// Movement
 		final PromptTreeWorldParameter movement = new PromptTreeWorldParameter("Troop Movement", "Where would you like to move troops from:", this, WorldFilter.WORLD_WITH_UNITS);
+		final PromptTreeWorldParameter moveTo = new PromptTreeWorldParameter("", "Where would you like to move troops to:", this, WorldFilter.ANY_KNOWN_WORLD_WITH_SPACE);
 		PromptTree movementSub = new PromptTree("", "What would you like to do:");
-		
-		movement.addChildPrompt(movementSub);
+		movementSub.addChildPrompt(new PromptTreeLeaf("Fly Troops With Ships", "", new TaskParameterizer()
+		{
+			@Override
+			public Task generateTask() 
+			{
+				return null; // TODO: THIS
+			}
+		}), this);
+		moveTo.addChildPrompt(movementSub);
+		movement.addChildPrompt(moveTo);
 		ret.addChildPrompt(movement, new PromptFilter()
 		{
 			@Override
