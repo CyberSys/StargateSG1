@@ -66,6 +66,7 @@ public class World {
 			factionStats.put(faction, new FactionWorldStats());
 		}
 		controllingFaction.gainWorldControl(this);
+		spies.remove(faction);
 		if(Universe.playerFaction != null)
 		GameFrame.addToLog(faction.factionName + " now has control of " + name);
 	}
