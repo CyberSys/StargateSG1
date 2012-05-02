@@ -767,6 +767,8 @@ public abstract class Faction
 			if(!task.canPerform(this))
 				continue;
 			totalFlavor += task.getFlavorMatch(this);
+			System.out.println(totalFlavor);
+			System.out.println(task);
 		}
 		if(totalFlavor <= 0)
 			return new WaitTask(null);

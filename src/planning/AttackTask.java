@@ -6,7 +6,6 @@ import universe.*;
 
 public class AttackTask extends Task {
 	
-	private World from, to;
 	private int attackForceSize;
 	private boolean completedTroopTraining;
 	public AttackTask(World from, World to, Faction target, int attackForceSize, Task parent) {

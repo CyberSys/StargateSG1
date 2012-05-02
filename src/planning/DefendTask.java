@@ -21,6 +21,7 @@ public class DefendTask extends Task {
 		taskList.add(new TrainTroopsTask(world, Globals.WORLD_TROOP_POPULATION_CAP * 3 / 4, this));
 		taskList.add(new GatherShipTask(world, Globals.WORLD_SHIP_POPULATION_CAP * 3 / 4, this));
 		taskList.add(new DirectedResearchTask(Globals.DEFENSE_RESEARCH, this));
+		taskList.add(new RaiseMoraleTask(this));
 		return taskList;
 	}
 
@@ -39,7 +40,7 @@ public class DefendTask extends Task {
 	}
 
 	public boolean canPerform(Faction faction) {
-		return world != null && getFlavorMatchTask(faction) != null &&   getFlavorMatchTask(faction).canPerform(faction);
+		return world != null && getFlavorMatchTask(faction) != null &&  getFlavorMatchTask(faction).canPerform(faction);
 	}
 
 	@Override
@@ -52,7 +53,7 @@ public class DefendTask extends Task {
 			defenseFactor += e.getAttackStrength(world);
 		}
 		
-		defenseFactor = defenseFactor / faction.getDefenseStrength(world);
+		defenseFactor = defenseFactor / Math.max(faction.getDefenseStrength(world), 1);
 		
 		return (defenseFactor) * (faction.getAggression() + faction.getDiplomacy() + faction.getScience()) / 3.0;
 	}

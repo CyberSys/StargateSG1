@@ -193,6 +193,7 @@ public class GameFrame extends JFrame
 			public void actionPerformed(ActionEvent arg0) 
 			{
 				Universe.getMilitaryAdvice();
+				mPlayerInput.requestFocusInWindow();
 			}
         });
 
@@ -203,6 +204,7 @@ public class GameFrame extends JFrame
 			public void actionPerformed(ActionEvent arg0) 
 			{
 				Universe.getScienceAdvice();
+				mPlayerInput.requestFocusInWindow();
 			}
         });
 
@@ -213,6 +215,7 @@ public class GameFrame extends JFrame
 			public void actionPerformed(ActionEvent arg0) 
 			{
 				Universe.getDiplomacyAdvice();
+				mPlayerInput.requestFocusInWindow();
 			}
         });
 
