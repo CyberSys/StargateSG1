@@ -409,23 +409,32 @@ public abstract class Faction
 		 * 
 		 * GENERAL TASKS:
 		 * Raise Morale
-		 * Research (Search and Directed)
 		 * Gather Resources
+		 * Training
+		 * Troop Movement
+		 * Sabotage
+		 * Research
 		 * Wait
 		 * 
 		 * Training:
-		 * Build Ship - controlled
-		 * Buy Ships - controlled  
-		 * Train Troops - controlled
+		 * Train Troops - controlled world
+		 * Build Ship - controlled world
+		 * Buy Ships - controlled world, number 
 		 * 
 		 * Movement:
-		 * FlyTroopsTo
-		 * TransferShipsTo 
-		 * TransportTroopsByGate
+		 * FlyTroopsTo - world with troops, world
+		 * TransferShipsTo - world with troops, world
+		 * TransportTroopsByGate - world with troops, world
 		 * 
 		 * Sabotage:
 		 * PlantSpy(by gate, ship, from planet) - non-controlled
 		 * Sabotage Tasks - non-controlled
+		 * 
+		 * Research:
+		 * Undirected
+		 * Directed Resource
+		 * Directed Offense
+		 * Directed Defense
 		 * 
 		 * */
 		PromptTree ret = new PromptTree("Player Action", "Please select your action:");

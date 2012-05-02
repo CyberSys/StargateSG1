@@ -1,7 +1,5 @@
 package faction;
 
-import java.util.Arrays;
-
 import settings.Globals;
 
 public class Reputation 

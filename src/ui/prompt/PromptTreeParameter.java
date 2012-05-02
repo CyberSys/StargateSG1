@@ -2,7 +2,6 @@ package ui.prompt;
 
 import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.Document;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
@@ -17,7 +16,7 @@ public abstract class PromptTreeParameter extends PromptTree
 	/**
 	 * The value of the parameter entered.
 	 */
-	private Object mValue;
+	protected Object mValue;
 	
 	
 	//
@@ -50,36 +49,10 @@ public abstract class PromptTreeParameter extends PromptTree
 	}
 	
 	@Override
-	public PromptTree getNextPrompt(String input)
-	{
-		try
-		{
-			//mValue = mType.parseParameter(input, mFaction);
-			
-			return mChildren.get(0);
-		}
-		catch(Exception e)
-		{
-			return this;
-		}
-	}
+	public abstract PromptTree getNextPrompt(String input);
 	
 	@Override
-	public void writePrompt(JTextPane pane)
-	{
-		final String NL = System.getProperty("line.separator");
-		
-		Document doc = new DefaultStyledDocument();
-		
-		try 
-		{
-			doc.insertString(doc.getLength(), mMessage + NL, null);
-			//mType.writePrompt(doc, mFaction);
-		} 
-		catch (BadLocationException e) {}
-		
-		pane.setDocument(doc);
-	}
+	public abstract void writePrompt(JTextPane pane);
 	
 	//
 	// PARAMETER TYPE
