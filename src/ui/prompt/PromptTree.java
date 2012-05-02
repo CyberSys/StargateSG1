@@ -26,12 +26,12 @@ public class PromptTree
 	/**
 	 * The prompt title to display.
 	 */
-	private String mTitle;
+	protected String mTitle;
 	
 	/**
 	 * The prompt message to display.
 	 */
-	private String mMessage;
+	protected String mMessage;
 	
 	/**
 	 * Whether or not the current prompt is a leaf.

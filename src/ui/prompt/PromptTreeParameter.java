@@ -1,10 +1,15 @@
 package ui.prompt;
 
 import javax.swing.JTextPane;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultStyledDocument;
+import javax.swing.text.Document;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
 
 import faction.Faction;
 
-public class PromptTreeParameter extends PromptTree 
+public abstract class PromptTreeParameter extends PromptTree 
 {
 	//
 	// DATA
@@ -72,6 +77,23 @@ public class PromptTreeParameter extends PromptTree
 		}
 	}
 	
+	@Override
+	public void writePrompt(JTextPane pane)
+	{
+		final String NL = System.getProperty("line.separator");
+		
+		Document doc = new DefaultStyledDocument();
+		
+		try 
+		{
+			doc.insertString(doc.getLength(), mMessage + NL, null);
+			mType.writePrompt(doc, mFaction);
+		} 
+		catch (BadLocationException e) {}
+		
+		pane.setDocument(doc);
+	}
+	
 	//
 	// PARAMETER TYPE
 	//
@@ -113,9 +135,34 @@ public class PromptTreeParameter extends PromptTree
 			}
 		}
 		
-		public void writePrompt(JTextPane pane)
+		public void writePrompt(Document doc, Faction f) throws BadLocationException
 		{
+			switch(this)
+			{
+			case OWNED_WORLD:
+			case KNOWN_LOC_WORLD:
+			case KNOWN_GATE_WORLD:
+				writeWorldList(doc, f);
+			case INTEGER:
+				doc.insertString(doc.getLength(), "Please enter an integer:", null);
+			}
+		}
+		
+		private void writeWorldList(Document doc, Faction f) throws BadLocationException
+		{
+			final String NL = System.getProperty("line.separator");
 			
+			final SimpleAttributeSet boldStyle = new SimpleAttributeSet();
+			boldStyle.addAttribute(StyleConstants.CharacterConstants.Bold, Boolean.TRUE);
+			
+			Object[] worlds = getParamList(f);
+			
+			int i = 0;
+			for(Object w : worlds)
+			{
+				doc.insertString(doc.getLength(), "" + i++ + ": ", boldStyle);
+				doc.insertString(doc.getLength(), w + NL, null);
+			}
 		}
 	}
 }

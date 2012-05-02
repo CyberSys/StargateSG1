@@ -176,13 +176,7 @@ public class World {
 	}
 	
 	public String toString() {
-		String string = "";
-		for(Faction  f : factionStats.keySet()) {
-			string += f + " ";
-			string += factionStats.get(f).toString();
-			string += "\n";
-		}
-		return string;
+		return name;
 	}
 	
 	//

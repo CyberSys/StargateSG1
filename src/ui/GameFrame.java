@@ -160,10 +160,7 @@ public class GameFrame extends JFrame
 			
 			doc.insertString(doc.getLength(), line.body + lineSep, bodyStyle);
 		} 
-		catch (BadLocationException e) 
-		{
-			e.printStackTrace();
-		}
+		catch (BadLocationException e){}
 	}
 	
 	

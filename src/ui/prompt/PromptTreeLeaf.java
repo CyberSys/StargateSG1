@@ -20,7 +20,7 @@ public class PromptTreeLeaf extends PromptTree
 	/**
 	 * The paramaterizer for this leaf.
 	 */
-	
+	private TaskParameterizer mTaskMaker;
 	
 	//
 	// CTOR
@@ -38,6 +38,13 @@ public class PromptTreeLeaf extends PromptTree
 		mIsLeaf = true;
 	}
 	
+	public PromptTreeLeaf(String title, String message, TaskParameterizer tm)
+	{
+		this(null, title, message);
+		
+		mTaskMaker = tm;
+	}
+	
 	
 	//
 	// METHODS
@@ -50,9 +57,13 @@ public class PromptTreeLeaf extends PromptTree
 	@Override
 	public Task getTask()
 	{
-		if(mParams == null)
+		if(mParams == null || mTaskMaker == null)
+		{
 			return mTask;
+		}
 		else
-			return null;
+		{
+			return mTaskMaker.generateTask(mParams);
+		}
 	}
 }

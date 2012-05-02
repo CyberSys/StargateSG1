@@ -9,6 +9,7 @@ import planning.*;
 import ui.prompt.PromptTree;
 import ui.prompt.PromptTreeLeaf;
 import ui.prompt.PromptTreeParameter;
+import ui.prompt.PromptTreeParameter.ParameterType;
 import universe.*;
 
 public abstract class Faction 
@@ -387,16 +388,20 @@ public abstract class Faction
 		 * Gather Resources
 		 * Wait
 		 * 
-		 * ELSE CHOOSE PLANET:
-		 * Build Ship
-		 * Buy Ships
-		 * PlantSpy(by gate, ship, from planet)
+		 * Training:
+		 * Build Ship - controlled
+		 * Buy Ships - controlled  
+		 * Train Troops - controlled
+		 * 
+		 * Movement:
 		 * FlyTroopsTo
-		 * Sabotage Tasks
-		 * Train Troops
-		 * Steal Ship
-		 * Transfer Ships To
-		 * Transport Troops By Gate
+		 * TransferShipsTo 
+		 * TransportTroopsByGate
+		 * 
+		 * Sabotage:
+		 * PlantSpy(by gate, ship, from planet) - non-controlled
+		 * Sabotage Tasks - non-controlled
+		 * 
 		 * */
 		PromptTree ret = new PromptTree("Player Action", "Please select your action:");
 		
@@ -412,10 +417,10 @@ public abstract class Faction
 		research.addChildPrompt(new PromptTreeLeaf(new DirectedResearchTask(Globals.DEFENSE_RESEARCH, null), "Defensive Technology Research", ""));
 		ret.addChildPrompt(research);
 		
-		// World Specific Tasks
-		PromptTreeParameter worldSpecific = null;
+		// Troop Management Tasks
+		//PromptTreeParameter worldSpecific = new PromptTreeParameter(null, this, "World Specific Actions", "Please select a world:");
 		
-		ret.addChildPrompt(worldSpecific);
+		//ret.addChildPrompt(worldSpecific);
 		
 		ret.addChildPrompt(new PromptTreeLeaf(new WaitTask(null)));
 		
