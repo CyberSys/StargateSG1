@@ -1,10 +1,7 @@
 package main;
 
-import faction.*;
-import planning.*;
 import ui.GameFrame;
 import universe.Universe;
-import universe.World;
 
 public class Play {
 	public static void main(String[] args) 
