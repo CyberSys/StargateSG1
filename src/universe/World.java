@@ -138,6 +138,21 @@ public class World {
 			return 0;
 	}
 	
+	public List<Faction> getOccupyingFactions()
+	{
+		ArrayList<Faction> occupants = new ArrayList<Faction>();
+		
+		for(Map.Entry<Faction, FactionWorldStats> entry : factionStats.entrySet())
+		{
+			FactionWorldStats fws = entry.getValue();
+
+			if(fws.troopCount > 0 || fws.shipCount > 0)
+				occupants.add(entry.getKey());
+		}
+		
+		return occupants;
+	}
+	
 	public boolean hasSpy(Faction faction) {
 		return spies.contains(faction);
 	}

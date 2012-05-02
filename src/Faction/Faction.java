@@ -738,7 +738,7 @@ public abstract class Faction
 								new DirectedDestroyTechTask(w, Globals.OFFENSE_RESEARCH, null).canPerform(player) ||
 								new DirectedDestroyTechTask(w, Globals.DEFENSE_RESEARCH, null).canPerform(player))
 							{
-								
+								return true;
 							}
 						}
 					}
